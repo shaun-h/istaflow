@@ -12,6 +12,12 @@ class Print(ElementBase):
 		
 	def set_params(self):
 		return None
+		
+	def get_description(self):
+		return "This prints the string that is in the input parameter"
+	
+	def get_title(self):
+		return 'Print'
 	
 	def run(self, input):
 		print input

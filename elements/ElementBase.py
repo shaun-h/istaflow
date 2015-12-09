@@ -12,6 +12,12 @@ class ElementBase (object):
 		
 	def set_params(self):
 		raise NotImplementedError("Class %s doesn't implement set_params()" % (self.__class__.__name__))
-	
+			
+	def get_description(self):
+		raise NotImplementedError("Class %s doesn't implement get_description()" % (self.__class__.__name__))
+		
+	def get_title(self):
+		raise NotImplementedError("Class %s doesn't implement get_title()" % (self.__class__.__name__))
+
 	def run(self):
 		raise NotImplementedError("Class %s doesn't implement run()" % (self.__class__.__name__))
