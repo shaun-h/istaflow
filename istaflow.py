@@ -2,6 +2,7 @@
 from views import ElementListView
 from managers import ElementManager
 import ui
+import collections
 
 class ista(object):
 	def __init__(self):
@@ -23,10 +24,12 @@ class ista(object):
 				try:
 					ele_value = self.elements[element.get_category()]
 					ele_value.append(element)
+					ele_value.sort(key=lambda x:x.get_title())
 					self.elements[element.get_category()] = ele_value
 				except KeyError:
 					self.elements[element.get_category()]=[element]
-			
+		self.elements = collections.OrderedDict(sorted(self.elements.items(), key=lambda t:t[0] ))
+		
 	def setup_elementsmanager(self):
 		self.element_manager = ElementManager.ElementManager()
 				

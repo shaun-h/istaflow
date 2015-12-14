@@ -1,5 +1,6 @@
 # coding: utf-8
 import ui
+
 class ElementListView(object):
 	def __init__(self, elements, selectedCallBack):
 		self.elements = elements
