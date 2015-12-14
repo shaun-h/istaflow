@@ -18,6 +18,12 @@ class ElementBase (object):
 		
 	def get_title(self):
 		raise NotImplementedError("Class %s doesn't implement get_title()" % (self.__class__.__name__))
-
+	
+	def get_icon(self):
+		raise NotImplementedError("Class %s doesn't implement get_icon()" % (self.__class__.__name__))
+	
+	def get_category(self):
+		raise NotImplementedError("Class %s doesn't implement get_category()" % (self.__class__.__name__))
+	
 	def run(self):
 		raise NotImplementedError("Class %s doesn't implement run()" % (self.__class__.__name__))

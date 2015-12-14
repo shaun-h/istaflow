@@ -18,6 +18,12 @@ class Print(ElementBase):
 	
 	def get_title(self):
 		return 'Print'
+		
+	def get_icon(self):
+		return 'iob:ios7_printer_256'
+		
+	def get_category(self):
+		return 'Utility'
 	
 	def run(self, input):
 		print input

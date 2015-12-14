@@ -6,22 +6,24 @@ class ElementListView(object):
 		self.scb = selectedCallBack
 
 	def tableview_did_select(self, tableview, section, row):
-		self.scb(self.elements[row])
+		section_key = self.elements.keys()[section]
+		self.scb(self.elements[section_key][row])
 		
 	def tableview_title_for_header(self, tableview, section):
-		return 'Elements'
+		return self.elements.keys()[section]
 
 	def tableview_number_of_sections(self, tableview):
-		return 1
+		return len(self.elements)
 
 	def tableview_number_of_rows(self, tableview, section):
-		return len(self.elements)
+		return len(self.elements[self.elements.keys()[section]])
 		
 	def tableview_cell_for_row(self, tableview, section, row):
+		section_key = self.elements.keys()[section]
 		cell = ui.TableViewCell('subtitle')
-		cell.text_label.text = self.elements[row].get_title()
-		cell.detail_text_label.text = self.elements[row].get_description()
-		cell.image_view = ui.ImageView().image = 'iob:bag_256'
+		cell.text_label.text = self.elements[section_key][row].get_title()
+		cell.detail_text_label.text = self.elements[section_key][row].get_description()
+		cell.image_view.image = ui.Image.named(self.elements[section_key][row].get_icon())
 		cell.selectable = True
 		return cell
 

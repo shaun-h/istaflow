@@ -3,8 +3,6 @@ from views import ElementListView
 from managers import ElementManager
 import ui
 
-
-
 class ista(object):
 	def __init__(self):
 		self.elements_view = None
@@ -18,7 +16,16 @@ class ista(object):
 		if self.element_manager == None:
 			raise ValueError("element_manager hasnt been initialised")
 		else:	
-			self.elements = self.element_manager.get_all_elements(type='valid')
+			elements_to_sort = self.element_manager.get_all_elements(type='valid')
+			for element in elements_to_sort:
+				if self.elements == None:
+					self.elements = {}
+				try:
+					ele_value = self.elements[element.get_category()]
+					ele_value.append(element)
+					self.elements[element.get_category()] = ele_value
+				except KeyError:
+					self.elements[element.get_category()]=[element]
 			
 	def setup_elementsmanager(self):
 		self.element_manager = ElementManager.ElementManager()
