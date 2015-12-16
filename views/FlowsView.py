@@ -2,12 +2,12 @@
 import ui
 
 class FlowsView(object):
-	def __init__(self, flows, saveCallBack):
+	def __init__(self, flows, flowselectedcb):
 		self.flows = flows
-		self.saveCallBack = saveCallBack
+		self.flowselectedcb = flowselectedcb
 
 	def tableview_did_select(self, tableview, section, row):
-		pass
+		self.flowselectedcb(self.flows[row])
 		
 	def tableview_title_for_header(self, tableview, section):
 		pass
@@ -25,7 +25,7 @@ class FlowsView(object):
 		return cell
 
 def get_view(flows, cb):
-	dbo = FlowsView(flows = flows, saveCallBack = cb)
+	dbo = FlowsView(flows = flows, flowselectedcb = cb)
 	table_view = ui.TableView()
 	table_view.name = 'Flows'
 	table_view.data_source = dbo

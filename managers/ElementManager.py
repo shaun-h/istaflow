@@ -36,6 +36,13 @@ class ElementManager (object):
 		
 	def get_element_class(self, element):
 		return type(element).__name__
+	
+	def get_element_with_title(self, title):
+		elements = self.get_all_elements('valid')
+		for element in elements:
+			if element.get_title() == title:
+				return element
+		return None
 		
 
 def main():

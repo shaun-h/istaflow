@@ -48,6 +48,11 @@ class ista(object):
 	def show_flowcreationview(self, sender):
 		self.validate_navigationview()
 		self.selectedElements = []
+		if not self.selectedFlow == None:
+			elementNames = self.flow_manager.get_element_names_for_flow(self.selectedFlow)
+			for name in elementNames:
+				self.selectedElements.append(self.element_manager.get_element_with_title(name))
+			self.selectedFlow = None
 		self.flow_creation_view.data_source.elements = self.selectedElements
 		self.flow_creation_view.reload_data()
 		if self.flow_creation_view == None:
@@ -119,11 +124,10 @@ class ista(object):
 		
 	def flowselectedcb(self, flow):
 		self.selectedFlow = flow
-		self.show_flowcreationview()
+		self.show_flowcreationview(None)
 
 def main():
 	m = ista()
-	#m.show_elementsview()
 	m.show_mainview()
 	
 if __name__ == '__main__':
