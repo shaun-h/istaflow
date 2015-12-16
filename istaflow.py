@@ -74,8 +74,11 @@ class ista(object):
 		
 	def setup_flowcreationview(self):
 		self.flow_creation_view = FlowCreationView.get_view(self.selectedElements, self.savecb)
-		self.flow_creation_view.right_button_items = [ui.ButtonItem(title='Add Element', action=self.show_elementsview)]
-	
+		self.flow_creation_view.right_button_items = [ui.ButtonItem(title='Add Element', action=self.show_elementsview), ui.ButtonItem(title='Save', action=self.saveflow)]
+		
+	def saveflow(self,sender):
+		self.flow_manager.save_flow('test', self.selectedElements)
+		
 	def validate_navigationview(self):
 		if self.navigation_view == None:
 			raise ValueError("navigation_view hasn't been initialised")
