@@ -21,3 +21,11 @@ class FlowManager (object):
 		f = open(self.dir+flow,'r')
 		fl = json.JSONDecoder().decode(f.read())
 		return fl
+	
+	def run_flow(self, elements):
+		output = None
+		for element in elements:
+			if element.get_input() == None:
+				output = element.run()
+			else:
+				output = element.run(output)

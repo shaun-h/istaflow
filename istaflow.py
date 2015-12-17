@@ -58,6 +58,7 @@ class ista(object):
 		if self.flow_creation_view == None:
 			raise ValueError("flow_creation_view hasnt been initialised")
 		else:	
+			self.flow_creation_view.editing = False
 			self.navigation_view.push_view(self.flow_creation_view)
 			
 	
@@ -79,7 +80,8 @@ class ista(object):
 		
 	def setup_flowcreationview(self):
 		self.flow_creation_view = FlowCreationView.get_view(self.selectedElements, self.savecb)
-		self.flow_creation_view.right_button_items = [ui.ButtonItem(title='Add Element', action=self.show_elementsview), ui.ButtonItem(title='Save', action=self.saveflow)]
+		self.flow_creation_view.right_button_items = [ui.ButtonItem(title='+', action=self.show_elementsview), ui.ButtonItem(title='Save', action=self.saveflow)]
+		self.flow_creation_view.left_button_items = [ui.ButtonItem(title='Play',action=self.runflow)]
 		
 	def saveflow(self,sender):
 		self.flow_manager.save_flow('test', self.selectedElements)
@@ -125,6 +127,9 @@ class ista(object):
 	def flowselectedcb(self, flow):
 		self.selectedFlow = flow
 		self.show_flowcreationview(None)
+	
+	def runflow(self,sender):
+		self.flow_manager.run_flow(self.selectedElements)
 
 def main():
 	m = ista()

@@ -27,6 +27,8 @@ class ElementListView(object):
 		cell.image_view.image = ui.Image.named(self.elements[section_key][row].get_icon())
 		cell.selectable = True
 		return cell
+		
+	
 
 def get_view(elements, cb):
 	dbo = ElementListView(elements = elements, selectedCallBack = cb)
