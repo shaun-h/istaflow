@@ -1,5 +1,6 @@
 # coding: utf-8
 import console
+import ui
 from ElementBase import ElementBase
 class ShowAlert(ElementBase):
 	def get_input(self):
@@ -25,6 +26,7 @@ class ShowAlert(ElementBase):
 		
 	def get_category(self):
 		return 'Utility'
-	
+		
+	@ui.in_background
 	def run(self, input):
 		print console.alert(input)
