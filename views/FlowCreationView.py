@@ -50,7 +50,8 @@ class FlowCreationView(object):
 			titleButton.action = self.change_title
 			cell.add_subview(titleButton)
 			return cell
-			
+	
+	@ui.in_background		
 	def change_title(self, sender):
 		self.title = console.input_alert('Please enter a title','',self.title,'Ok',False)
 		table_view.name = self.title

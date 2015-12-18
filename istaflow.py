@@ -93,6 +93,7 @@ class ista(object):
 	def deleteflow(self, flowtitle):
 		self.flow_manager.delete_flow(flowtitle)
 	
+	@ui.in_background
 	def saveflow(self,sender):
 		if self.flow_creation_view.data_source.title == '':
 			console.alert(title='Error',message='Please enter a title',button1='Ok',hide_cancel_button=True)
