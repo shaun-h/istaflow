@@ -3,6 +3,8 @@ from views import ElementListView, FlowCreationView, FlowsView
 from managers import ElementManager, FlowManager
 import ui
 import collections
+import console
+import os
 
 class ista(object):
 	def __init__(self):
@@ -52,9 +54,14 @@ class ista(object):
 			elementNames = self.flow_manager.get_element_names_for_flow(self.selectedFlow)
 			for name in elementNames:
 				self.selectedElements.append(self.element_manager.get_element_with_title(name))
+			
+			self.flow_creation_view.data_source.title = os.path.splitext(self.selectedFlow)[0]
 			self.selectedFlow = None
+		else:
+			self.flow_creation_view.data_source.title = ''
 		self.flow_creation_view.data_source.elements = self.selectedElements
 		self.flow_creation_view.reload_data()
+		
 		if self.flow_creation_view == None:
 			raise ValueError("flow_creation_view hasnt been initialised")
 		else:	
@@ -76,15 +83,25 @@ class ista(object):
 		self.elements_view = ElementListView.get_view(self.elements, self.elementselectedcb)
 	
 	def setup_flowsview(self):
-		self.flow_view = FlowsView.get_view(self.flows, self.flowselectedcb)
+		self.flow_view = FlowsView.get_view(self.flows, self.flowselectedcb, self.deleteflow)
 		
 	def setup_flowcreationview(self):
 		self.flow_creation_view = FlowCreationView.get_view(self.selectedElements, self.savecb)
 		self.flow_creation_view.right_button_items = [ui.ButtonItem(title='+', action=self.show_elementsview), ui.ButtonItem(title='Save', action=self.saveflow)]
 		self.flow_creation_view.left_button_items = [ui.ButtonItem(title='Play',action=self.runflow)]
 		
+	def deleteflow(self, flowtitle):
+		self.flow_manager.delete_flow(flowtitle)
+	
 	def saveflow(self,sender):
-		self.flow_manager.save_flow('test', self.selectedElements)
+		if self.flow_creation_view.data_source.title == '':
+			console.alert(title='Error',message='Please enter a title',button1='Ok',hide_cancel_button=True)
+		else:
+			self.flow_manager.save_flow(self.flow_creation_view.data_source.title, self.selectedElements)
+			console.alert(title='Success',message='Flow has been saved',button1='Ok',hide_cancel_button=True)
+			self.get_flows()
+			self.flow_view.data_source.flows = self.flows
+			self.flow_view.reload_data()
 		
 	def validate_navigationview(self):
 		if self.navigation_view == None:
@@ -129,7 +146,10 @@ class ista(object):
 		self.show_flowcreationview(None)
 	
 	def runflow(self,sender):
-		self.flow_manager.run_flow(self.selectedElements)
+		try:
+			self.flow_manager.run_flow(self.selectedElements)
+		except ValueError, e:
+			console.alert(str(e))
 
 def main():
 	m = ista()

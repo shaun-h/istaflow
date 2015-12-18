@@ -2,9 +2,10 @@
 import ui
 
 class FlowsView(object):
-	def __init__(self, flows, flowselectedcb):
+	def __init__(self, flows, flowselectedcb, flowdeletedcb):
 		self.flows = flows
 		self.flowselectedcb = flowselectedcb
+		self.flowdeletedcb = flowdeletedcb
 
 	def tableview_did_select(self, tableview, section, row):
 		self.flowselectedcb(self.flows[row])
@@ -34,15 +35,17 @@ class FlowsView(object):
 
 	def tableview_delete(self, tableview, section, row):
 		# Called when the user confirms deletion of the given row.
-		pass
+		self.flowdeletedcb(self.flows[row])
+		self.flows.pop(row)
+		table_view.delete_rows([row])
 
 	def tableview_move_row(self, tableview, from_section, from_row, to_section, to_row):
 		# Called when the user moves a row with the reordering control (in editing mode).
 		pass
 
-def get_view(flows, cb):
-	dbo = FlowsView(flows = flows, flowselectedcb = cb)
-	table_view = ui.TableView()
+table_view = ui.TableView()
+def get_view(flows, selectedcb, deletedcb):
+	dbo = FlowsView(flows = flows, flowselectedcb = selectedcb, flowdeletedcb = deletedcb)
 	table_view.name = 'Flows'
 	table_view.data_source = dbo
 	table_view.delegate = dbo

@@ -1,11 +1,14 @@
 # coding: utf-8
 import ui
+import console
+
 dbo = None
 class FlowCreationView(object):
 	def __init__(self, elements, saveCallBack):
 		self.elements = elements
 		self.saveCallBack = saveCallBack
 		self.extraRows = 1
+		self.title = ''
 
 	def tableview_did_select(self, tableview, section, row):
 		pass
@@ -41,9 +44,17 @@ class FlowCreationView(object):
 			editButton.y = cell.height/2 - editButton.height/2
 			editButton.x = cell.width/2+editButton.width/2
 			cell.add_subview(editButton)
-			
+			titleButton = ui.Button(title='Change Title')
+			titleButton.y = cell.height/2 - editButton.height/2
+			titleButton.x = titleButton.width/2
+			titleButton.action = self.change_title
+			cell.add_subview(titleButton)
 			return cell
-	
+			
+	def change_title(self, sender):
+		self.title = console.input_alert('Please enter a title','',self.title,'Ok',False)
+		table_view.name = self.title
+		
 	def tableview_can_delete(self, tableview, section, row):
 		# Return True if the user should be able to delete the given row.
 		if row >= self.extraRows:

@@ -17,6 +17,10 @@ class FlowManager (object):
 		f = open(self.dir+title+'.flow','w')
 		f.write(json.JSONEncoder().encode(names))
 	
+	def delete_flow(self, title):
+		if os.path.exists(self.dir+title):
+			os.remove(self.dir+title)
+	
 	def get_element_names_for_flow(self, flow):
 		f = open(self.dir+flow,'r')
 		fl = json.JSONDecoder().decode(f.read())
@@ -24,8 +28,13 @@ class FlowManager (object):
 	
 	def run_flow(self, elements):
 		output = None
+		prevOutputType = None
 		for element in elements:
 			if element.get_input() == None:
 				output = element.run()
 			else:
-				output = element.run(output)
+				if prevOutputType == element.get_input():
+					output = element.run(output)
+				else:
+					raise ValueError('Invalid input type provided to ' + element.get_title())
+			prevOutputType = element.get_output()

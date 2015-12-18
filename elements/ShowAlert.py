@@ -29,4 +29,4 @@ class ShowAlert(ElementBase):
 		
 	@ui.in_background
 	def run(self, input):
-		print console.alert(input)
+		console.alert(title='Message',message=input,button1='Ok',hide_cancel_button=True)

@@ -28,8 +28,6 @@ class ElementListView(object):
 		cell.selectable = True
 		return cell
 		
-	
-
 def get_view(elements, cb):
 	dbo = ElementListView(elements = elements, selectedCallBack = cb)
 	table_view = ui.TableView()

@@ -43,14 +43,3 @@ class ElementManager (object):
 			if element.get_title() == title:
 				return element
 		return None
-		
-
-def main():
-	manager = ElementManager()
-	elements = manager.get_all_elements()
-	
-	print 'valid count: ' + str(len(elements['valid']))
-	print 'invalid count: ' + str(len(elements['invalid']))
-	
-if __name__ == "__main__":
-	main()
