@@ -1,6 +1,8 @@
 # coding: utf-8
 import json
 import os
+import ui
+
 class FlowManager (object):
 	def __init__(self):
 		self.dir = 'flows/'
