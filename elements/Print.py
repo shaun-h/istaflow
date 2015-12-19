@@ -20,7 +20,7 @@ class Print(ElementBase):
 		return 'Print'
 		
 	def get_icon(self):
-		return 'iob:ios7_printer_256'
+		return 'iob:ios7_printer_32'
 		
 	def get_category(self):
 		return 'Utility'

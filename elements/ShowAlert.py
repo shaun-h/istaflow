@@ -22,7 +22,7 @@ class ShowAlert(ElementBase):
 		return 'Show Alert'
 		
 	def get_icon(self):
-		return 'iob:alert_circled_256'
+		return 'iob:alert_circled_32'
 		
 	def get_category(self):
 		return 'Utility'

@@ -21,7 +21,7 @@ class GetClipboardText(ElementBase):
 		return 'Get Clipboard Text'
 		
 	def get_icon(self):
-		return 'iob:ios7_copy_256'
+		return 'iob:ios7_copy_32'
 		
 	def get_category(self):
 		return 'Utility'
