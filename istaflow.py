@@ -137,7 +137,6 @@ class ista(object):
 		self.flow_creation_view.reload_data()
 		self.close_elementsview()
 		
-
 	def savecb(self, saveElements):
 		self.selectedElements = saveElements
 		self.close_flowcreationview()
@@ -146,6 +145,7 @@ class ista(object):
 		self.selectedFlow = flow
 		self.show_flowcreationview(None)
 	
+	@ui.in_background
 	def runflow(self,sender):
 		try:
 			self.flow_manager.run_flow(self.selectedElements)

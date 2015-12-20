@@ -1,11 +1,22 @@
 # coding: utf-8
 from ElementBase import ElementBase
 import clipboard
+
 class SetClipboardText(ElementBase):
-	def get_input(self):
+	def __init__(self):
+		self.status = 'running'
+		self.output = None
+	
+	def get_status(self):
+		return self.status
+	
+	def get_input_type(self):
 		return 'string'
-		
+	
 	def get_output(self):
+		return self.output
+	
+	def get_output_type(self):
 		return None
 		
 	def get_params(self):
@@ -25,6 +36,7 @@ class SetClipboardText(ElementBase):
 		
 	def get_category(self):
 		return 'Utility'
-	
+		
 	def run(self, input):
-		return clipboard.set(input)
+		clipboard.set(input)
+		self.status = 'complete'

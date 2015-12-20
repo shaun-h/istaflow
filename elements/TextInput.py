@@ -1,13 +1,22 @@
 # coding: utf-8
 from ElementBase import ElementBase
 import console
-import ui
 
 class TextInput(ElementBase):
-	def get_input(self):
+	def __init__(self):
+		self.status = 'running'
+		self.output = None
+		
+	def get_status(self):
+		return self.status
+		
+	def get_input_type(self):
 		return None
 		
 	def get_output(self):
+		return self.output
+	
+	def get_output_type(self):
 		return 'string'
 		
 	def get_params(self):
@@ -27,9 +36,13 @@ class TextInput(ElementBase):
 		
 	def get_category(self):
 		return 'Utility'
-	
-	def show_alert(self):
-		return console.input_alert('Please enter text')
 
+	def show_input(self):
+		self.output = console.input_alert('Please enter text')
+		
 	def run(self):
-		return self.show_alert()
+		self.status = 'complete'
+		self.show_input()
+		return self.output
+		
+		

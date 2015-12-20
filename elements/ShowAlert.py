@@ -1,12 +1,22 @@
 # coding: utf-8
 import console
-import ui
 from ElementBase import ElementBase
+
 class ShowAlert(ElementBase):
-	def get_input(self):
+	def __init__(self):
+		self.status = 'running'
+		self.output = None
+		
+	def get_status(self):
+		return self.status
+		
+	def get_input_type(self):
 		return 'string'
 		
 	def get_output(self):
+		self.output
+		
+	def get_output_type(self):
 		return None
 		
 	def get_params(self):
@@ -27,6 +37,7 @@ class ShowAlert(ElementBase):
 	def get_category(self):
 		return 'Utility'
 		
-	@ui.in_background
 	def run(self, input):
+		self.status = 'complete'
 		console.alert(title='Message',message=input,button1='Ok',hide_cancel_button=True)
+		

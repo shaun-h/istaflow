@@ -1,7 +1,7 @@
 # coding: utf-8
 import json
 import os
-import ui
+import time
 
 class FlowManager (object):
 	def __init__(self):
@@ -32,11 +32,16 @@ class FlowManager (object):
 		output = None
 		prevOutputType = None
 		for element in elements:
-			if element.get_input() == None:
+			if element.get_input_type() == None:
 				output = element.run()
+				#while element.get_status() == 'running':
+				#	time.sleep(.1)
+				#output = element.get_output()
 			else:
-				if prevOutputType == element.get_input():
+				if prevOutputType == element.get_input_type():
+					#while element.get_status() == 'running':
+					#	time.sleep(.1)
 					output = element.run(output)
 				else:
 					raise ValueError('Invalid input type provided to ' + element.get_title())
-			prevOutputType = element.get_output()
+			prevOutputType = element.get_output_type()

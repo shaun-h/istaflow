@@ -1,10 +1,21 @@
 # coding: utf-8
 from ElementBase import ElementBase
+
 class Print(ElementBase):
-	def get_input(self):
-		return 'string'
+	def __init__(self):
+		self.status = 'running'
+		self.output = None 
+	
+	def get_status(self):
+		return self.status
 		
+	def get_input_type(self):
+		return 'string'
+	
 	def get_output(self):
+		return self.output
+		
+	def get_output_type(self):
 		return None
 		
 	def get_params(self):
@@ -27,3 +38,4 @@ class Print(ElementBase):
 	
 	def run(self, input):
 		print input
+		self.status = 'complete'
