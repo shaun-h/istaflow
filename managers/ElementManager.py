@@ -51,6 +51,7 @@ class ElementManager (object):
 		tem = f.read()
 		print tem
 		tem = tem.replace("{{title}}",titleValidated)
+		tem = tem.replace("{{title_space}}",title)
 		f.close()
 		f = open(self.elementsFolder+'/'+titleValidated+'.py','w')
 		f.write(tem)

@@ -148,7 +148,7 @@ class ista(object):
 	
 	@ui.in_background
 	def create_element(self, sender):
-		title = console.input_alert(title='Enter Element title', message='Title cannot have spaces and will be replaced. If element with file exists it will be overwritten without warning.')
+		title = console.input_alert(title='Enter Element title', message='Space in title will be removed for filename and classname. If element with file exists it will be overwritten without warning.')
 		self.element_manager.create_element(title=title)
 		console.hud_alert('Element created')
 		
