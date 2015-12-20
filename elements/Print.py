@@ -10,7 +10,7 @@ class Print(ElementBase):
 		return self.status
 		
 	def get_input_type(self):
-		return 'string'
+		return '*'
 	
 	def get_output(self):
 		return self.output

@@ -49,7 +49,6 @@ class ElementManager (object):
 		templatePath = self.elementsFolder + '/Template.py'
 		f = open(templatePath, 'r')
 		tem = f.read()
-		print tem
 		tem = tem.replace("{{title}}",titleValidated)
 		tem = tem.replace("{{title_space}}",title)
 		f.close()

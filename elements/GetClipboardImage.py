@@ -36,8 +36,7 @@ class GetClipboardImage(ElementBase):
 		return 'iob:image_32'
 		
 	def get_category(self):
-		return 'Iamge'
-		pass
+		return 'Image'
 	
 	def run(self, input=''):
 		self.status = 'complete'

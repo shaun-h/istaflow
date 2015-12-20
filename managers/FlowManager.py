@@ -37,7 +37,7 @@ class FlowManager (object):
 			if element.get_input_type() == None:
 				output = element.run()
 			else:
-				if prevOutputType == element.get_input_type():
+				if prevOutputType == element.get_input_type() or element.get_input_type() == '*':
 					output = element.run(output)
 				else:
 					raise ValueError('Invalid input type provided to ' + element.get_title())

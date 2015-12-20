@@ -32,7 +32,7 @@ class {{title}}(ElementBase):
 		pass
 	
 	def get_title(self):
-		return '{{title}}'
+		return '{{title_space}}'
 		
 	def get_icon(self):
 		#REQUIRED - return element icon to display

@@ -35,7 +35,7 @@ class TextInput(ElementBase):
 		return 'iob:document_text_32'
 		
 	def get_category(self):
-		return 'Utility'
+		return 'Text'
 
 	def show_input(self):
 		self.output = console.input_alert('Please enter text')

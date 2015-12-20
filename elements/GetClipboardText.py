@@ -35,7 +35,7 @@ class GetClipboardText(ElementBase):
 		return 'iob:ios7_copy_32'
 		
 	def get_category(self):
-		return 'Utility'
+		return 'Text'
 	
 	def run(self):
 		self.output = clipboard.get()
