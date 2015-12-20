@@ -71,6 +71,7 @@ class ista(object):
 	
 	def setup_navigationview(self, initview):           
 		initview.right_button_items = [ui.ButtonItem(title='Add Flow', action=self.show_flowcreationview)]
+		initview.left_button_items = [ui.ButtonItem(title='Create Element', action=self.create_element)]
 		self.navigation_view = ui.NavigationView(initview)
 	
 	def setup_flowsmanager(self):
@@ -145,6 +146,12 @@ class ista(object):
 		self.selectedFlow = flow
 		self.show_flowcreationview(None)
 	
+	@ui.in_background
+	def create_element(self, sender):
+		title = console.input_alert(title='Enter Element title', message='Title cannot have spaces and will be replaced. If element with file exists it will be overwritten without warning.')
+		self.element_manager.create_element(title=title)
+		console.hud_alert('Element created')
+		
 	@ui.in_background
 	def runflow(self,sender):
 		try:

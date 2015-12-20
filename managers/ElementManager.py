@@ -7,8 +7,8 @@ sys.path.append('elements')
 
 class ElementManager (object):
 	elementsFolder = 'elements'
-	elementExclusionList = ('ElementBase.py','__init__.py')
-	requiredElementInstanceMethods = ('get_input','get_output','get_params','set_params','run')
+	elementExclusionList = ('ElementBase.py','__init__.py','Template.py')
+	requiredElementInstanceMethods = ('get_status','get_input','get_output','get_input_type','get_output_type','get_params','set_params','get_description','get_title','get_category','get_icon','run')
 	
 	def get_all_elements(self, type=''):
 		elements = [splitext(f) for f in listdir(self.elementsFolder) if isfile(join(self.elementsFolder, f)) and not f in self.elementExclusionList]
@@ -43,3 +43,15 @@ class ElementManager (object):
 			if element.get_title() == title:
 				return element
 		return None
+	
+	def create_element(self, title):
+		titleValidated = title.replace(" ","")
+		templatePath = self.elementsFolder + '/Template.py'
+		f = open(templatePath, 'r')
+		tem = f.read()
+		print tem
+		tem = tem.replace("{{title}}",titleValidated)
+		f.close()
+		f = open(self.elementsFolder+'/'+titleValidated+'.py','w')
+		f.write(tem)
+		f.close()

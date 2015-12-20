@@ -21,12 +21,19 @@ class ElementListView(object):
 		
 	def tableview_cell_for_row(self, tableview, section, row):
 		section_key = self.elements.keys()[section]
-		cell = ui.TableViewCell('subtitle')
-		cell.text_label.text = self.elements[section_key][row].get_title()
-		cell.detail_text_label.text = self.elements[section_key][row].get_description()
-		cell.image_view.image = ui.Image.named(self.elements[section_key][row].get_icon())
-		cell.selectable = True
-		return cell
+		try:
+			cell = ui.TableViewCell('subtitle')
+			cell.text_label.text = self.elements[section_key][row].get_title()
+			cell.detail_text_label.text = self.elements[section_key][row].get_description()
+			cell.image_view.image = ui.Image.named(self.elements[section_key][row].get_icon())
+			cell.selectable = True
+			return cell
+		except:
+			cell = ui.TableViewCell('subtitle')
+			cell.text_label.text = self.elements[section_key][row].get_title()
+			cell.detail_text_label.text = 'Is invalid please check file in elements folder'
+			cell.selectable = False
+			return cell
 		
 def get_view(elements, cb):
 	dbo = ElementListView(elements = elements, selectedCallBack = cb)
