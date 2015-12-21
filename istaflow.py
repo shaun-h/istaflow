@@ -34,7 +34,7 @@ class ista(object):
 			raise ValueError("element_manager hasnt been initialised")
 		else:	
 			self.elements = {}
-			elements_to_sort = self.element_manager.get_all_elements(type='valid')
+			elements_to_sort = self.element_manager.get_all_elements('valid')
 			for element in elements_to_sort:
 				if self.elements == None:
 					self.elements = {}
