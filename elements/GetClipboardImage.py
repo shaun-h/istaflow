@@ -18,7 +18,7 @@ class GetClipboardImage(ElementBase):
 		return self.output
 		
 	def get_output_type(self):
-		return 'Image'
+		return 'image'
 		
 	def get_params(self):
 		return self.params
