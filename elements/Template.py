@@ -1,7 +1,7 @@
 # coding: utf-8
 from ElementBase import ElementBase
 
-class {{title}}(ElementBase):
+class {title}(ElementBase):
 	def __init__(self):
 		self.status = 'running'
 		self.output = None 
@@ -32,7 +32,7 @@ class {{title}}(ElementBase):
 		pass
 	
 	def get_title(self):
-		return '{{title_space}}'
+		return '{title_space}'
 		
 	def get_icon(self):
 		#REQUIRED - return element icon to display
