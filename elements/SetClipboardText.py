@@ -26,7 +26,7 @@ class SetClipboardText(ElementBase):
 		return None
 		
 	def get_description(self):
-		return "This sets the system clipboard with input provided."
+		return "This sets the system clipboard with text input provided."
 	
 	def get_title(self):
 		return 'Set Clipboard Text'
