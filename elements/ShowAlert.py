@@ -11,7 +11,7 @@ class ShowAlert(ElementBase):
 		return self.status
 		
 	def get_input_type(self):
-		return 'string'
+		return '*'
 		
 	def get_output(self):
 		self.output
@@ -39,5 +39,6 @@ class ShowAlert(ElementBase):
 		
 	def run(self, input):
 		self.status = 'complete'
+		input = str(input)
 		console.alert(title='Message',message=input,button1='Ok',hide_cancel_button=True)
 		
