@@ -4,7 +4,8 @@ import os
 import time
 
 class FlowManager (object):
-	def __init__(self):
+	def __init__(self, elementchangecb):
+		self.elementchangecb = elementchangecb
 		self.dir = 'flows/'
 		if not os.path.exists(self.dir):
 			os.mkdir(self.dir)
@@ -33,7 +34,9 @@ class FlowManager (object):
 	def run_flow(self, elements):
 		output = None
 		prevOutputType = None
+		elementNumber = 1
 		for element in elements:
+			self.elementchangecb(elementNumber)
 			if element.get_input_type() == None:
 				output = element.run()
 			else:
@@ -42,3 +45,6 @@ class FlowManager (object):
 				else:
 					raise ValueError('Invalid input type provided to ' + element.get_title())
 			prevOutputType = element.get_output_type()
+			elementNumber += 1
+		elementNumber = 0
+		self.elementchangecb(elementNumber)

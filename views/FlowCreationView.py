@@ -9,6 +9,7 @@ class FlowCreationView(object):
 		self.saveCallBack = saveCallBack
 		self.extraRows = 1
 		self.title = ''
+		self.currentElementNumber = -1
 
 	def tableview_did_select(self, tableview, section, row):
 		pass
@@ -29,7 +30,11 @@ class FlowCreationView(object):
 			cell.text_label.text = self.elements[row-self.extraRows].get_title()
 			cell.detail_text_label.text = self.elements[row-self.extraRows].get_description()
 			cell.image_view.image = ui.Image.named(self.elements[row-self.extraRows].get_icon())
-			cell.selectable = True
+			cell.selectable = False
+			if self.currentElementNumber == row:
+				cell.background_color = .37, .59, 1.0
+			else:
+				cell.background_color = 1.0, 1.0, 1.0
 			return cell
 		else:
 			cell = ui.TableViewCell()

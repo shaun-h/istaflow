@@ -78,7 +78,7 @@ class ista(object):
 		self.navigation_view = ui.NavigationView(initview)
 	
 	def setup_flowsmanager(self):
-		self.flow_manager = FlowManager.FlowManager()
+		self.flow_manager = FlowManager.FlowManager(self.elementchange)
 		
 	def setup_elementsmanager(self):
 		self.element_manager = ElementManager.ElementManager()
@@ -174,9 +174,15 @@ class ista(object):
 	@ui.in_background
 	def runflow(self,sender):
 		try:
+			self.flow_creation_view.reload()
 			self.flow_manager.run_flow(self.selectedElements)
+			console.alert(title='Complete',message='Flow completed successfully',button1='Ok',hide_cancel_button=True)
 		except ValueError, e:
 			console.alert(str(e))
+			
+	def elementchange(self, currentelementnumber):
+		self.flow_creation_view.data_source.currentElementNumber = currentelementnumber
+		self.flow_creation_view.reload()
 
 def main():
 	m = ista()
