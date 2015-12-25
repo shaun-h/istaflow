@@ -58,7 +58,11 @@ class ElementManager (object):
 				return element
 		return None
 
-	def create_element(self, title):
+	def create_element(self, title, inputType, outputType, description, icon, category):
+		if not inputType == None:
+			inputType = "'"+inputType+"'"
+		if not outputType == None:
+			outputType = "'"+outputType+"'"
 		titleValidated = title.replace(" ","")
 		templatePath = os.path.join(self.elementsFolder, 'Template.py')
 		elementPath = os.path.join(self.elementsFolder, "{fileName}.py".format(fileName=titleValidated))
@@ -68,7 +72,7 @@ class ElementManager (object):
 		with open(templatePath, 'r') as f:
 			# str.format thinks that on line 8 ```self.params = {}``` and
 			# on line 27 ```def set_params(self, params = {})``` are fomatting values
-			tem = f.read().format(*['{}', '{}'], **{'title':titleValidated, 'title_space':title})
+			tem = f.read().format(*['{}', '{}'], **{'title':titleValidated, 'title_space':title, 'input_type':inputType, 'output_type':outputType,'description':description,'icon':icon,'category':category})
 		with open(elementPath, 'w') as f:
 			f.write(tem)
 

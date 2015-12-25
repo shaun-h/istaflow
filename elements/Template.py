@@ -11,15 +11,13 @@ class {title}(ElementBase):
 		return self.status
 		
 	def get_input_type(self):
-		#return the input type as a string, return None if not required
-		return None
+		return {input_type}
 	
 	def get_output(self):
 		return self.output
 		
 	def get_output_type(self):
-		#return the output type as a string, return None if not required
-		return None
+		return {output_type}
 		
 	def get_params(self):
 		return self.params
@@ -28,19 +26,16 @@ class {title}(ElementBase):
 		self.params = params
 		
 	def get_description(self):
-		#REQUIRED - return a description of the element as a string 
-		pass
+		return '{description}'
 	
 	def get_title(self):
 		return '{title_space}'
 		
 	def get_icon(self):
-		#REQUIRED - return element icon to display
-		pass
+		return '{icon}'
 		
 	def get_category(self):
-		#REQUIRED - return category as a string (case sensitive)
-		pass
+		return '{category}'
 	
 	def run(self, input=''):
 		#where the magic happens, put element logic here input is only used if input type is not None, return something if output type is not None, NOTE: for future changes please set self.status to 'complete' if successful or 'error' if error required

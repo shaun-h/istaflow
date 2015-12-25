@@ -1,5 +1,5 @@
 # coding: utf-8
-from views import ElementListView, FlowCreationView, FlowsView, ElementManagementView
+from views import ElementListView, FlowCreationView, FlowsView, ElementManagementView, ElementCreationView
 from managers import ElementManager, FlowManager
 import ui
 import collections
@@ -10,6 +10,7 @@ class ista(object):
 	def __init__(self):
 		self.elements_view = None
 		self.element_management_view = None
+		self.element_creation_view = None
 		self.flow_creation_view = None
 		self.navigation_view = None
 		self.flow_view = None
@@ -25,6 +26,7 @@ class ista(object):
 		self.get_flows()
 		self.setup_elementsview()
 		self.setup_elementmanagementview()
+		self.setup_elementcreationview()
 		self.setup_flowsview()
 		self.setup_flowcreationview()
 		self.setup_navigationview(self.flow_view)
@@ -71,7 +73,12 @@ class ista(object):
 			self.flow_creation_view.editing = False
 			self.navigation_view.push_view(self.flow_creation_view)
 			
+	def show_assetpicker(self, view):
+		self.navigation_view.push_view(view)
 	
+	def close_assetpicker(self, view):
+		self.navigation_view.pop_view(view)
+		
 	def setup_navigationview(self, initview):           
 		initview.right_button_items = [ui.ButtonItem(title='Add Flow', action=self.show_flowcreationview)]
 		initview.left_button_items = [ui.ButtonItem(title='Elements', action=self.show_elementmanagementview)]
@@ -88,6 +95,9 @@ class ista(object):
 	
 	def setup_elementmanagementview(self):
 		self.element_management_view = ElementManagementView.get_view(self.elements)
+	
+	def setup_elementcreationview(self):
+		self.element_creation_view = ElementCreationView.get_view(savecb=self.create_element, apcb=self.show_assetpicker, capcb = self.close_assetpicker)
 	
 	def setup_flowsview(self):
 		self.flow_view = FlowsView.get_view(self.flows, self.flowselectedcb, self.deleteflow)
@@ -127,8 +137,15 @@ class ista(object):
 		if self.element_management_view == None:
 			raise ValueError("element_management_view hasnt been initialised")
 		else:	
-			self.element_management_view.right_button_items = [ui.ButtonItem(title='Create Element', action=self.create_element)]
+			self.element_management_view.right_button_items = [ui.ButtonItem(title='Create Element', action=self.show_elementcreationview)]
 			self.navigation_view.push_view(self.element_management_view)
+		
+	def show_elementcreationview(self, sender):
+		self.validate_navigationview()
+		if self.element_creation_view == None:
+			raise ValueError("element_creation_view hasnt been initialised")
+		else:	
+			self.navigation_view.push_view(self.element_creation_view)
 			
 	def close_elementsview(self):
 		if self.elements_view == None:
@@ -160,16 +177,16 @@ class ista(object):
 		self.selectedFlow = flow
 		self.show_flowcreationview(None)
 	
-	@ui.in_background
-	def create_element(self, sender):
-		title = console.input_alert(title='Enter Element title', message='Space in title will be removed for filename and classname. If element with file exists it will be overwritten without warning.')
-		self.element_manager.create_element(title=title)
+	def create_element(self, title, inputType, outputType, description, icon, category):
+		
+		self.element_manager.create_element(title=title, inputType=inputType, outputType=outputType, description=description, icon=icon, category=category)
 		console.hud_alert('Element created')
 		self.get_valid_elements()
 		self.element_management_view.data_source.elements = self.elements
 		self.element_management_view.reload_data()
 		self.elements_view.data_source.elements = self.elements
 		self.elements_view.reload_data()
+		self.element_creation_view.reload()
 		
 	@ui.in_background
 	def runflow(self,sender):
