@@ -35,6 +35,7 @@ class FlowManager (object):
 		output = None
 		prevOutputType = None
 		elementNumber = 1
+		runtime_variables = {}
 		for element in elements:
 			self.elementchangecb(elementNumber)
 			if element.get_input_type() == None:
