@@ -6,6 +6,7 @@ import time
 class FlowManager (object):
 	def __init__(self, elementchangecb):
 		self.elementchangecb = elementchangecb
+		self.runtime_variables = {}
 		self.dir = 'flows/'
 		if not os.path.exists(self.dir):
 			os.mkdir(self.dir)
@@ -35,9 +36,10 @@ class FlowManager (object):
 		output = None
 		prevOutputType = None
 		elementNumber = 1
-		runtime_variables = {}
+		self.runtime_variables = {}
 		for element in elements:
 			self.elementchangecb(elementNumber)
+			self.set_runtime_element_params(element)
 			if element.get_input_type() == None:
 				output = element.run()
 			else:
@@ -49,3 +51,10 @@ class FlowManager (object):
 			elementNumber += 1
 		elementNumber = 0
 		self.elementchangecb(elementNumber)
+	
+	def set_runtime_element_params(self, element):
+		params = element.get_params()
+		if not params == None:
+			for param in params:
+				pass
+			element.set_params(params)
