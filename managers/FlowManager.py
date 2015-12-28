@@ -47,14 +47,24 @@ class FlowManager (object):
 					output = element.run(output)
 				else:
 					raise ValueError('Invalid input type provided to ' + element.get_title())
+			self.get_runtime_element_params(element)
 			prevOutputType = element.get_output_type()
 			elementNumber += 1
 		elementNumber = 0
 		self.elementchangecb(elementNumber)
+		print self.runtime_variables
 	
 	def set_runtime_element_params(self, element):
 		params = element.get_params()
 		if not params == None:
 			for param in params:
-				pass
+				if param.name =='fm:runtime_variables':
+					param.value = self.runtime_variables
 			element.set_params(params)
+			
+	def get_runtime_element_params(self, element):
+		params = element.get_params()
+		if not params == None:
+			for param in params:
+				if param.name == 'fm:runtime_variables':
+					self.runtime_variables = param.value

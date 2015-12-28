@@ -9,7 +9,7 @@ sys.path.append('elements')
 
 class ElementManager (object):
 	elementsFolder = 'elements'
-	elementExclusionList = ('ElementBase.py','__init__.py','Template.py')
+	elementExclusionList = ('ElementBase.py','__init__.py','Template.py','ElementParameter.py')
 	requiredElementInstanceMethods = (
 	'get_status', 'get_input', 'get_output',
 	'get_input_type', 'get_output_type', 'get_params',
