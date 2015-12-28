@@ -1,6 +1,7 @@
 # coding: utf-8
 from ElementBase import ElementBase
 from ElementParameter import ElementParameter
+from ElementValue import ElementValue
 import clipboard
 
 class GetClipboardImage(ElementBase):
@@ -43,6 +44,8 @@ class GetClipboardImage(ElementBase):
 	def get_category(self):
 		return 'Image'
 	
-	def run(self, input=''):
+	def run(self):
 		self.status = 'complete'
-		return clipboard.get_image()
+		img = clipboard.get_image()
+		ev = ElementValue(type=self.get_output_type(),value=img)
+		return ev

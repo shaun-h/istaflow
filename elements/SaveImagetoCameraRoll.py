@@ -1,6 +1,7 @@
 # coding: utf-8
 from ElementBase import ElementBase
 from ElementParameter import ElementParameter
+from ElementValue import ElementValue
 import photos
 
 class SaveImagetoCameraRoll(ElementBase):
@@ -44,5 +45,5 @@ class SaveImagetoCameraRoll(ElementBase):
 		return 'Image'
 
 	def run(self, input):
-		photos.save_image(input)
+		photos.save_image(input.value)
 		self.status = 'complete'

@@ -1,6 +1,7 @@
 # coding: utf-8
 from ElementBase import ElementBase
 from ElementParameter import ElementParameter
+from ElementValue import ElementValue
 import clipboard
 
 class SetClipboardImage(ElementBase):
@@ -44,5 +45,5 @@ class SetClipboardImage(ElementBase):
 		return 'Image'
 	
 	def run(self, input):
-		clipboard.set_image(input)
+		clipboard.set_image(input.value)
 		self.status = 'complete'

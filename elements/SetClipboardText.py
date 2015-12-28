@@ -1,6 +1,7 @@
 # coding: utf-8
 from ElementBase import ElementBase
 from ElementParameter import ElementParameter
+from ElementValue import ElementValue
 import clipboard
 
 class SetClipboardText(ElementBase):
@@ -44,5 +45,5 @@ class SetClipboardText(ElementBase):
 		return 'Text'
 		
 	def run(self, input):
-		clipboard.set(input)
+		clipboard.set(input.value)
 		self.status = 'complete'

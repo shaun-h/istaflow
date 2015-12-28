@@ -1,6 +1,7 @@
 # coding: utf-8
 from ElementBase import ElementBase
 from ElementParameter import ElementParameter
+from ElementValue import ElementValue
 import photos
 import console
 
@@ -47,4 +48,5 @@ class TakePhoto(ElementBase):
 	def run(self):
 		self.status = 'complete'
 		console.alert(title='Known Issue',message='Take Photo currently freezes the ui and cant be used',button1='Ok',hide_cancel_button=True)
-		return None #photos.capture_image()
+		ev = ElementValue(type = self.get_output_type(), value = None)
+		return ev

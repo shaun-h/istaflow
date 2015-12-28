@@ -1,6 +1,7 @@
 # coding: utf-8
 from ElementBase import ElementBase
 from ElementParameter import ElementParameter
+from ElementValue import ElementValue
 import console
 
 class ShowAlert(ElementBase):
@@ -45,6 +46,6 @@ class ShowAlert(ElementBase):
 		
 	def run(self, input):
 		self.status = 'complete'
-		input = str(input)
+		input = str(input.value)
 		console.alert(title='Message',message=input,button1='Ok',hide_cancel_button=True)
 		

@@ -1,6 +1,7 @@
 # coding: utf-8
 from ElementBase import ElementBase
 from ElementParameter import ElementParameter
+from ElementValue import ElementValue
 import location
 
 class GetCurrentLocation(ElementBase):
@@ -47,4 +48,5 @@ class GetCurrentLocation(ElementBase):
 		location.start_updates()
 		loc = location.get_location()
 		location.stop_updates()
-		return loc
+		ev = ElementValue(type = self.get_output_type(), value = loc)
+		return ev

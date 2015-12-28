@@ -1,6 +1,7 @@
 # coding: utf-8
 from ElementBase import ElementBase
 from ElementParameter import ElementParameter
+from ElementValue import ElementValue
 
 class Print(ElementBase):
 	def __init__(self):
@@ -43,5 +44,5 @@ class Print(ElementBase):
 		return 'Utility'
 	
 	def run(self, input):
-		print input
+		print input.value
 		self.status = 'complete'

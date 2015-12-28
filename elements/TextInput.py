@@ -1,6 +1,7 @@
 # coding: utf-8
 from ElementBase import ElementBase
 from ElementParameter import ElementParameter
+from ElementValue import ElementValue
 import console
 
 class TextInput(ElementBase):
@@ -49,6 +50,5 @@ class TextInput(ElementBase):
 	def run(self):
 		self.status = 'complete'
 		self.show_input()
-		return self.output
-		
-		
+		ev = ElementValue(type = self.get_output_type(), value = self.output)
+		return ev

@@ -48,7 +48,10 @@ class FlowManager (object):
 				else:
 					raise ValueError('Invalid input type provided to ' + element.get_title())
 			self.get_runtime_element_params(element)
-			prevOutputType = element.get_output_type()
+			if output == None:
+				prevOutputType = element.get_output_type()
+			else:
+				prevOutputType = output.type
 			elementNumber += 1
 		elementNumber = 0
 		self.elementchangecb(elementNumber)

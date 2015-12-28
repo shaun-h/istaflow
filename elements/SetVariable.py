@@ -1,6 +1,7 @@
 # coding: utf-8
 from ElementBase import ElementBase
 from ElementParameter import ElementParameter
+from ElementValue import ElementValue
 import console
 
 class SetVariable(ElementBase):
@@ -51,5 +52,6 @@ class SetVariable(ElementBase):
 		else:
 			name = np.value
 		rv = self.get_param_by_name('fm:runtime_variables')
-		rv.value[name] = input
+		rv.type = input.type
+		rv.value[name] = input.value
 		self.status = 'complete'

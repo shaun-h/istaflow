@@ -1,6 +1,7 @@
 # coding: utf-8
 from ElementBase import ElementBase
 from ElementParameter import ElementParameter
+from ElementValue import ElementValue
 import clipboard
 
 class GetClipboardText(ElementBase):
@@ -44,6 +45,7 @@ class GetClipboardText(ElementBase):
 		return 'Text'
 	
 	def run(self):
-		self.output = clipboard.get()
+		clip = clipboard.get()
 		self.status = 'complete'
-		return self.output
+		ev = ElementValue(type = self.get_output_type(), value = clip)
+		return ev

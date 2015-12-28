@@ -1,6 +1,7 @@
 # coding: utf-8
 from ElementBase import ElementBase
 from ElementParameter import ElementParameter
+from ElementValue import ElementValue
 import photos
 
 class PickImagefromPhotos(ElementBase):
@@ -44,4 +45,6 @@ class PickImagefromPhotos(ElementBase):
 		return 'Image'
 	
 	def run(self):
-		return photos.pick_image()
+		img = photos.pick_image()
+		ev = ElementValue(type = self.get_output_type(), value = img)
+		return ev

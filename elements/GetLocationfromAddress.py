@@ -1,6 +1,7 @@
 # coding: utf-8
 from ElementBase import ElementBase
 from ElementParameter import ElementParameter
+from ElementValue import ElementValue
 import location
 
 class GetLocationfromAddress(ElementBase):
@@ -45,4 +46,6 @@ class GetLocationfromAddress(ElementBase):
 	
 	def run(self, input):
 		self.status = 'complete'
-		return location.geocode(input[0])
+		loc = location.geocode(input.value[0])
+		ev = ElementValue(type = self.get_output_type(), value = loc)
+		return ev
