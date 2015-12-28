@@ -52,7 +52,6 @@ class FlowManager (object):
 			elementNumber += 1
 		elementNumber = 0
 		self.elementchangecb(elementNumber)
-		print self.runtime_variables
 	
 	def set_runtime_element_params(self, element):
 		params = element.get_params()
