@@ -1,10 +1,16 @@
 # coding: utf-8
 from ElementBase import ElementBase
+from ElementParameter import ElementParameter
 
 class Print(ElementBase):
 	def __init__(self):
 		self.status = 'running'
 		self.output = None 
+		self.params = None
+		self.setup_params()
+	
+	def setup_params(self):
+		pass
 	
 	def get_status(self):
 		return self.status
@@ -19,10 +25,10 @@ class Print(ElementBase):
 		return None
 		
 	def get_params(self):
-		return None
+		return self.params
 		
-	def set_params(self):
-		return None
+	def set_params(self, params = []):
+		self.params = params
 		
 	def get_description(self):
 		return "This prints the string that is in the input parameter"

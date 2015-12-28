@@ -36,7 +36,14 @@ class ElementBase (object):
 	
 	def run(self):
 		raise self.not_implemented()
-
+	
+	def get_param_by_name(self, name):
+		param = None
+		for p in self.params:
+			if p.name == name:
+				param = p
+		return param
+	
 	def not_implemented(self):
 		import inspect
 		fmt = 'Class {} does not implement {}()'

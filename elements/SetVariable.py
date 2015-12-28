@@ -12,6 +12,7 @@ class SetVariable(ElementBase):
 	
 	def setup_params(self):
 		self.params.append(ElementParameter(name='fm:runtime_variables',type='*'))
+		self.params.append(ElementParameter(name='VariableName',display=True,type='string'))
 		
 	def get_status(self):
 		return self.status
@@ -44,8 +45,11 @@ class SetVariable(ElementBase):
 		return 'Utility'
 	
 	def run(self, input):
-		name = console.input_alert('Please enter Variable name')
-		for p in self.params:
-			if p.name == 'fm:runtime_variables':
-				p.value[name] = input
+		np = self.get_param_by_name('VariableName')
+		if np.value == None:
+			name = console.input_alert('Please enter Variable name')
+		else:
+			name = np.value
+		rv = self.get_param_by_name('fm:runtime_variables')
+		rv.value[name] = input
 		self.status = 'complete'

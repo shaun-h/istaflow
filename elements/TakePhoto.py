@@ -1,12 +1,18 @@
 # coding: utf-8
 from ElementBase import ElementBase
+from ElementParameter import ElementParameter
 import photos
+import console
 
 class TakePhoto(ElementBase):
 	def __init__(self):
 		self.status = 'running'
 		self.output = None 
-		self.params = {}
+		self.params = None
+		self.setup_params()
+	
+	def setup_params(self):
+		pass
 	
 	def get_status(self):
 		return self.status
@@ -23,7 +29,7 @@ class TakePhoto(ElementBase):
 	def get_params(self):
 		return self.params
 		
-	def set_params(self, params = {}):
+	def set_params(self, params = []):
 		self.params = params
 		
 	def get_description(self):
@@ -39,6 +45,6 @@ class TakePhoto(ElementBase):
 		return 'Image'
 	
 	def run(self):
-		image = photos.capture_image()
 		self.status = 'complete'
-		return image
+		console.alert(title='Known Issue',message='Take Photo currently freezes the ui and cant be used',button1='Ok',hide_cancel_button=True)
+		return None #photos.capture_image()

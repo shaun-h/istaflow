@@ -72,7 +72,7 @@ class ElementManager (object):
 		with open(templatePath, 'r') as f:
 			# str.format thinks that on line 8 ```self.params = {}``` and
 			# on line 27 ```def set_params(self, params = {})``` are fomatting values
-			tem = f.read().format(*['{}', '{}'], **{'title':titleValidated, 'title_space':title, 'input_type':inputType, 'output_type':outputType,'description':description,'icon':icon,'category':category})
+			tem = f.read().format(**{'title':titleValidated, 'title_space':title, 'input_type':inputType, 'output_type':outputType,'description':description,'icon':icon,'category':category})
 		with open(elementPath, 'w') as f:
 			f.write(tem)
 
