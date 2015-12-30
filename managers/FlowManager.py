@@ -7,6 +7,7 @@ class FlowManager (object):
 	def __init__(self, elementchangecb):
 		self.elementchangecb = elementchangecb
 		self.runtime_variables = {}
+		self.nav_view = None
 		self.dir = 'flows/'
 		if not os.path.exists(self.dir):
 			os.mkdir(self.dir)
@@ -32,10 +33,11 @@ class FlowManager (object):
 		f.close()
 		return fl
 	
-	def run_flow(self, elements):
+	def run_flow(self, elements, navview):
 		output = None
 		prevOutputType = None
 		elementNumber = 1
+		self.nav_view = navview
 		self.runtime_variables = {}
 		for element in elements:
 			self.elementchangecb(elementNumber)
@@ -62,6 +64,8 @@ class FlowManager (object):
 			for param in params:
 				if param.name =='fm:runtime_variables':
 					param.value = self.runtime_variables
+				if param.name == 'fm:nav_view':
+					param.value = self.nav_view
 			element.set_params(params)
 			
 	def get_runtime_element_params(self, element):

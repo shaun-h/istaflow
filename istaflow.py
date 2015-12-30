@@ -192,7 +192,7 @@ class ista(object):
 	def runflow(self,sender):
 		try:
 			self.flow_creation_view.reload()
-			self.flow_manager.run_flow(self.selectedElements)
+			self.flow_manager.run_flow(self.selectedElements,self.navigation_view)
 			console.alert(title='Complete',message='Flow completed successfully',button1='Ok',hide_cancel_button=True)
 		except ValueError, e:
 			console.alert(str(e))
