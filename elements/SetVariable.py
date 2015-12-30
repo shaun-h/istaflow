@@ -52,6 +52,5 @@ class SetVariable(ElementBase):
 		else:
 			name = np.value
 		rv = self.get_param_by_name('fm:runtime_variables')
-		rv.type = input.type
-		rv.value[name] = input.value
+		rv.value[name] = input
 		self.status = 'complete'
