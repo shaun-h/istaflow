@@ -3,13 +3,22 @@ import ui
 import console
 
 dbo = None
+
 class FlowCreationView(object):
-	def __init__(self, elements, saveCallBack):
+	def __init__(self, elements, saveCallBack, addElementAction, saveFlowAction, runFlowAction):
 		self.elements = elements
 		self.saveCallBack = saveCallBack
 		self.extraRows = 1
 		self.title = ''
 		self.currentElementNumber = -1
+		self.addElementButton = ui.ButtonItem(title = 'Add', action = addElementAction)
+		self.saveFlowButton = ui.ButtonItem(title='Save', action=saveFlowAction)
+		self.runFlowButton = ui.ButtonItem(title='Run', action=runFlowAction)
+		self.titleButton = ui.Button(title='Change Title')
+		self.editButtonsRight = [self.addElementButton]
+		self.editButtonsLeft = [self.saveFlowButton]
+		self.runButtonsRight = [self.runFlowButton]
+		self.runButtonsLeft = []
 
 	def tableview_did_select(self, tableview, section, row):
 		pass
@@ -49,11 +58,10 @@ class FlowCreationView(object):
 			editButton.y = cell.height/2 - editButton.height/2
 			editButton.x = cell.width/2+editButton.width/2
 			cell.add_subview(editButton)
-			titleButton = ui.Button(title='Change Title')
-			titleButton.y = cell.height/2 - editButton.height/2
-			titleButton.x = titleButton.width/2
-			titleButton.action = self.change_title
-			cell.add_subview(titleButton)
+			self.titleButton.y = cell.height/2 - editButton.height/2
+			self.titleButton.x = self.titleButton.width/2
+			self.titleButton.action = self.change_title
+			cell.add_subview(self.titleButton)
 			return cell
 	
 	@ui.in_background		
@@ -85,20 +93,30 @@ class FlowCreationView(object):
 
 
 table_view = ui.TableView()
-def get_view(elements, cb):
-	dbo = FlowCreationView(elements = elements, saveCallBack = cb)
+
+def get_view(elements, saveCallBack, addElementAction, saveFlowAction, runFlowAction):
+	dbo = FlowCreationView(elements = elements, saveCallBack = saveCallBack, addElementAction = addElementAction, saveFlowAction = saveFlowAction, runFlowAction = runFlowAction)
 	table_view.name = 'Flow'
 	table_view.data_source = dbo
 	table_view.delegate = dbo
+	table_view.right_button_items = table_view.data_source.runButtonsRight
+	table_view.left_button_items = table_view.data_source.runButtonsLeft
+	table_view.data_source.titleButton.hidden = True
 	return table_view
 
 def swap_edit(sender):
 	if table_view.editing:
 		table_view.editing = False
 		sender.title = 'Edit'
+		table_view.right_button_items = table_view.data_source.runButtonsRight
+		table_view.left_button_items = table_view.data_source.runButtonsLeft
+		table_view.data_source.titleButton.hidden = True
 	else:
 		table_view.editing = True
 		sender.title = 'Done'
+		table_view.right_button_items = table_view.data_source.editButtonsRight
+		table_view.left_button_items = table_view.data_source.editButtonsLeft
+		table_view.data_source.titleButton.hidden = False
 
 def del_row(row):
 	table_view.delete_rows(row)
