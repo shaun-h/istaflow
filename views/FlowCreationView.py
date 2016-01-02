@@ -11,7 +11,7 @@ class FlowCreationView(object):
 		self.extraRows = 1
 		self.title = ''
 		self.currentElementNumber = -1
-		self.addElementButton = ui.ButtonItem(title = 'Add', action = addElementAction)
+		self.addElementButton = ui.ButtonItem(title = 'Add Element', action = addElementAction)
 		self.saveFlowButton = ui.ButtonItem(title='Save', action=saveFlowAction)
 		self.runFlowButton = ui.ButtonItem(title='Run', action=runFlowAction)
 		self.titleButton = ui.Button(title='Change Title')
@@ -19,7 +19,13 @@ class FlowCreationView(object):
 		self.editButtonsLeft = [self.saveFlowButton]
 		self.runButtonsRight = [self.runFlowButton]
 		self.runButtonsLeft = []
-
+	
+	def update_buttons(self):
+		if not table_view.editing:
+			show_run_buttons()
+		else:
+			show_edit_buttons()
+			
 	def tableview_did_select(self, tableview, section, row):
 		pass
 		
@@ -99,24 +105,31 @@ def get_view(elements, saveCallBack, addElementAction, saveFlowAction, runFlowAc
 	table_view.name = 'Flow'
 	table_view.data_source = dbo
 	table_view.delegate = dbo
-	table_view.right_button_items = table_view.data_source.runButtonsRight
-	table_view.left_button_items = table_view.data_source.runButtonsLeft
-	table_view.data_source.titleButton.hidden = True
+	show_run_buttons()
 	return table_view
 
 def swap_edit(sender):
 	if table_view.editing:
 		table_view.editing = False
 		sender.title = 'Edit'
-		table_view.right_button_items = table_view.data_source.runButtonsRight
-		table_view.left_button_items = table_view.data_source.runButtonsLeft
-		table_view.data_source.titleButton.hidden = True
+		show_run_buttons()
 	else:
 		table_view.editing = True
 		sender.title = 'Done'
-		table_view.right_button_items = table_view.data_source.editButtonsRight
-		table_view.left_button_items = table_view.data_source.editButtonsLeft
-		table_view.data_source.titleButton.hidden = False
+		show_edit_buttons()
 
+def show_edit_buttons():
+	table_view.right_button_items = table_view.data_source.editButtonsRight
+	table_view.left_button_items = table_view.data_source.editButtonsLeft
+	table_view.data_source.titleButton.hidden = False
+
+def show_run_buttons():
+	if len(table_view.data_source.elements) > 0:
+		table_view.right_button_items = table_view.data_source.runButtonsRight
+	else:
+		table_view.right_button_items = []
+	table_view.left_button_items = table_view.data_source.runButtonsLeft
+	table_view.data_source.titleButton.hidden = True
+		
 def del_row(row):
 	table_view.delete_rows(row)

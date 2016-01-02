@@ -65,6 +65,7 @@ class ista(object):
 		else:
 			self.flow_creation_view.data_source.title = ''
 		self.flow_creation_view.data_source.elements = self.selectedElements
+		self.flow_creation_view.data_source.update_buttons()
 		self.flow_creation_view.reload_data()
 		
 		if self.flow_creation_view == None:
