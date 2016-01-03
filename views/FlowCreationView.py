@@ -96,6 +96,7 @@ class FlowCreationView(object):
 
 	def tableview_move_row(self, tableview, from_section, from_row, to_section, to_row):
 		self.elements.insert(to_row-self.extraRows, self.elements.pop(from_row-self.extraRows))
+		tableview.reload()
 
 
 table_view = ui.TableView()
@@ -117,6 +118,7 @@ def swap_edit(sender):
 		table_view.editing = True
 		sender.title = 'Done'
 		show_edit_buttons()
+	table_view.reload()
 
 def show_edit_buttons():
 	table_view.right_button_items = table_view.data_source.editButtonsRight
