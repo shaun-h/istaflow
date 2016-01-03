@@ -40,12 +40,20 @@ class FlowCreationView(object):
 		
 	def tableview_cell_for_row(self, tableview, section, row):
 		if row >= self.extraRows:
+			element = self.elements[row-self.extraRows]
 			cell = ui.TableViewCell('subtitle')
 			cell.selectable = False
-			cell.text_label.text = self.elements[row-self.extraRows].get_title()
-			cell.detail_text_label.text = self.elements[row-self.extraRows].get_description()
-			cell.image_view.image = ui.Image.named(self.elements[row-self.extraRows].get_icon())
-			cell.selectable = True
+			cell.text_label.text = element.get_title()
+			cell.detail_text_label.text = element.get_description()
+			cell.image_view.image = ui.Image.named(element.get_icon())
+			params = element.get_params()
+			selectable = False
+			if not params == None:
+				for p in params:
+					if p.display == True:
+						selectable = True
+						cell.accessory_type = 'disclosure_indicator'
+			cell.selectable = selectable
 			if self.currentElementNumber >= self.extraRows:
 				cell.selectable = False
 			if self.currentElementNumber == row:
