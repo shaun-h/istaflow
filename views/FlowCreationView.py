@@ -39,13 +39,15 @@ class FlowCreationView(object):
 		return len(self.elements)+self.extraRows
 		
 	def tableview_cell_for_row(self, tableview, section, row):
-		if row > 0:
+		if row >= self.extraRows:
 			cell = ui.TableViewCell('subtitle')
 			cell.selectable = False
 			cell.text_label.text = self.elements[row-self.extraRows].get_title()
 			cell.detail_text_label.text = self.elements[row-self.extraRows].get_description()
 			cell.image_view.image = ui.Image.named(self.elements[row-self.extraRows].get_icon())
-			cell.selectable = False
+			cell.selectable = True
+			if self.currentElementNumber >= self.extraRows:
+				cell.selectable = False
 			if self.currentElementNumber == row:
 				cell.background_color = .37, .59, 1.0
 			else:
