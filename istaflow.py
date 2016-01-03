@@ -59,8 +59,9 @@ class ista(object):
 			elementNames = self.flow_manager.get_element_names_for_flow(self.selectedFlow)
 			for name in elementNames:
 				self.selectedElements.append(self.element_manager.get_element_with_title(name))
-			
-			self.flow_creation_view.data_source.title = os.path.splitext(self.selectedFlow)[0]
+			title = os.path.splitext(self.selectedFlow)[0]
+			self.flow_creation_view.name = title
+			self.flow_creation_view.data_source.title = title
 			self.selectedFlow = None
 		else:
 			self.flow_creation_view.data_source.title = ''
