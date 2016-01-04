@@ -13,7 +13,7 @@ class SetVariable(ElementBase):
 	
 	def setup_params(self):
 		self.params.append(ElementParameter(name='fm:runtime_variables',type='*'))
-		self.params.append(ElementParameter(name='VariableName',display=True,type='string'))
+		self.params.append(ElementParameter(name='VariableName',displayName='Variable Name',display=True,type='string'))
 		
 	def get_status(self):
 		return self.status

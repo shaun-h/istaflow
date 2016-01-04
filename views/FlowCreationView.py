@@ -5,9 +5,10 @@ import console
 dbo = None
 
 class FlowCreationView(object):
-	def __init__(self, elements, saveCallBack, addElementAction, saveFlowAction, runFlowAction):
+	def __init__(self, elements, saveCallBack, addElementAction, saveFlowAction, runFlowAction, showElementRuntimeView):
 		self.elements = elements
 		self.saveCallBack = saveCallBack
+		self.showElementRuntimeView = showElementRuntimeView
 		self.extraRows = 1
 		self.title = ''
 		self.currentElementNumber = -1
@@ -27,7 +28,15 @@ class FlowCreationView(object):
 			show_edit_buttons()
 			
 	def tableview_did_select(self, tableview, section, row):
-		pass
+		element = self.elements[row-self.extraRows]
+		params = element.get_params()
+		show = False
+		if not params == None:
+			for p in params:
+				if p.display == True:
+					show = True
+		if show:
+			self.showElementRuntimeView(element)
 		
 	def tableview_title_for_header(self, tableview, section):
 		pass
@@ -111,8 +120,8 @@ class FlowCreationView(object):
 
 table_view = ui.TableView()
 
-def get_view(elements, saveCallBack, addElementAction, saveFlowAction, runFlowAction):
-	dbo = FlowCreationView(elements = elements, saveCallBack = saveCallBack, addElementAction = addElementAction, saveFlowAction = saveFlowAction, runFlowAction = runFlowAction)
+def get_view(elements, saveCallBack, addElementAction, saveFlowAction, runFlowAction, showElementRuntimeView):
+	dbo = FlowCreationView(elements = elements, saveCallBack = saveCallBack, addElementAction = addElementAction, saveFlowAction = saveFlowAction, runFlowAction = runFlowAction, showElementRuntimeView = showElementRuntimeView)
 	table_view.name = 'Flow'
 	table_view.data_source = dbo
 	table_view.delegate = dbo

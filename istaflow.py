@@ -1,5 +1,5 @@
 # coding: utf-8
-from views import ElementListView, FlowCreationView, FlowsView, ElementManagementView, ElementCreationView
+from views import ElementListView, FlowCreationView, FlowsView, ElementManagementView, ElementCreationView, ElementRuntimeView
 from managers import ElementManager, FlowManager
 import ui
 import collections
@@ -14,6 +14,7 @@ class ista(object):
 		self.flow_creation_view = None
 		self.navigation_view = None
 		self.flow_view = None
+		self.element_runtime_view = None
 		self.element_manager = None
 		self.flow_manager = None
 		self.elements = None
@@ -29,8 +30,12 @@ class ista(object):
 		self.setup_elementcreationview()
 		self.setup_flowsview()
 		self.setup_flowcreationview()
+		self.setup_elementruntimeview()
 		self.setup_navigationview(self.flow_view)
 	
+	def setup_elementruntimeview(self):
+		self.element_runtime_view = ElementRuntimeView.get_view() 
+		
 	def get_valid_elements(self):
 		if self.element_manager == None:
 			raise ValueError("element_manager hasnt been initialised")
@@ -51,6 +56,11 @@ class ista(object):
 	
 	def get_flows(self):
 		self.flows = self.flow_manager.get_flows()
+	
+	def show_elementruntimeview(self, element):
+		self.element_runtime_view.data_source.load_element(element)
+		self.element_runtime_view.reload()
+		self.navigation_view.push_view(self.element_runtime_view)	
 		
 	def show_flowcreationview(self, sender):
 		self.validate_navigationview()
@@ -106,7 +116,7 @@ class ista(object):
 		self.flow_view = FlowsView.get_view(self.flows, self.flowselectedcb, self.deleteflow)
 		
 	def setup_flowcreationview(self):
-		self.flow_creation_view = FlowCreationView.get_view(elements = self.selectedElements, saveCallBack = self.savecb, addElementAction = self.show_elementsview, saveFlowAction = self.saveflow, runFlowAction = self.runflow)
+		self.flow_creation_view = FlowCreationView.get_view(elements = self.selectedElements, saveCallBack = self.savecb, addElementAction = self.show_elementsview, saveFlowAction = self.saveflow, runFlowAction = self.runflow, showElementRuntimeView = self.show_elementruntimeview)
 		
 		
 	def deleteflow(self, flowtitle):
