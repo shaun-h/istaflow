@@ -20,8 +20,12 @@ class ElementRuntimeView (object):
 		
 	def tableview_cell_for_row(self, tableview, section, row):
 		cell = ui.TableViewCell('subtitle')
-		cell.text_label.text = self.params[row].displayName
-		cell.detail_text_label.text = self.params[row].type
+		param = self.params[row]
+		name = param.displayName
+		if name == None or name == '':
+			name = param.name
+		cell.text_label.text = name
+		cell.detail_text_label.text = param.type
 		return cell
 	
 	def tableview_can_delete(self, tableview, section, row):
