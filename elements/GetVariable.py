@@ -3,7 +3,10 @@ from ElementBase import ElementBase
 from ElementParameter import ElementParameter
 from ElementValue import ElementValue
 import console
-import dialogs
+try:
+	import dialogs
+except :
+	pass
 import ui
 
 class GetVariable(ElementBase):
