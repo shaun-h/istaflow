@@ -8,12 +8,19 @@ import scene
 import Image
 
 def get_asset_folder():
-	return os.path.dirname(scene.get_image_path('emj:Airplane'))[:-10]
+	try:
+		p = os.path.dirname(scene.get_image_path('emj:Airplane'))[:-10]
+	except:
+		p = os.path.dirname(scene.get_image_path('Airplane'))+'/'
+	return p
 
 def get_collection_info(asset_type=''):
 	folder = get_asset_folder()
-	with open(folder+os.listdir(folder)[0], 'r') as f:
-		return [asset for asset in json.load(f)['collections'] if asset['type'] == asset_type]
+	try:
+		with open(folder+os.listdir(folder)[0], 'r') as f:
+			return [asset for asset in json.load(f)['collections'] if asset['type'] == asset_type]
+	except ValueError:
+		return os.listdir(folder)
 
 class AssetPicker (ui.View):
 	def __init__(self, source, selected_cb, name='', dark_cells=False, object_type='none', parent=None):
