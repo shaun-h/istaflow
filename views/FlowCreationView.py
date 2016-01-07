@@ -91,7 +91,7 @@ class FlowCreationView(object):
 	
 	@ui.in_background		
 	def change_title(self, sender):
-		self.title = console.input_alert('Please enter a title','',self.title,'Ok',False)
+		self.title = console.input_alert('Flow title','',self.title,'Ok',False)
 		table_view.name = self.title
 		
 	def tableview_can_delete(self, tableview, section, row):
