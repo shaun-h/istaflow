@@ -11,10 +11,13 @@ class ElementRuntimeView (object):
 	def tableview_did_select(self, tableview, section, row):
 		param = self.params[row]
 		name = param.displayName
+		value = param.value
 		if name == None or name == '':
 			name = param.name
+		if value == None:
+			value = ''
 		if param.type == 'string':
-			param.value = console.input_alert(title = name)
+			param.value = console.input_alert(name, '', value)
 		
 	def tableview_title_for_header(self, tableview, section):
 		return 'Parameters'
