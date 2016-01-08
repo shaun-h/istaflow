@@ -1,13 +1,20 @@
 # coding: utf-8
 import ui
+import console
 
 class ElementRuntimeView (object):
 	def __init__(self):
 		self.element = None
 		self.params = []
 	
+	@ui.in_background
 	def tableview_did_select(self, tableview, section, row):
-		pass
+		param = self.params[row]
+		name = param.displayName
+		if name == None or name == '':
+			name = param.name
+		if param.type == 'string':
+			param.value = console.input_alert(title = name)
 		
 	def tableview_title_for_header(self, tableview, section):
 		return 'Parameters'
