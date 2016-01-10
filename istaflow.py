@@ -66,9 +66,13 @@ class ista(object):
 		self.validate_navigationview()
 		self.selectedElements = []
 		if not self.selectedFlow == None:
-			elementNames = self.flow_manager.get_element_names_for_flow(self.selectedFlow)
-			for name in elementNames:
-				self.selectedElements.append(self.element_manager.get_element_with_title(name))
+			elements = self.flow_manager.get_element_details_for_flow(self.selectedFlow)
+			for element in elements:
+				e = self.element_manager.get_element_with_title(element['title'])
+				if not e.get_params() == None:
+					for p in e.get_params():
+						p.value = element['params'][p.name]
+				self.selectedElements.append(e)
 			title = os.path.splitext(self.selectedFlow)[0]
 			self.flow_creation_view.name = title
 			self.flow_creation_view.data_source.title = title

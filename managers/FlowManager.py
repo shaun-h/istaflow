@@ -18,7 +18,12 @@ class FlowManager (object):
 	def save_flow(self, title, elements):
 		names = []
 		for ele in elements:
-			names.append(ele.get_title())
+			params = {}
+			if not ele.get_params() == None:
+				for p in ele.get_params():
+					params[p.name] = p.value
+			ob = {'title':ele.get_title(),'params':params}
+			names.append(ob)
 		f = open(self.dir+title+'.flow','w')
 		f.write(json.JSONEncoder().encode(names))
 		f.close()
@@ -27,7 +32,7 @@ class FlowManager (object):
 		if os.path.exists(self.dir+title):
 			os.remove(self.dir+title)
 	
-	def get_element_names_for_flow(self, flow):
+	def get_element_details_for_flow(self, flow):
 		f = open(self.dir+flow,'r')
 		fl = json.JSONDecoder().decode(f.read())
 		f.close()
