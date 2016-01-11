@@ -64,7 +64,7 @@ class GetVariable(ElementBase):
 		for k in rv.value.keys():
 			keysavailablestring += k + ' '
 		keysavailablemessage = 'Keys to choose from are: ' + keysavailablestring
-		if np.value == None:
+		if np.value == None or np.value.replace(' ', '') == '':
 			try:
 				key = dialogs.list_dialog('Vars',rv.value.keys())
 				self.name = key

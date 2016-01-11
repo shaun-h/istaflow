@@ -18,6 +18,9 @@ class ElementRuntimeView (object):
 			value = ''
 		if param.type == 'string':
 			param.value = console.input_alert(name, '', value)
+		elif param.type == 'variable':
+			pass
+		tableview.reload()
 		
 	def tableview_title_for_header(self, tableview, section):
 		return 'Parameters'

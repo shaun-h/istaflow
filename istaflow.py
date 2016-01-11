@@ -71,7 +71,8 @@ class ista(object):
 				e = self.element_manager.get_element_with_title(element['title'])
 				if not e.get_params() == None:
 					for p in e.get_params():
-						p.value = element['params'][p.name]
+						if p.name in element['params'].keys():
+							p.value = element['params'][p.name]
 				self.selectedElements.append(e)
 			title = os.path.splitext(self.selectedFlow)[0]
 			self.flow_creation_view.name = title

@@ -21,7 +21,8 @@ class FlowManager (object):
 			params = {}
 			if not ele.get_params() == None:
 				for p in ele.get_params():
-					params[p.name] = p.value
+					if p.display:
+						params[p.name] = p.value
 			ob = {'title':ele.get_title(),'params':params}
 			names.append(ob)
 		f = open(self.dir+title+'.flow','w')
