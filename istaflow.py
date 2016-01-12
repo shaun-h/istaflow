@@ -178,7 +178,9 @@ class ista(object):
 	
 	def show_mainview(self):
 		self.validate_navigationview()
-		self.navigation_view.present()
+		#ui seems to need to be portrait otherwise capture image view breaks
+		self.navigation_view.present(orientations=['portrait'])
+		#self.navigation_view.present()
 		
 	def elementselectedcb(self, element):
 		self.selectedElements.append(element)
