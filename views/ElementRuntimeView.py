@@ -22,7 +22,16 @@ class ElementRuntimeView (object):
 		elif param.type == 'variable':
 			pass
 		elif param.type == 'list':
-			param.value = dialogs.list_dialog(title=name,items=param.allowedValues)
+			ret = dialogs.list_dialog(title=name,items=param.allowedValues, multiple=param.multipleAllowed)
+			yo = ''
+			if not ret == None:
+				if isinstance(ret,list):
+					for item in ret:
+						yo += item+','
+				else:
+					yo = ret
+				yo = yo.rstrip(',')
+			param.value = yo
 		tableview.reload()
 		
 	def tableview_title_for_header(self, tableview, section):
