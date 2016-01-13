@@ -1,9 +1,10 @@
 # coding: utf-8
 class ElementParameter (object):
-	def __init__(self, name, type, displayName='', display=False, value=None, allowedValues=[]):
+	def __init__(self, name, type, displayName='', display=False, value=None, allowedValues=[], multipleAllowed=False):
 		self.name = name
 		self.displayName = displayName
 		self.display = display
 		self.type = type
 		self.value = value
 		self.allowedValues = allowedValues
+		self.multipleAllowed = multipleAllowed
