@@ -1,6 +1,7 @@
 # coding: utf-8
 import ui
 import console
+import dialogs
 
 class ElementRuntimeView (object):
 	def __init__(self):
@@ -20,6 +21,8 @@ class ElementRuntimeView (object):
 			param.value = console.input_alert(name, '', value)
 		elif param.type == 'variable':
 			pass
+		elif param.type == 'list':
+			param.value = dialogs.list_dialog(title=name,items=param.allowedValues)
 		tableview.reload()
 		
 	def tableview_title_for_header(self, tableview, section):
