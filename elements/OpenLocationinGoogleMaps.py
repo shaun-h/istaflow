@@ -9,11 +9,11 @@ class OpenLocationinGoogleMaps(ElementBase):
 	def __init__(self):
 		self.status = 'running'
 		self.output = None 
-		self.params = None
+		self.params = []
 		self.setup_params()
 	
 	def setup_params(self):
-		pass
+		self.params.append(ElementParameter(name='mapmode',displayName='Map Mode',display=True,type='list',value='standard',allowedValues=['standard','streetview']))
 	
 	def get_status(self):
 		return self.status
@@ -46,7 +46,8 @@ class OpenLocationinGoogleMaps(ElementBase):
 		return 'External App'
 	
 	def run(self, input=''):
-		url = 'comgooglemaps://?center=' + str(input.value['latitude'])+','+str(input.value['longitude'])
+		mapmodeparam = self.get_param_by_name('mapmode')
+		url = 'comgooglemaps://?center=' + str(input.value['latitude'])+','+str(input.value['longitude']) + '&mapmode='+ mapmodeparam.value
 		uia = ObjCClass('UIApplication').sharedApplication()
 		if not uia.openURL_(nsurl(url)):
 			console.alert(title='Error oppening App',message='Is Google Maps app installed?',button1='Ok',hide_cancel_button=True)
