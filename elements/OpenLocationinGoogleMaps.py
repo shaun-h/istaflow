@@ -15,6 +15,10 @@ class OpenLocationinGoogleMaps(ElementBase):
 	def setup_params(self):
 		self.params.append(ElementParameter(name='mapmode',displayName='Map Mode',display=True,type='list',value='standard',allowedValues=['standard','streetview']))
 		self.params.append(ElementParameter(name='viewmode',displayName='View Mode',display=True,type='list',value=None,allowedValues=['satellite', 'traffic', 'transit'],multipleAllowed=True))
+		
+		self.params.append(ElementParameter(name='zoom',displayName='Zoom',display=True,type='string',value='12'))
+		
+		self.params.append(ElementParameter(name='query',displayName='Query in area',display=True,type='string'))
 	
 	def get_status(self):
 		return self.status
@@ -49,12 +53,24 @@ class OpenLocationinGoogleMaps(ElementBase):
 	def run(self, input=''):
 		mapmodeparam = self.get_param_by_name('mapmode')
 		viewsparam = self.get_param_by_name('viewmode')
+		zoomparam = self.get_param_by_name('zoom')
+		queryparam = self.get_param_by_name('query')
 		
-		
-		url = 'comgooglemaps://?center=' + str(input.value['latitude'])+','+str(input.value['longitude']) + '&mapmode='+ mapmodeparam.value 
+		url = 'comgooglemaps://?center=' + str(input.value['latitude']) + ',' + str(input.value['longitude']) 
+
+		if not mapmodeparam.value == None:
+			url = url + '&mapmode='+ mapmodeparam.value 
 		
 		if not viewsparam.value == None:
 			url = url + '&views=' + viewsparam.value
+		
+		if not zoomparam.value == None:
+			url = url + '&zoom=' + zoomparam.value
+		
+		if not queryparam.value == None:
+			url = url + '&q=' + queryparam.value
+		
+		
 		uia = ObjCClass('UIApplication').sharedApplication()
 		if not uia.openURL_(nsurl(url)):
 			console.alert(title='Error oppening App',message='Is Google Maps app installed?',button1='Ok',hide_cancel_button=True)
