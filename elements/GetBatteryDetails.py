@@ -1,5 +1,5 @@
 # coding: utf-8
-# The get battery code is hughly based of the battery level example in pythonista 2.0
+# The get battery code is highly based of the battery level example in pythonista 2.0
 
 from ElementBase import ElementBase
 from ElementParameter import ElementParameter
