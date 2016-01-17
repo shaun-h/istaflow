@@ -3,6 +3,7 @@ from ElementBase import ElementBase
 from ElementParameter import ElementParameter
 from ElementValue import ElementValue
 import photos
+import console
 
 class SaveImagetoCameraRoll(ElementBase):
 	def __init__(self):
@@ -45,5 +46,9 @@ class SaveImagetoCameraRoll(ElementBase):
 		return 'Image'
 
 	def run(self, input):
-		photos.save_image(input.value)
+		try:
+			if not photos.save_image(input.value):
+				console.alert('didnt work')
+		except:
+			console.alert('error')
 		self.status = 'complete'
