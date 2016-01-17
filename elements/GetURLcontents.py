@@ -6,6 +6,8 @@ from PIL import Image
 from StringIO import StringIO
 import requests
 import console
+import time
+import copy
 
 class GetURLcontents(ElementBase):
 	def __init__(self):
@@ -49,11 +51,13 @@ class GetURLcontents(ElementBase):
 	
 	def run(self, input=''):
 		r = requests.get(input.value)
+		self.status = 'complete'
 		if r.status_code == 200:
 			type = r.headers['content-type'].split('/')[0]
 			if type == 'image':
-				i = Image.open(StringIO(r.content))
-				return ElementValue(type=type, value=i)
+				a = Image.open(StringIO(r.content))
+				ev = ElementValue(type=type, value=a)
+				return ev
 			else:
 				return ElementValue(type=type, value=r.text)
 		else:
