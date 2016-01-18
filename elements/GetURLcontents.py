@@ -13,11 +13,11 @@ class GetURLcontents(ElementBase):
 	def __init__(self):
 		self.status = 'running'
 		self.output = None 
-		self.params = None
+		self.params = []
 		self.setup_params()
 	
 	def setup_params(self):
-		pass
+		self.params.append(ElementParameter(name='verb',displayName='Verb',display=True, type='list',value='GET',allowedValues=['GET', 'POST', 'PUT', 'DELETE']))
 	
 	def get_status(self):
 		return self.status
@@ -50,7 +50,15 @@ class GetURLcontents(ElementBase):
 		return 'Url'
 	
 	def run(self, input=''):
-		r = requests.get(input.value)
+		verbParam = self.get_param_by_name('verb')
+		if verbParam.value == 'GET':
+			r = requests.get(input.value)
+		elif verbParam.value == 'POST':
+			r = requests.post(input.value)
+		elif verbParam.value == 'PUT':
+			r = requests.put(input.value)
+		elif verbParam.value == 'DELETE':
+			r = requests.delete(input.value)
 		self.status = 'complete'
 		if r.status_code == 200:
 			type = r.headers['content-type'].split('/')[0]
