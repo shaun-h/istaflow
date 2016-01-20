@@ -56,7 +56,7 @@ class GetURLContents(ElementBase):
 			if paramsParam.value == None:
 				r = requests.get(input.value)
 			else:
-				r = requests.get(input.value, param=paramsParam.value)
+				r = requests.get(input.value, params=paramsParam.value)
 		elif verbParam.value == 'POST':
 			if paramsParam.value == None:
 				r = requests.post(input.value)
