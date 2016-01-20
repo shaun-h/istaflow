@@ -2,11 +2,15 @@
 import ui
 import console
 import dialogs
+import ElementParameterDictionaryInputView
 
 class ElementRuntimeView (object):
 	def __init__(self):
 		self.element = None
 		self.params = []
+		self.dictionaryParam = None
+		self.tv = None
+		self.dictView = None
 	
 	@ui.in_background
 	def tableview_did_select(self, tableview, section, row):
@@ -32,7 +36,18 @@ class ElementRuntimeView (object):
 					yo = ret
 				yo = yo.rstrip(',')
 			param.value = yo
+		elif param.type == 'dictionary':
+			self.dictionaryParam = param
+			self.dictView = ElementParameterDictionaryInputView.get_view(dictionary=param.value, title=name, cb=self.dictionaryReturn)
+			self.tv = tableview
+			self.dictView.present(orientations=['portrait'])
 		tableview.reload()
+	
+	def dictionaryReturn(self, sender):
+		self.dictionaryParam.value = self.dictView.data_source.dictionary
+		self.dictView.close()
+		self.tv.reload()
+		
 		
 	def tableview_title_for_header(self, tableview, section):
 		return 'Parameters'
@@ -51,7 +66,7 @@ class ElementRuntimeView (object):
 			name = param.name
 		cell.text_label.text = name
 		if not param.value == None:
-			cell.detail_text_label.text = param.value
+			cell.detail_text_label.text = str(param.value)
 		return cell
 	
 	def tableview_can_delete(self, tableview, section, row):
