@@ -18,7 +18,7 @@ class GetURLContents(ElementBase):
 	
 	def setup_params(self):
 		self.params.append(ElementParameter(name='verb',displayName='Verb',display=True, type='list',value='GET',allowedValues=['GET', 'POST', 'PUT', 'DELETE']))
-	
+		self.params.append(ElementParameter(name='params', displayName='Parameters', display=True, type='dictionary', value=None))
 	def get_status(self):
 		return self.status
 		
@@ -51,10 +51,18 @@ class GetURLContents(ElementBase):
 	
 	def run(self, input=''):
 		verbParam = self.get_param_by_name('verb')
+		paramsParam = self.get_param_by_name('params')
 		if verbParam.value == 'GET':
-			r = requests.get(input.value)
+			if paramsParam.value == None:
+				r = requests.get(input.value)
+			else:
+				r = requests.get(input.value, param=paramsParam.value)
 		elif verbParam.value == 'POST':
-			r = requests.post(input.value)
+			if paramsParam.value == None:
+				r = requests.post(input.value)
+			else:
+				r = requests.get(input.value, data=paramsParam.value)
+
 		elif verbParam.value == 'PUT':
 			r = requests.put(input.value)
 		elif verbParam.value == 'DELETE':
