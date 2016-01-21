@@ -12,7 +12,7 @@ class Print(ElementBase):
 		self.setup_params()
 	
 	def can_handle_list(self):
-		True
+		return True
 		
 	def setup_params(self):
 		pass

@@ -18,7 +18,7 @@ class GetURLContents(ElementBase):
 		self.setup_params()
 	
 	def can_handle_list(self):
-		False
+		return False
 		
 	def setup_params(self):
 		self.params.append(ElementParameter(name='verb',displayName='Verb',display=True, type='list',value='GET',allowedValues=['GET', 'POST', 'PUT', 'DELETE']))

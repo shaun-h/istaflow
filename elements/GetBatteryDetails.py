@@ -15,7 +15,7 @@ class GetBatteryDetails(ElementBase):
 		self.setup_params()
 	
 	def can_handle_list(self):
-		False
+		return False
 		
 	def setup_params(self):
 		pass
