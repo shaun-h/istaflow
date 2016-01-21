@@ -10,6 +10,9 @@ class {title}(ElementBase):
 		self.params = None
 		self.setup_params()
 	
+	def can_handle_list(self):
+		pass
+	
 	def setup_params(self):
 		pass
 	

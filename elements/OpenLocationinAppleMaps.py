@@ -12,6 +12,9 @@ class OpenLocationinAppleMaps(ElementBase):
 		self.params = []
 		self.setup_params()
 	
+	def can_handle_list(self):
+		False
+		
 	def setup_params(self):
 		self.params.append(ElementParameter(name='mapmode',displayName='Map Mode',display=True,type='list',value='standard',allowedValues=['standard','satellite','hybrid ','transit']))
 		self.params.append(ElementParameter(name='zoom',displayName='Zoom',display=True,type='string',value='12'))

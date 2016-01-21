@@ -13,6 +13,9 @@ class TakePhoto(ElementBase):
 		self.params = None
 		self.setup_params()
 	
+	def can_handle_list(self):
+		False
+		
 	def setup_params(self):
 		pass
 	

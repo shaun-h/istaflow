@@ -12,6 +12,9 @@ class OpenLocationinGoogleMaps(ElementBase):
 		self.params = []
 		self.setup_params()
 	
+	def can_handle_list(self):
+		False
+		
 	def setup_params(self):
 		self.params.append(ElementParameter(name='mapmode',displayName='Map Mode',display=True,type='list',value='standard',allowedValues=['standard','streetview']))
 		self.params.append(ElementParameter(name='viewmode',displayName='View Mode',display=True,type='list',value=None,allowedValues=['satellite', 'traffic', 'transit'],multipleAllowed=True))

@@ -1,5 +1,7 @@
 # coding: utf-8
 class ElementBase (object):
+	def can_handle_list(self):
+		raise self.not_implemented()
 	
 	def get_status(self):
 		raise self.not_implemented()

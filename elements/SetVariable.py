@@ -11,6 +11,9 @@ class SetVariable(ElementBase):
 		self.params = []
 		self.setup_params()
 	
+	def can_handle_list(self):
+		True
+		
 	def setup_params(self):
 		self.params.append(ElementParameter(name='fm:runtime_variables',type='*'))
 		self.params.append(ElementParameter(name='VariableName',displayName='Variable Name',display=True,type='string'))

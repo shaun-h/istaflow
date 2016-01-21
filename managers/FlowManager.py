@@ -52,7 +52,10 @@ class FlowManager (object):
 				output = element.run()
 			else:
 				if prevOutputType == element.get_input_type() or element.get_input_type() == '*':
-					output = element.run(output)
+					if not output.isList or element.can_handle_list():
+						output = element.run(output)
+					else:
+						raise ValueError('List provided to ' + element.get_title() + ' and cant handle list')
 				else:
 					raise ValueError('Invalid input type provided to ' + element.get_title())
 			self.get_runtime_element_params(element)
