@@ -11,6 +11,7 @@ class TakePhoto(ElementBase):
 		self.status = 'running'
 		self.output = None 
 		self.params = None
+		self.type = 'Standard'
 		self.setup_params()
 	
 	def can_handle_list(self):
@@ -48,7 +49,10 @@ class TakePhoto(ElementBase):
 		
 	def get_category(self):
 		return 'Image'
-	
+		
+	def get_type(self):
+		return self.type
+		
 	def run(self):
 		self.status = 'complete'
 		#console.alert(title='Known Issue',message='Take Photo sometimes freezes the ui and pythonista needs to be killed.',button1='Ok',hide_cancel_button=True)

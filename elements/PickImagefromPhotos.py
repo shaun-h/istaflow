@@ -9,6 +9,7 @@ class PickImagefromPhotos(ElementBase):
 		self.status = 'running'
 		self.output = None 
 		self.params = None
+		self.type = 'Standard'
 		self.setup_params()
 	
 	def can_handle_list(self):
@@ -47,6 +48,9 @@ class PickImagefromPhotos(ElementBase):
 	def get_category(self):
 		return 'Image'
 	
+	def get_type(self):
+		return self.type
+		
 	def run(self):
 		img = photos.pick_image()
 		ev = ElementValue(type = self.get_output_type(), value = img)

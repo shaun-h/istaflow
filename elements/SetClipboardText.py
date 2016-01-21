@@ -9,6 +9,7 @@ class SetClipboardText(ElementBase):
 		self.status = 'running'
 		self.output = None
 		self.params = None
+		self.type = 'Standard'
 		self.setup_params()
 	
 	def can_handle_list(self):
@@ -46,6 +47,9 @@ class SetClipboardText(ElementBase):
 		
 	def get_category(self):
 		return 'Text'
+	
+	def get_type(self):
+		return self.type
 		
 	def run(self, input):
 		clipboard.set(input.value)

@@ -9,6 +9,7 @@ class SetVariable(ElementBase):
 		self.status = 'running'
 		self.output = None 
 		self.params = []
+		self.type = 'Standard'
 		self.setup_params()
 	
 	def can_handle_list(self):
@@ -48,6 +49,9 @@ class SetVariable(ElementBase):
 	def get_category(self):
 		return 'Utility'
 	
+	def get_type(self):
+		return self.type
+		
 	def run(self, input):
 		np = self.get_param_by_name('VariableName')
 		if np.value == None:

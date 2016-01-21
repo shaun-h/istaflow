@@ -10,6 +10,7 @@ class OpenLocationinGoogleMaps(ElementBase):
 		self.status = 'running'
 		self.output = None 
 		self.params = []
+		self.type = 'Standard'
 		self.setup_params()
 	
 	def can_handle_list(self):
@@ -53,6 +54,9 @@ class OpenLocationinGoogleMaps(ElementBase):
 	def get_category(self):
 		return 'External App'
 	
+	def get_type(self):
+		return self.type
+		
 	def run(self, input=''):
 		mapmodeparam = self.get_param_by_name('mapmode')
 		viewsparam = self.get_param_by_name('viewmode')

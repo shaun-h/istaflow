@@ -14,6 +14,7 @@ class GetURLContents(ElementBase):
 		self.status = 'running'
 		self.output = None 
 		self.params = []
+		self.type = 'Standard'
 		self.setup_params()
 	
 	def can_handle_list(self):
@@ -52,6 +53,9 @@ class GetURLContents(ElementBase):
 	def get_category(self):
 		return 'Url'
 	
+	def get_type(self):
+		return self.type
+		
 	def run(self, input=''):
 		verbParam = self.get_param_by_name('verb')
 		paramsParam = self.get_param_by_name('params')

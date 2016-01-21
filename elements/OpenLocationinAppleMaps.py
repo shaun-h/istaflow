@@ -10,6 +10,7 @@ class OpenLocationinAppleMaps(ElementBase):
 		self.status = 'running'
 		self.output = None 
 		self.params = []
+		self.type = 'Standard'
 		self.setup_params()
 	
 	def can_handle_list(self):
@@ -49,6 +50,9 @@ class OpenLocationinAppleMaps(ElementBase):
 	def get_category(self):
 		return 'External App'
 	
+	def get_type(self):
+		return self.type
+		
 	def run(self, input=''):
 		mapmodeparam = self.get_param_by_name('mapmode')
 		zoomparam = self.get_param_by_name('zoom')

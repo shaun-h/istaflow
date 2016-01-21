@@ -9,6 +9,7 @@ class ShowAlert(ElementBase):
 		self.status = 'running'
 		self.output = None
 		self.params = None
+		self.type = 'Standard'
 		self.setup_params()
 	
 	def can_handle_list(self):
@@ -47,6 +48,9 @@ class ShowAlert(ElementBase):
 	def get_category(self):
 		return 'Utility'
 		
+	def get_type(self):
+		return self.type
+	
 	def run(self, input):
 		self.status = 'complete'
 		input = str(input.value)

@@ -9,6 +9,7 @@ class SetClipboardImage(ElementBase):
 		self.status = 'running'
 		self.output = None 
 		self.params = None
+		self.type = 'Standard'
 		self.setup_params()
 	
 	def can_handle_list(self):
@@ -47,6 +48,9 @@ class SetClipboardImage(ElementBase):
 	def get_category(self):
 		return 'Image'
 	
+	def get_type(self):
+		return self.type
+		
 	def run(self, input):
 		clipboard.set_image(input.value)
 		self.status = 'complete'

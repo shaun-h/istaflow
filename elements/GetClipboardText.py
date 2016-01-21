@@ -9,6 +9,7 @@ class GetClipboardText(ElementBase):
 		self.status = 'running'
 		self.output = None 
 		self.params = None
+		self.type = 'Standard'
 		self.setup_params()
 	
 	def can_handle_list(self):
@@ -47,6 +48,9 @@ class GetClipboardText(ElementBase):
 	def get_category(self):
 		return 'Text'
 	
+	def get_type(self):
+		return self.type
+		
 	def run(self):
 		clip = clipboard.get()
 		self.status = 'complete'

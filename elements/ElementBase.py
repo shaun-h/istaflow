@@ -36,6 +36,9 @@ class ElementBase (object):
 	def get_category(self):
 		raise self.not_implemented()
 	
+	def get_type(self):
+		raise self.not_implemented()
+		
 	def run(self):
 		raise self.not_implemented()
 	

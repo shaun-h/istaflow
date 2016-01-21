@@ -8,6 +8,7 @@ class {title}(ElementBase):
 		self.status = 'running'
 		self.output = None 
 		self.params = None
+		self.type = 'Standard'
 		self.setup_params()
 	
 	def can_handle_list(self):
@@ -45,7 +46,10 @@ class {title}(ElementBase):
 		
 	def get_category(self):
 		return '{category}'
-	
+		
+	def get_type(self):
+		return self.type
+		
 	def run(self, input=''):
 		#where the magic happens, put element logic here input is only used if input type is not None, return something if output type is not None, NOTE: for future changes please set self.status to 'complete' if successful or 'error' if error required
 		pass

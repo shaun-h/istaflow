@@ -15,6 +15,7 @@ class GetVariable(ElementBase):
 		self.output = None
 		self.params = []
 		self.name = None
+		self.type = 'Standard'
 		self.setup_params()
 	
 	def can_handle_list(self):
@@ -59,6 +60,9 @@ class GetVariable(ElementBase):
 		self.name = item.name
 		self.status = 'complete'
 		self.get_param_by_name('fm:nav_view').value.pop_view()
+	
+	def get_type(self):
+		return self.type
 		
 	def run(self):
 		np = self.get_param_by_name('VariableName')
