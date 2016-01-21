@@ -10,10 +10,7 @@ class ElementParameterDictionaryInputView(object):
 	def tableview_did_select(self, tableview, section, row):
 		key = self.dictionary.keys()[row]
 		value = self.dictionary[key]
-		values = edit_item(key, value)
-		if not values == None:
-			self.dictionary[values['Key']] = values['Value']
-			tableview.reload()
+		edit_item(key, value)
 		
 	def tableview_title_for_header(self, tableview, section):
 		pass
@@ -46,9 +43,12 @@ def get_view(dictionary={}, title='Dictionary', cb=None):
 	table_view.right_button_items = [ui.ButtonItem(title='Add', action = add_item), ui.ButtonItem(title='Save', action=cb)]
 	return table_view
 
+@ui.in_background
 def edit_item(key, value):
 	values = dialogs.form_dialog(title='Edit Item', fields=[{'type':'text', 'title':'Key', 'value':key},{'type':'text', 'title':'Value', 'value':value}])
-	return values
+	if not values == None:
+		dbo.dictionary[values['Key']] = values['Value']
+		table_view.reload()
 	
 def add_item(sender):
 	values = dialogs.form_dialog(title='Add Item', fields=[{'type':'text', 'title':'Key'},{'type':'text', 'title':'Value'}])
