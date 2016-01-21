@@ -28,6 +28,15 @@ class ElementParameterDictionaryInputView(object):
 		cell.detail_text_label.text = self.dictionary[key]
 		cell.selectable = True
 		return cell
+	
+	def tableview_can_delete(self, tableview, section, row):
+		return True
+	
+	def tableview_delete(self, tableview, section, row):
+		# Called when the user confirms deletion of the given row.
+		key = self.dictionary.keys()[row]
+		self.dictionary.pop(key)
+		del_row([row])
 
 table_view = ui.TableView()	
 dbo = ElementParameterDictionaryInputView()	
@@ -36,7 +45,6 @@ def get_view(dictionary={}, title='Dictionary', cb=None):
 	if dicti == None:
 	 dicti = {}
 	dbo.dictionary=dicti
-	#table_view = ui.TableView()
 	table_view.name = title
 	table_view.data_source = dbo
 	table_view.delegate = dbo
@@ -55,3 +63,6 @@ def add_item(sender):
 	if not values == None:
 		dbo.dictionary[values['Key']] = values['Value']
 		table_view.reload()
+		
+def del_row(row):
+	table_view.delete_rows(row)
