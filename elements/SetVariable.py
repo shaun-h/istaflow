@@ -3,6 +3,7 @@ from ElementBase import ElementBase
 from ElementParameter import ElementParameter
 from ElementValue import ElementValue
 import console
+import copy
 
 class SetVariable(ElementBase):
 	def __init__(self):
@@ -59,5 +60,5 @@ class SetVariable(ElementBase):
 		else:
 			name = np.value
 		rv = self.get_param_by_name('fm:runtime_variables')
-		rv.value[name] = input
+		rv.value[name] = copy.deepcopy(input)
 		self.status = 'complete'

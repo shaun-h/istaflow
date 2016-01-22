@@ -3,6 +3,7 @@ from ElementBase import ElementBase
 from ElementParameter import ElementParameter
 from ElementValue import ElementValue
 import console
+import copy
 try:
 	import dialogs
 except :
@@ -83,4 +84,4 @@ class GetVariable(ElementBase):
 			self.name = np.value
 		if self.name == None:
 			self.name = console.input_alert(title='Please enter variable title', message=keysavailablemessage)
-		return rv.value[self.name]
+		return copy.deepcopy(rv.value[self.name])
