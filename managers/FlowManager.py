@@ -43,16 +43,19 @@ class FlowManager (object):
 		output = None
 		prevOutputType = None
 		elementNumber = 1
+		foreachstore = None
 		self.nav_view = navview
 		self.runtime_variables = {}
-		for element in elements:
+		while elementNumber<= len(elements):
+			element = elements[elementNumber-1]
 			self.elementchangecb(elementNumber)
+			elementType = element.get_type()
 			self.set_runtime_element_params(element)
 			if element.get_input_type() == None:
 				output = element.run()
 			else:
 				if prevOutputType == element.get_input_type() or element.get_input_type() == '*':
-					if not output.isList or element.can_handle_list():
+					if output == None or not output.isList or element.can_handle_list():
 						output = element.run(output)
 					else:
 						raise ValueError('List provided to ' + element.get_title() + ' and cant handle list')
@@ -63,6 +66,21 @@ class FlowManager (object):
 				prevOutputType = element.get_output_type()
 			else:
 				prevOutputType = output.type
+			if elementType == 'Foreach':
+				foreachstore = [output,elementNumber,len(output.value),0]
+				output.value = foreachstore[0].value[foreachstore[3]]
+				#print foreachstore[0].value
+				self.handle_foreach()
+			if elementType == 'EndForeach':
+				if foreachstore[3] < foreachstore[2]:
+					elementNumber = foreachstore[1]
+					foreachstore[3] += 1
+					output.type = foreachstore[0].type
+					#print foreachstore[0].value
+					output.value=foreachstore[0].value[foreachstore[3]]
+				else:
+					foreachstore = None
+					output = None
 			elementNumber += 1
 		elementNumber = 0
 		self.elementchangecb(elementNumber)
@@ -83,3 +101,6 @@ class FlowManager (object):
 			for param in params:
 				if param.name == 'fm:runtime_variables':
 					self.runtime_variables = param.value
+	
+	def handle_foreach(self):
+		pass
