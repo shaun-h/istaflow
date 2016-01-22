@@ -53,5 +53,5 @@ class ForEach(ElementBase):
 	def run(self, input=''):
 		if not isinstance(input.value,list):
 			print 'error'
-		print input
+		#print input
 		return input

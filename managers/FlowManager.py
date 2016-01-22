@@ -2,6 +2,7 @@
 import json
 import os
 import time
+import copy
 
 class FlowManager (object):
 	def __init__(self, elementchangecb):
@@ -67,17 +68,15 @@ class FlowManager (object):
 			else:
 				prevOutputType = output.type
 			if elementType == 'Foreach':
-				foreachstore = [output,elementNumber,len(output.value),0]
+				foreachstore = [copy.deepcopy(output),elementNumber,len(output.value),0]
 				output.value = foreachstore[0].value[foreachstore[3]]
-				#print foreachstore[0].value
 				self.handle_foreach()
 			if elementType == 'EndForeach':
+				foreachstore[3] += 1
 				if foreachstore[3] < foreachstore[2]:
 					elementNumber = foreachstore[1]
-					foreachstore[3] += 1
 					output.type = foreachstore[0].type
-					#print foreachstore[0].value
-					output.value=foreachstore[0].value[foreachstore[3]]
+					output.value = foreachstore[0].value[foreachstore[3]]
 				else:
 					foreachstore = None
 					output = None
