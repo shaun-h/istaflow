@@ -4,6 +4,7 @@ import os
 # from os.path import isfile, join, splitext # --> join is a builtin method causing name space issues
 from importlib import import_module
 import sys
+import copy
 sys.path.append('elements')
 
 
@@ -55,7 +56,7 @@ class ElementManager (object):
 		elements = self.get_all_elements('valid')
 		for element in elements:
 			if element.get_title() == title:
-				return element
+				return copy.deepcopy(element)
 		return None
 
 	def create_element(self, title, inputType, outputType, description, icon, category):

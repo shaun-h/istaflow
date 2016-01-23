@@ -1,6 +1,6 @@
 # coding: utf-8
 import ui
-
+import copy
 class ElementListView(object):
 	def __init__(self, elements, selectedCallBack):
 		self.elements = elements
@@ -8,7 +8,7 @@ class ElementListView(object):
 
 	def tableview_did_select(self, tableview, section, row):
 		section_key = self.elements.keys()[section]
-		self.scb(self.elements[section_key][row])
+		self.scb(copy.deepcopy(self.elements[section_key][row]))
 		
 	def tableview_title_for_header(self, tableview, section):
 		return self.elements.keys()[section]
