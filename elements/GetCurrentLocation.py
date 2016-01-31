@@ -8,7 +8,7 @@ class GetCurrentLocation(ElementBase):
 	def __init__(self):
 		self.status = 'running'
 		self.output = None 
-		self.params = None
+		self.params = []
 		self.type = 'Standard'
 		self.setup_params()
 	
@@ -16,7 +16,7 @@ class GetCurrentLocation(ElementBase):
 		return False
 		
 	def setup_params(self):
-		pass
+		self.params.append(ElementParameter(name='title',displayName='Title',display=True,type='string',value='Current Location'))
 	
 	def get_status(self):
 		return self.status
@@ -55,5 +55,9 @@ class GetCurrentLocation(ElementBase):
 		location.start_updates()
 		loc = location.get_location()
 		location.stop_updates()
+		titleParam = self.get_param_by_name('title').value
+		loc['title'] = 'Current Location'
+		if not titleParam == None:
+			loc['title'] = titleParam
 		ev = ElementValue(type = self.get_output_type(), value = loc)
 		return ev

@@ -9,6 +9,7 @@ from ElementParameter import ElementParameter
 from ElementValue import ElementValue
 from views.MapView import MapView
 
+sys.path.remove('..')
 class ShowlocationonMap(ElementBase):
 	def __init__(self):
 		self.status = 'running'
@@ -63,7 +64,10 @@ class ShowlocationonMap(ElementBase):
 			for loc in input.value:
 				m.add_pin(lat = loc['latitude'], lon = loc['longitude'],title='Test')
 		else:
-			m.add_pin(lat = input.value['latitude'], lon = input.value['longitude'],title='Test')
+			title = str(input.value['latitude']) + ', ' + str(input.value['longitude'])
+			if 'title' in input.value.keys():
+				title = input.value['title']
+			m.add_pin(lat = input.value['latitude'], lon = input.value['longitude'],title=title)
 		m.present()
 		while m.on_screen:
 			time.sleep(0.1)
