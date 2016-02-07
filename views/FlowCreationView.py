@@ -5,7 +5,7 @@ import console
 dbo = None
 
 class FlowCreationView(object):
-	def __init__(self, elements, saveCallBack, addElementAction, saveFlowAction, runFlowAction, showElementRuntimeView):
+	def __init__(self, elements, saveCallBack, addElementAction, saveFlowAction, runFlowAction, showElementRuntimeView, thememanager):
 		self.elements = elements
 		self.saveCallBack = saveCallBack
 		self.showElementRuntimeView = showElementRuntimeView
@@ -20,6 +20,7 @@ class FlowCreationView(object):
 		self.editButtonsLeft = [self.saveFlowButton]
 		self.runButtonsRight = [self.runFlowButton]
 		self.runButtonsLeft = []
+		self.thememanager = thememanager
 	
 	def update_buttons(self):
 		if not table_view.editing:
@@ -54,6 +55,7 @@ class FlowCreationView(object):
 			cell.selectable = False
 			cell.text_label.text = element.get_title()
 			cell.detail_text_label.text = element.get_description()
+			cell.background_color=self.thememanager.main_background_colour
 			cell.image_view.image = ui.Image.named(element.get_icon())
 			params = element.get_params()
 			selectable = False
@@ -66,12 +68,17 @@ class FlowCreationView(object):
 			if self.currentElementNumber >= self.extraRows:
 				cell.selectable = False
 			if self.currentElementNumber == row:
-				cell.background_color = .37, .59, 1.0
+				cell.background_color = self.thememanager.running_cell_background_colour
+				cell.text_label.text_color = self.thememanager.running_cell_text_colour
+				cell.detail_text_label.text_color = self.thememanager.running_cell_text_colour
 			else:
-				cell.background_color = 1.0, 1.0, 1.0
+				cell.background_color = self.thememanager.main_background_colour
+				cell.text_label.text_color = self.thememanager.main_text_colour
+				cell.detail_text_label.text_color = self.thememanager.main_text_colour
 			return cell
 		else:
 			cell = ui.TableViewCell()
+			cell.background_color=self.thememanager.main_background_colour
 			cell.selectable = False
 			if tableview.editing:
 				title = 'Done'
@@ -120,9 +127,10 @@ class FlowCreationView(object):
 
 table_view = ui.TableView()
 
-def get_view(elements, saveCallBack, addElementAction, saveFlowAction, runFlowAction, showElementRuntimeView):
-	dbo = FlowCreationView(elements = elements, saveCallBack = saveCallBack, addElementAction = addElementAction, saveFlowAction = saveFlowAction, runFlowAction = runFlowAction, showElementRuntimeView = showElementRuntimeView)
+def get_view(elements, saveCallBack, addElementAction, saveFlowAction, runFlowAction, showElementRuntimeView,thememanager):
+	dbo = FlowCreationView(elements = elements, saveCallBack = saveCallBack, addElementAction = addElementAction, saveFlowAction = saveFlowAction, runFlowAction = runFlowAction, showElementRuntimeView = showElementRuntimeView, thememanager=thememanager)
 	table_view.name = 'Flow'
+	table_view.background_color = thememanager.main_background_colour
 	table_view.data_source = dbo
 	table_view.delegate = dbo
 	show_run_buttons()

@@ -130,7 +130,7 @@ class ista(object):
 		self.flow_view = FlowsView.get_view(self.flows, self.flowselectedcb, self.deleteflow, self.theme_manager)
 		
 	def setup_flowcreationview(self):
-		self.flow_creation_view = FlowCreationView.get_view(elements = self.selectedElements, saveCallBack = self.savecb, addElementAction = self.show_elementsview, saveFlowAction = self.saveflow, runFlowAction = self.runflow, showElementRuntimeView = self.show_elementruntimeview)
+		self.flow_creation_view = FlowCreationView.get_view(elements = self.selectedElements, saveCallBack = self.savecb, addElementAction = self.show_elementsview, saveFlowAction = self.saveflow, runFlowAction = self.runflow, showElementRuntimeView = self.show_elementruntimeview, thememanager=self.theme_manager)
 		
 		
 	def deleteflow(self, flowtitle):
