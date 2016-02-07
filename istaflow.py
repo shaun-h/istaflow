@@ -1,6 +1,6 @@
  # coding: utf-8
 from views import ElementListView, FlowCreationView, FlowsView, ElementManagementView, ElementCreationView, ElementRuntimeView
-from managers import ElementManager, FlowManager
+from managers import ElementManager, FlowManager, ThemeManager
 import ui
 import collections
 import console
@@ -17,10 +17,12 @@ class ista(object):
 		self.element_runtime_view = None
 		self.element_manager = None
 		self.flow_manager = None
+		self.theme_manager = None
 		self.elements = None
 		self.selectedElements = []
 		self.flows = []
 		self.selectedFlow = None
+		self.setup_thememanager()
 		self.setup_elementsmanager()
 		self.setup_flowsmanager()		
 		self.get_valid_elements()
@@ -101,12 +103,19 @@ class ista(object):
 		initview.right_button_items = [ui.ButtonItem(title='Add Flow', action=self.show_flowcreationview)]
 		initview.left_button_items = [ui.ButtonItem(title='Elements', action=self.show_elementmanagementview)]
 		self.navigation_view = ui.NavigationView(initview)
+		self.navigation_view.bar_tint_color=self.theme_manager.main_bar_colour
+		self.navigation_view.tint_color = self.theme_manager.main_tint_colour
+		self.navigation_view.background_color = self.theme_manager.main_background_colour
+		self.navigation_view.title_color = self.theme_manager.main_title_text_colour
 	
 	def setup_flowsmanager(self):
 		self.flow_manager = FlowManager.FlowManager(self.elementchange)
 		
 	def setup_elementsmanager(self):
 		self.element_manager = ElementManager.ElementManager()
+	
+	def setup_thememanager(self):
+		self.theme_manager = ThemeManager.ThemeManager()
 				
 	def setup_elementsview(self):
 		self.elements_view = ElementListView.get_view(self.elements, self.elementselectedcb)
@@ -118,7 +127,7 @@ class ista(object):
 		self.element_creation_view = ElementCreationView.get_view(savecb=self.create_element, apcb=self.show_assetpicker, capcb = self.close_assetpicker)
 	
 	def setup_flowsview(self):
-		self.flow_view = FlowsView.get_view(self.flows, self.flowselectedcb, self.deleteflow)
+		self.flow_view = FlowsView.get_view(self.flows, self.flowselectedcb, self.deleteflow, self.theme_manager)
 		
 	def setup_flowcreationview(self):
 		self.flow_creation_view = FlowCreationView.get_view(elements = self.selectedElements, saveCallBack = self.savecb, addElementAction = self.show_elementsview, saveFlowAction = self.saveflow, runFlowAction = self.runflow, showElementRuntimeView = self.show_elementruntimeview)
