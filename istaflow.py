@@ -1,5 +1,5 @@
  # coding: utf-8
-from views import ElementListView, FlowCreationView, FlowsView, ElementManagementView, ElementCreationView, ElementRuntimeView
+from views import ElementListView, FlowCreationView, FlowsView, ElementManagementView, ElementCreationView, ElementRuntimeView, ToastView
 from managers import ElementManager, FlowManager, ThemeManager
 import ui
 import collections
@@ -8,6 +8,7 @@ import os
 
 class ista(object):
 	def __init__(self):
+		self.hide_title_bar=True
 		self.elements_view = None
 		self.element_management_view = None
 		self.element_creation_view = None
@@ -188,8 +189,10 @@ class ista(object):
 	def show_mainview(self):
 		self.validate_navigationview()
 		#ui seems to need to be portrait otherwise capture image view breaks
-		self.navigation_view.present(orientations=['portrait'])
+		self.navigation_view.present(orientations=['portrait'], title_bar_color=self.theme_manager.main_bar_colour, hide_title_bar=self.hide_title_bar)
 		#self.navigation_view.present()
+		if self.hide_title_bar:
+			ToastView.display_toast(view=self.navigation_view, help_text='Close by swiping down with two fingers')
 		
 	def elementselectedcb(self, element):
 		self.selectedElements.append(element)
