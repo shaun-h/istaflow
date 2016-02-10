@@ -5,7 +5,7 @@ import AssetPickerView
 
 dbo = None
 class ElementCreationView(object):
-	def __init__(self, saveCallBack, showAssetPickerCallBack, closeAssetPickerCallBack):
+	def __init__(self, saveCallBack, showAssetPickerCallBack, closeAssetPickerCallBack, thememanager):
 		self.saveCallBack = saveCallBack
 		self.numberOfRows = 6
 		self.titleRow = 0
@@ -23,6 +23,7 @@ class ElementCreationView(object):
 		self.showAssetPickerCallBack = showAssetPickerCallBack
 		self.closeAssetPickerCallBack = closeAssetPickerCallBack
 		self.assetPickerView = AssetPickerView.get_view(self.set_iconcb)
+		self.thememanager = thememanager
 	
 	def reset_view(self):
 		self.title = ''
@@ -93,6 +94,9 @@ class ElementCreationView(object):
 				cell.detail_text_label.text = 'Please enter a category'
 			else:
 				cell.detail_text_label.text = self.category
+		cell.text_label.text_color = self.thememanager.main_text_colour
+		cell.detail_text_label.text_color = self.thememanager.main_text_colour
+		cell.background_color = self.thememanager.main_background_colour
 		return cell
 	
 	@ui.in_background		
@@ -147,12 +151,13 @@ class ElementCreationView(object):
 			console.hud_alert('Invalid')
 
 table_view = ui.TableView()
-def get_view(savecb, apcb, capcb):
-	dbo = ElementCreationView(saveCallBack = savecb, showAssetPickerCallBack = apcb, closeAssetPickerCallBack = capcb)
+def get_view(savecb, apcb, capcb, thememanager):
+	dbo = ElementCreationView(saveCallBack = savecb, showAssetPickerCallBack = apcb, closeAssetPickerCallBack = capcb, thememanager = thememanager)
 	table_view.name = 'Element'
 	table_view.data_source = dbo
 	table_view.delegate = dbo
 	table_view.right_button_items = [ui.ButtonItem(title='Save Element', action=dbo.create_element)]
+	table_view.background_color = thememanager.main_background_colour
 	return table_view
 
 

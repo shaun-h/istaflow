@@ -2,9 +2,10 @@
 import ui
 import copy
 class ElementListView(object):
-	def __init__(self, elements, selectedCallBack):
+	def __init__(self, elements, selectedCallBack, thememanager):
 		self.elements = elements
 		self.scb = selectedCallBack
+		self.thememanager = thememanager
 
 	def tableview_did_select(self, tableview, section, row):
 		section_key = self.elements.keys()[section]
@@ -23,8 +24,11 @@ class ElementListView(object):
 		section_key = self.elements.keys()[section]
 		try:
 			cell = ui.TableViewCell('subtitle')
+			cell.background_color = self.thememanager.main_background_colour
+			cell.text_label.text_color = self.thememanager.main_text_colour
 			cell.text_label.text = self.elements[section_key][row].get_title()
 			cell.detail_text_label.text = self.elements[section_key][row].get_description()
+			cell.detail_text_label.text_color = self.thememanager.main_text_colour
 			cell.image_view.image = ui.Image.named(self.elements[section_key][row].get_icon())
 			cell.selectable = True
 			return cell
@@ -35,11 +39,12 @@ class ElementListView(object):
 			cell.selectable = False
 			return cell
 		
-def get_view(elements, cb):
-	dbo = ElementListView(elements = elements, selectedCallBack = cb)
+def get_view(elements, cb, thememanager):
+	dbo = ElementListView(elements = elements, selectedCallBack = cb, thememanager = thememanager)
 	table_view = ui.TableView()
 	table_view.name = 'Elements'
 	table_view.data_source = dbo
 	table_view.delegate = dbo
+	table_view.background_color = thememanager.main_background_colour
 	return table_view
 	

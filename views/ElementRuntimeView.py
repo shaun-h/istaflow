@@ -5,12 +5,13 @@ import dialogs
 import ElementParameterDictionaryInputView
 
 class ElementRuntimeView (object):
-	def __init__(self):
+	def __init__(self, thememanager):
 		self.element = None
 		self.params = []
 		self.dictionaryParam = None
 		self.tv = None
 		self.dictView = None
+		self.thememanager = thememanager
 	
 	@ui.in_background
 	def tableview_did_select(self, tableview, section, row):
@@ -38,8 +39,10 @@ class ElementRuntimeView (object):
 			param.value = yo
 		elif param.type == 'dictionary':
 			self.dictionaryParam = param
-			self.dictView = ElementParameterDictionaryInputView.get_view(dictionary=param.value, title=name, cb=self.dictionaryReturn)
+			self.dictView = ElementParameterDictionaryInputView.get_view(dictionary=param.value, title=name, cb=self.dictionaryReturn, thememanager = self.thememanager)
 			self.tv = tableview
+			self.dictView.title_bar_color = self.thememanager.main_bar_colour
+			self.dictView.tint_color = self.thememanager.main_tint_colour
 			self.dictView.present(orientations=['portrait'])
 		tableview.reload()
 	
@@ -67,6 +70,9 @@ class ElementRuntimeView (object):
 		cell.text_label.text = name
 		if not param.value == None:
 			cell.detail_text_label.text = str(param.value)
+		cell.background_color = self.thememanager.main_background_colour
+		cell.text_label.text_color = self.thememanager.main_text_colour
+		cell.detail_text_label.text_color = self.thememanager.main_text_colour
 		return cell
 	
 	def tableview_can_delete(self, tableview, section, row):
@@ -90,9 +96,10 @@ class ElementRuntimeView (object):
 		
 
 table_view = ui.TableView()
-def get_view():
-	dbo = ElementRuntimeView()
+def get_view(thememanager):
+	dbo = ElementRuntimeView(thememanager=thememanager)
 	table_view.name = 'Element'
 	table_view.data_source = dbo
 	table_view.delegate = dbo
+	table_view.background_color = thememanager.main_background_colour
 	return table_view

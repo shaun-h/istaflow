@@ -6,6 +6,7 @@ import dialogs
 class ElementParameterDictionaryInputView(object):
 	def __init__(self):
 		self.dictionary = {}
+		self.thememanager = None
 
 	def tableview_did_select(self, tableview, section, row):
 		key = self.dictionary.keys()[row]
@@ -26,6 +27,9 @@ class ElementParameterDictionaryInputView(object):
 		key = self.dictionary.keys()[row]
 		cell.text_label.text = key
 		cell.detail_text_label.text = self.dictionary[key]
+		cell.background_color = self.thememanager.main_background_colour
+		cell.text_label.text_color = self.thememanager.main_text_colour
+		cell.detail_text_label.text_color = self.thememanager.main_text_colour
 		cell.selectable = True
 		return cell
 	
@@ -40,15 +44,17 @@ class ElementParameterDictionaryInputView(object):
 
 table_view = ui.TableView()	
 dbo = ElementParameterDictionaryInputView()	
-def get_view(dictionary={}, title='Dictionary', cb=None):
+def get_view(thememanager, dictionary={}, title='Dictionary', cb=None):
 	dicti = dictionary
 	if dicti == None:
 	 dicti = {}
 	dbo.dictionary=dicti
+	dbo.thememanager = thememanager
 	table_view.name = title
 	table_view.data_source = dbo
 	table_view.delegate = dbo
 	table_view.right_button_items = [ui.ButtonItem(title='Add', action = add_item), ui.ButtonItem(title='Save', action=cb)]
+	table_view.background_color=thememanager.main_background_colour
 	return table_view
 
 @ui.in_background
