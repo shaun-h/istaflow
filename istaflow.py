@@ -37,7 +37,7 @@ class ista(object):
 		self.setup_navigationview(self.flow_view)
 	
 	def setup_elementruntimeview(self):
-		self.element_runtime_view = ElementRuntimeView.get_view() 
+		self.element_runtime_view = ElementRuntimeView.get_view(self.theme_manager) 
 		
 	def get_valid_elements(self):
 		if self.element_manager == None:
@@ -119,13 +119,13 @@ class ista(object):
 		self.theme_manager = ThemeManager.ThemeManager()
 				
 	def setup_elementsview(self):
-		self.elements_view = ElementListView.get_view(self.elements, self.elementselectedcb)
+		self.elements_view = ElementListView.get_view(self.elements, self.elementselectedcb, self.theme_manager)
 	
 	def setup_elementmanagementview(self):
-		self.element_management_view = ElementManagementView.get_view(self.elements)
+		self.element_management_view = ElementManagementView.get_view(self.elements, self.theme_manager)
 	
 	def setup_elementcreationview(self):
-		self.element_creation_view = ElementCreationView.get_view(savecb=self.create_element, apcb=self.show_assetpicker, capcb = self.close_assetpicker)
+		self.element_creation_view = ElementCreationView.get_view(savecb=self.create_element, apcb=self.show_assetpicker, capcb = self.close_assetpicker, thememanager = self.theme_manager)
 	
 	def setup_flowsview(self):
 		self.flow_view = FlowsView.get_view(self.flows, self.flowselectedcb, self.deleteflow, self.theme_manager)
