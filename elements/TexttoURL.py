@@ -52,14 +52,14 @@ class TexttoURL(ElementBase):
 		return self.type
 		
 	def run(self, input=''):
-		url = input.value
+		stringUrl = input.value
 		protoParam = self.get_param_by_name('protocol').value
-		if url == None:
+		if stringUrl == None:
 			console.alert(title='Error',message='No url was given',button1='Ok',hide_cancel_button=True)
 		else:
-			if url[:len(protoParam)].find(protoParam) == -1:
-				if url.find('//') == -1:
-					url = protoParam + url
+			if stringUrl[:len(protoParam)].find(protoParam) == -1:
+				if stringUrl.find('//') == -1:
+					stringUrl = protoParam + stringUrl
 				else:
 					console.alert(title='Information',message='Url passed with incorrect protocol given',button1='Ok',hide_cancel_button=True)
-			return ElementValue(type='url',value=url(url))
+			return ElementValue(type='url',value=stringUrl)
