@@ -50,12 +50,12 @@ class FlowManager (object):
 	def run_flow(self, elements, navview):
 		output = None
 		prevOutputType = None
-		elementNumber = 2
+		elementNumber = 1
 		foreachstore = None
 		self.nav_view = navview
 		self.runtime_variables = {}
 		while elementNumber<= len(elements):
-			element = elements[elementNumber-2]
+			element = elements[elementNumber-1]
 			self.elementchangecb(elementNumber)
 			elementType = element.get_type()
 			self.set_runtime_element_params(element)

@@ -73,7 +73,7 @@ class FlowCreationView(object):
 			cell.selectable = selectable
 			if self.currentElementNumber >= self.extraRows:
 				cell.selectable = False
-			if self.currentElementNumber == row:
+			if self.currentElementNumber+1 == row:
 				cell.background_color = self.thememanager.running_cell_background_colour
 				cell.text_label.text_color = self.thememanager.running_cell_text_colour
 				cell.detail_text_label.text_color = self.thememanager.running_cell_text_colour
