@@ -3,6 +3,7 @@ import json
 import os
 import time
 import copy
+import appex
 
 class FlowManager (object):
 	def __init__(self, elementchangecb):
@@ -47,13 +48,15 @@ class FlowManager (object):
 		f.close()
 		return fl['type']
 		
-	def run_flow(self, elements, navview):
+	def run_flow(self, elements, navview, type):
 		output = None
 		prevOutputType = None
 		elementNumber = 1
 		foreachstore = None
 		self.nav_view = navview
 		self.runtime_variables = {}
+		if type == 'Action Extension' and not appex.is_running_extension():
+			return False, 'Flow type: Action Extension flow not running in extension'
 		while elementNumber<= len(elements):
 			element = elements[elementNumber-1]
 			self.elementchangecb(elementNumber)
@@ -90,6 +93,7 @@ class FlowManager (object):
 			elementNumber += 1
 		elementNumber = 0
 		self.elementchangecb(elementNumber)
+		return True, 'Flow completed successfully'
 	
 	def set_runtime_element_params(self, element):
 		params = element.get_params()
