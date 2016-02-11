@@ -5,6 +5,7 @@ import ui
 import collections
 import console
 import os
+import dialogs
 
 class ista(object):
 	def __init__(self):
@@ -21,6 +22,7 @@ class ista(object):
 		self.theme_manager = None
 		self.elements = None
 		self.selectedElements = []
+		self.selectedFlowType = ''
 		self.flows = []
 		self.selectedFlow = None
 		self.setup_thememanager()
@@ -77,13 +79,16 @@ class ista(object):
 						if p.name in element['params'].keys():
 							p.value = element['params'][p.name]
 				self.selectedElements.append(e)
+			type = self.flow_manager.get_type_for_flow(self.selectedFlow)
 			title = os.path.splitext(self.selectedFlow)[0]
 			self.flow_creation_view.name = title
 			self.flow_creation_view.data_source.title = title
+			self.flow_creation_view.data_source.flowType = type
 			self.selectedFlow = None
 		else:
 			self.flow_creation_view.data_source.title = ''
 			self.flow_creation_view.name = 'New Flow'
+			self.flow_creation_view.data_source.flowType = 'Normal'
 		self.flow_creation_view.data_source.elements = self.selectedElements
 		self.flow_creation_view.data_source.update_buttons()
 		self.flow_creation_view.reload_data()
@@ -131,8 +136,16 @@ class ista(object):
 		self.flow_view = FlowsView.get_view(self.flows, self.flowselectedcb, self.deleteflow, self.theme_manager)
 		
 	def setup_flowcreationview(self):
-		self.flow_creation_view = FlowCreationView.get_view(elements = self.selectedElements, saveCallBack = self.savecb, addElementAction = self.show_elementsview, saveFlowAction = self.saveflow, runFlowAction = self.runflow, showElementRuntimeView = self.show_elementruntimeview, thememanager=self.theme_manager)
-		
+		self.flow_creation_view = FlowCreationView.get_view(elements = self.selectedElements, saveCallBack = self.savecb, addElementAction = self.show_elementsview, saveFlowAction = self.saveflow, runFlowAction = self.runflow, showElementRuntimeView = self.show_elementruntimeview, thememanager=self.theme_manager, flowType = self.selectedFlowType, flowTypeSelection = self.show_flowtypeselection)
+	
+	@ui.in_background	
+	def show_flowtypeselection(self):
+		self.selectedFlowType = self.flow_creation_view.data_source.flowType
+		type = dialogs.list_dialog(title='Flow Type', items=['Normal','Action Extension'])
+		if not type == None:
+			self.selectedFlowType = type
+		self.flow_creation_view.data_source.flowType = self.selectedFlowType
+		self.flow_creation_view.reload_data()
 		
 	def deleteflow(self, flowtitle):
 		self.flow_manager.delete_flow(flowtitle)
@@ -142,7 +155,7 @@ class ista(object):
 		if self.flow_creation_view.data_source.title == '':
 			console.alert(title='Error',message='Please enter a title',button1='Ok',hide_cancel_button=True)
 		else:
-			self.flow_manager.save_flow(self.flow_creation_view.data_source.title, self.selectedElements)
+			self.flow_manager.save_flow(self.flow_creation_view.data_source.title, self.selectedElements, self.selectedFlowType)
 			console.alert(title='Success',message='Flow has been saved',button1='Ok',hide_cancel_button=True)
 			self.get_flows()
 			self.flow_view.data_source.flows = self.flows

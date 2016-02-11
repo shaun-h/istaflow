@@ -16,7 +16,7 @@ class FlowManager (object):
 	def get_flows(self):
 		return os.listdir(self.dir)
 	
-	def save_flow(self, title, elements):
+	def save_flow(self, title, elements, type):
 		names = []
 		for ele in elements:
 			params = {}
@@ -26,8 +26,9 @@ class FlowManager (object):
 						params[p.name] = p.value
 			ob = {'title':ele.get_title(),'params':params}
 			names.append(ob)
+		fl = {'type':type,'elements':names}
 		f = open(self.dir+title+'.flow','w')
-		f.write(json.JSONEncoder().encode(names))
+		f.write(json.JSONEncoder().encode(fl))
 		f.close()
 	
 	def delete_flow(self, title):
@@ -38,17 +39,23 @@ class FlowManager (object):
 		f = open(self.dir+flow,'r')
 		fl = json.JSONDecoder().decode(f.read())
 		f.close()
-		return fl
+		return fl['elements']
 	
+	def get_type_for_flow(self, flow):
+		f = open(self.dir+flow,'r')
+		fl = json.JSONDecoder().decode(f.read())
+		f.close()
+		return fl['type']
+		
 	def run_flow(self, elements, navview):
 		output = None
 		prevOutputType = None
-		elementNumber = 1
+		elementNumber = 2
 		foreachstore = None
 		self.nav_view = navview
 		self.runtime_variables = {}
 		while elementNumber<= len(elements):
-			element = elements[elementNumber-1]
+			element = elements[elementNumber-2]
 			self.elementchangecb(elementNumber)
 			elementType = element.get_type()
 			self.set_runtime_element_params(element)

@@ -1,15 +1,18 @@
 # coding: utf-8
 import ui
 import console
-
 dbo = None
 
 class FlowCreationView(object):
-	def __init__(self, elements, saveCallBack, addElementAction, saveFlowAction, runFlowAction, showElementRuntimeView, thememanager):
+	def __init__(self, elements, saveCallBack, addElementAction, saveFlowAction, runFlowAction, showElementRuntimeView, thememanager, flowType, flowTypeSelection):
+		self.flowType = flowType
 		self.elements = elements
 		self.saveCallBack = saveCallBack
+		self.flowTypeSelection = flowTypeSelection
 		self.showElementRuntimeView = showElementRuntimeView
-		self.extraRows = 1
+		self.extraRows = 2
+		self.adminRow = 0
+		self.typeRow = 1
 		self.title = ''
 		self.currentElementNumber = -1
 		self.addElementButton = ui.ButtonItem(title = 'Add Element', action = addElementAction)
@@ -29,16 +32,19 @@ class FlowCreationView(object):
 			show_edit_buttons()
 			
 	def tableview_did_select(self, tableview, section, row):
-		element = self.elements[row-self.extraRows]
-		params = element.get_params()
-		show = False
-		if not params == None:
-			for p in params:
-				if p.display == True:
-					show = True
-		if show:
-			self.showElementRuntimeView(element)
-		
+		if row >= self.extraRows:
+			element = self.elements[row-self.extraRows]
+			params = element.get_params()
+			show = False
+			if not params == None:
+				for p in params:
+					if p.display == True:
+						show = True
+			if show:
+				self.showElementRuntimeView(element)
+		elif row == self.typeRow:
+			self.flowTypeSelection()
+			
 	def tableview_title_for_header(self, tableview, section):
 		pass
 
@@ -76,7 +82,7 @@ class FlowCreationView(object):
 				cell.text_label.text_color = self.thememanager.main_text_colour
 				cell.detail_text_label.text_color = self.thememanager.main_text_colour
 			return cell
-		else:
+		elif row == self.adminRow:
 			cell = ui.TableViewCell()
 			cell.background_color=self.thememanager.main_background_colour
 			cell.selectable = False
@@ -95,7 +101,16 @@ class FlowCreationView(object):
 			self.titleButton.action = self.change_title
 			cell.add_subview(self.titleButton)
 			return cell
-	
+		elif row == self.typeRow:
+			cell = ui.TableViewCell('value1')
+			cell.background_color=self.thememanager.main_background_colour
+			cell.selectable = True
+			cell.text_label.text_color = self.thememanager.main_text_colour
+			cell.detail_text_label.text_color = self.thememanager.main_text_colour
+			cell.text_label.text = 'Type of Flow'
+			cell.detail_text_label.text = self.flowType
+			return cell
+			
 	@ui.in_background		
 	def change_title(self, sender):
 		self.title = console.input_alert('Flow title','',self.title,'Ok',False)
@@ -127,8 +142,8 @@ class FlowCreationView(object):
 
 table_view = ui.TableView()
 
-def get_view(elements, saveCallBack, addElementAction, saveFlowAction, runFlowAction, showElementRuntimeView,thememanager):
-	dbo = FlowCreationView(elements = elements, saveCallBack = saveCallBack, addElementAction = addElementAction, saveFlowAction = saveFlowAction, runFlowAction = runFlowAction, showElementRuntimeView = showElementRuntimeView, thememanager=thememanager)
+def get_view(elements, saveCallBack, addElementAction, saveFlowAction, runFlowAction, showElementRuntimeView,thememanager, flowType, flowTypeSelection):
+	dbo = FlowCreationView(elements = elements, saveCallBack = saveCallBack, addElementAction = addElementAction, saveFlowAction = saveFlowAction, runFlowAction = runFlowAction, showElementRuntimeView = showElementRuntimeView, thememanager=thememanager, flowType=flowType, flowTypeSelection=flowTypeSelection)
 	table_view.name = 'Flow'
 	table_view.background_color = thememanager.main_background_colour
 	table_view.data_source = dbo
