@@ -219,6 +219,7 @@ class ista(object):
 		
 	def flowselectedcb(self, flow):
 		self.selectedFlow = flow
+		self.selectedFlowType = self.flow_manager.get_type_for_flow(flow)
 		self.show_flowcreationview(None)
 	
 	def create_element(self, title, inputType, outputType, description, icon, category):
