@@ -6,6 +6,7 @@ import collections
 import console
 import os
 import dialogs
+import appex
 
 class ista(object):
 	def __init__(self):
@@ -29,7 +30,7 @@ class ista(object):
 		self.setup_elementsmanager()
 		self.setup_flowsmanager()		
 		self.get_valid_elements()
-		self.get_flows()
+		self.get_flows(appex.is_running_extension())
 		self.setup_elementsview()
 		self.setup_elementmanagementview()
 		self.setup_elementcreationview()
@@ -59,8 +60,8 @@ class ista(object):
 					self.elements[element.get_category()]=[element]
 		self.elements = collections.OrderedDict(sorted(self.elements.items(), key=lambda t:t[0] ))
 	
-	def get_flows(self):
-		self.flows = self.flow_manager.get_flows()
+	def get_flows(self, appexonly):
+		self.flows = self.flow_manager.get_flows(appexonly=appexonly)
 	
 	def show_elementruntimeview(self, element):
 		self.element_runtime_view.data_source.load_element(element)
@@ -157,7 +158,7 @@ class ista(object):
 		else:
 			self.flow_manager.save_flow(self.flow_creation_view.data_source.title, self.selectedElements, self.selectedFlowType)
 			console.alert(title='Success',message='Flow has been saved',button1='Ok',hide_cancel_button=True)
-			self.get_flows()
+			self.get_flows(appex.is_running_extension())
 			self.flow_view.data_source.flows = self.flows
 			self.flow_view.reload_data()
 		

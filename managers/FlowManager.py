@@ -14,8 +14,16 @@ class FlowManager (object):
 		if not os.path.exists(self.dir):
 			os.mkdir(self.dir)
 		
-	def get_flows(self):
-		return os.listdir(self.dir)
+	def get_flows(self, appexonly):
+		flows = os.listdir(self.dir)
+		if appexonly:
+			appexflows=[]
+			for f in flows:
+				if self.get_type_for_flow(f) == 'Action Extension':
+					appexflows.append(f)
+			return appexflows
+		else:
+			return flows
 	
 	def save_flow(self, title, elements, type):
 		names = []
