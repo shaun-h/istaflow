@@ -223,9 +223,9 @@ class ista(object):
 		self.selectedFlowType = self.flow_manager.get_type_for_flow(flow)
 		self.show_flowcreationview(None)
 	
-	def create_element(self, title, inputType, outputType, description, icon, category):
+	def create_element(self, title, inputType, outputType, description, icon, category, canHandleList):
 		
-		self.element_manager.create_element(title=title, inputType=inputType, outputType=outputType, description=description, icon=icon, category=category)
+		self.element_manager.create_element(title=title, inputType=inputType, outputType=outputType, description=description, icon=icon, category=category, canHandleList=canHandleList)
 		console.hud_alert('Element created')
 		self.get_valid_elements()
 		self.element_management_view.data_source.elements = self.elements

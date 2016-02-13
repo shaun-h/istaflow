@@ -12,7 +12,7 @@ class {title}(ElementBase):
 		self.setup_params()
 	
 	def can_handle_list(self):
-		pass
+		return {canHandleList}
 	
 	def setup_params(self):
 		pass

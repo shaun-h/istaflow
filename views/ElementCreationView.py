@@ -7,19 +7,21 @@ dbo = None
 class ElementCreationView(object):
 	def __init__(self, saveCallBack, showAssetPickerCallBack, closeAssetPickerCallBack, thememanager):
 		self.saveCallBack = saveCallBack
-		self.numberOfRows = 6
+		self.numberOfRows = 7
 		self.titleRow = 0
 		self.inputTypeRow = 1
 		self.outputTypeRow = 2
 		self.descriptionRow = 3
 		self.iconRow = 4
 		self.categoryRow = 5
+		self.canHandleListRow = 6
 		self.title = ''
 		self.inputType = None
 		self.outputType = None
 		self.description = ''
 		self.icon = ''
 		self.category = ''
+		self.canHandleList = False
 		self.showAssetPickerCallBack = showAssetPickerCallBack
 		self.closeAssetPickerCallBack = closeAssetPickerCallBack
 		self.assetPickerView = AssetPickerView.get_view(self.set_iconcb)
@@ -94,11 +96,24 @@ class ElementCreationView(object):
 				cell.detail_text_label.text = 'Please enter a category'
 			else:
 				cell.detail_text_label.text = self.category
+		elif row == self.canHandleListRow:
+			cell.text_label.text = 'Can Handle List'
+			cell.selectable = False
+			switch = ui.Switch()
+			switch.name = 'canHandleList'
+			switch.value = False
+			switch.y = cell.center.y - switch.height/2
+			switch.x = cell.width + switch.width/2   
+			switch.action = self.canHandleListAction
+			cell.add_subview(switch)
 		cell.text_label.text_color = self.thememanager.main_text_colour
 		cell.detail_text_label.text_color = self.thememanager.main_text_colour
 		cell.background_color = self.thememanager.main_background_colour
 		return cell
 	
+	def canHandleListAction(self, sender):
+		self.canHandleList = sender.value
+		
 	@ui.in_background		
 	def change_title(self):
 		self.title = console.input_alert(title='Enter Element title', message='Space in title will be removed for filename and classname. If element with file exists it will be overwritten without warning.')
@@ -145,7 +160,7 @@ class ElementCreationView(object):
 			valid = False
 			
 		if valid:
-			self.saveCallBack(title=self.title, inputType=self.inputType, outputType=self.outputType, description=self.description, icon=self.icon, category=self.category)
+			self.saveCallBack(title=self.title, inputType=self.inputType, outputType=self.outputType, description=self.description, icon=self.icon, category=self.category, canHandleList=self.canHandleList)
 			self.reset_view()
 		else:
 			console.hud_alert('Invalid')

@@ -9,13 +9,11 @@ sys.path.append('elements')
 
 
 class ElementManager (object):
-	elementsFolder = 'elements'
-	elementExclusionList = ('ElementBase.py','__init__.py','Template.py','ElementParameter.py','ElementValue.py')
-	requiredElementInstanceMethods = (
-	'get_status', 'get_input', 'get_output',
-	'get_input_type', 'get_output_type', 'get_params',
-	'set_params', 'get_description', 'get_title',
-	'get_category', 'get_icon', 'run')
+	def __init__(self):
+		self.elementsFolder = 'elements'
+		self.elementExclusionList = ('ElementBase.py','__init__.py','Template.py','ElementParameter.py','ElementValue.py')
+		self.requiredElementInstanceMethods = ('get_status', 'get_input', 'get_output','get_input_type', 'get_output_type', 'get_params','set_params', 'get_description', 'get_title','get_category', 'get_icon', 'run')
+		sys.path.append('elements')
 
 	def get_all_elements(self, element_type=None):
 		elements = [
@@ -59,7 +57,7 @@ class ElementManager (object):
 				return copy.deepcopy(element)
 		return None
 
-	def create_element(self, title, inputType, outputType, description, icon, category):
+	def create_element(self, title, inputType, outputType, description, icon, category, canHandleList):
 		if not inputType == None:
 			inputType = "'"+inputType+"'"
 		if not outputType == None:
@@ -73,7 +71,7 @@ class ElementManager (object):
 		with open(templatePath, 'r') as f:
 			# str.format thinks that on line 8 ```self.params = {}``` and
 			# on line 27 ```def set_params(self, params = {})``` are fomatting values
-			tem = f.read().format(**{'title':titleValidated, 'title_space':title, 'input_type':inputType, 'output_type':outputType,'description':description,'icon':icon,'category':category})
+			tem = f.read().format(**{'title':titleValidated, 'title_space':title, 'input_type':inputType, 'output_type':outputType,'description':description,'icon':icon,'category':category,'canHandleList':canHandleList})
 		with open(elementPath, 'w') as f:
 			f.write(tem)
 
