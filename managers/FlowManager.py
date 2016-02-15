@@ -17,22 +17,14 @@ class FlowManager (object):
 	def get_flows(self, appexonly):
 		flows = os.listdir(self.dir)
 		if appexonly:
-			appexflows=[]
-			for f in flows:
-				if self.get_type_for_flow(f) == 'Action Extension':
-					appexflows.append(f)
-			return appexflows
+			return [f for f in flows if self.get_type_for_flow(f) == 'Action Extension']
 		else:
 			return flows
 	
 	def save_flow(self, title, elements, type):
 		names = []
 		for ele in elements:
-			params = {}
-			if not ele.get_params() == None:
-				for p in ele.get_params():
-					if p.display:
-						params[p.name] = p.value
+			params = {p.name: p.value for p in (ele.get_params() or []) if p.display}
 			ob = {'title':ele.get_title(),'params':params}
 			names.append(ob)
 		fl = {'type':type,'elements':names}
@@ -45,16 +37,12 @@ class FlowManager (object):
 			os.remove(self.dir+title)
 	
 	def get_element_details_for_flow(self, flow):
-		f = open(self.dir+flow,'r')
-		fl = json.JSONDecoder().decode(f.read())
-		f.close()
-		return fl['elements']
+		with open(self.dir+flow,'r') as f:
+			return json.JSONDecoder().decode(f.read())['elements']
 	
 	def get_type_for_flow(self, flow):
-		f = open(self.dir+flow,'r')
-		fl = json.JSONDecoder().decode(f.read())
-		f.close()
-		return fl['type']
+		with open(self.dir+flow,'r') as f:
+			return json.JSONDecoder().decode(f.read())['type']
 		
 	def run_flow(self, elements, navview, type):
 		output = None
@@ -81,15 +69,12 @@ class FlowManager (object):
 				else:
 					raise ValueError('Invalid input type provided to ' + element.get_title())
 			self.get_runtime_element_params(element)
-			if output == None:
-				prevOutputType = element.get_output_type()
-			else:
-				prevOutputType = output.type
+			prevOutputType = output.type if output else element.get_output_type()
 			if elementType == 'Foreach':
 				foreachstore = [copy.deepcopy(output),elementNumber,len(output.value),0]
 				output.value = foreachstore[0].value[foreachstore[3]]
 				self.handle_foreach()
-			if elementType == 'EndForeach':
+			elif elementType == 'EndForeach':
 				foreachstore[3] += 1
 				if foreachstore[3] < foreachstore[2]:
 					elementNumber = foreachstore[1]
@@ -105,7 +90,7 @@ class FlowManager (object):
 	
 	def set_runtime_element_params(self, element):
 		params = element.get_params()
-		if not params == None:
+		if params:
 			for param in params:
 				if param.name =='fm:runtime_variables':
 					param.value = self.runtime_variables
@@ -114,11 +99,9 @@ class FlowManager (object):
 			element.set_params(params)
 			
 	def get_runtime_element_params(self, element):
-		params = element.get_params()
-		if not params == None:
-			for param in params:
-				if param.name == 'fm:runtime_variables':
-					self.runtime_variables = param.value
+		for param in element.get_params() or []:
+			if param.name == 'fm:runtime_variables':
+				self.runtime_variables = param.value
 	
 	def handle_foreach(self):
 		pass
