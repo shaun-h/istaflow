@@ -53,6 +53,11 @@ class GetLocationfromAddress(ElementBase):
 		
 	def run(self, input):
 		self.status = 'complete'
-		loc = location.geocode(input.value[0])
+		v = input.value
+		if isinstance(input.value, list):
+			v = input.value[0]
+		loc = location.geocode(v)
+		if 'title' in v.keys():
+			loc[0]['title'] = v['title']
 		ev = ElementValue(type = self.get_output_type(), value = loc)
 		return ev

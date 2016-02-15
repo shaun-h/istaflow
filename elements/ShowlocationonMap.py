@@ -62,7 +62,10 @@ class ShowlocationonMap(ElementBase):
 		
 		if input.isList:
 			for loc in input.value:
-				m.add_pin(lat = loc['latitude'], lon = loc['longitude'],title='Test')
+				title = str(loc['latitude']) + ', ' + str(loc['longitude'])
+				if 'title' in loc.keys():
+					title = loc['title']
+				m.add_pin(lat = loc['latitude'], lon = loc['longitude'],title=title)
 		else:
 			title = str(input.value['latitude']) + ', ' + str(input.value['longitude'])
 			if 'title' in input.value.keys():
