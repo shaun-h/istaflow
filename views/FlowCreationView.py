@@ -26,20 +26,16 @@ class FlowCreationView(object):
 		self.thememanager = thememanager
 	
 	def update_buttons(self):
-		if not table_view.editing:
-			show_run_buttons()
-		else:
+		if table_view.editing:
 			show_edit_buttons()
+		else:
+			show_run_buttons()
 			
 	def tableview_did_select(self, tableview, section, row):
 		if row >= self.extraRows:
 			element = self.elements[row-self.extraRows]
-			params = element.get_params()
-			show = False
-			if not params == None:
-				for p in params:
-					if p.display == True:
-						show = True
+			params = element.get_params() or []
+			show = any(p.display for p in params)
 			if show:
 				self.showElementRuntimeView(element)
 		elif row == self.typeRow:
@@ -63,13 +59,12 @@ class FlowCreationView(object):
 			cell.detail_text_label.text = element.get_description()
 			cell.background_color=self.thememanager.main_background_colour
 			cell.image_view.image = ui.Image.named(element.get_icon())
-			params = element.get_params()
+			params = element.get_params() or []
 			selectable = False
-			if not params == None:
-				for p in params:
-					if p.display == True:
-						selectable = True
-						cell.accessory_type = 'disclosure_indicator'
+			for p in params:
+				if p.display:
+					selectable = True
+					cell.accessory_type = 'disclosure_indicator'
 			cell.selectable = selectable
 			if self.currentElementNumber >= self.extraRows:
 				cell.selectable = False
@@ -86,11 +81,7 @@ class FlowCreationView(object):
 			cell = ui.TableViewCell()
 			cell.background_color=self.thememanager.main_background_colour
 			cell.selectable = False
-			if tableview.editing:
-				title = 'Done'
-			else:
-				title = 'Edit'
-			editButton = ui.Button(title=title)
+			editButton = ui.Button(title='Done' if tableview.editing else 'Edit')
 			editButton.width *= 1.4
 			editButton.action = swap_edit
 			editButton.y = cell.height/2 - editButton.height/2
@@ -118,17 +109,11 @@ class FlowCreationView(object):
 		
 	def tableview_can_delete(self, tableview, section, row):
 		# Return True if the user should be able to delete the given row.
-		if row >= self.extraRows:
-			return True
-		else:
-			return False
+		return row >= self.extraRows
 
 	def tableview_can_move(self, tableview, section, row):
 		# Return True if a reordering control should be shown for the given row (in editing mode).
-		if row >= self.extraRows:
-			return True
-		else:
-			return False
+		return row >= self.extraRows:
 
 	def tableview_delete(self, tableview, section, row):
 		# Called when the user confirms deletion of the given row.
@@ -168,7 +153,7 @@ def show_edit_buttons():
 	table_view.data_source.titleButton.hidden = False
 
 def show_run_buttons():
-	if len(table_view.data_source.elements) > 0:
+	if table_view.data_source.elements:
 		table_view.right_button_items = table_view.data_source.runButtonsRight
 	else:
 		table_view.right_button_items = []
