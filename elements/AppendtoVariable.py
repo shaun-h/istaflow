@@ -66,7 +66,7 @@ class AppendtoVariable(ElementBase):
 			rv.value[name] = copy.deepcopy(input)
 		else:
 			if input.type == rv.value[name].type:
-				if not rv.value[name].isList:
+				if not isinstance(rv.value[name].value,list):
 					t = copy.deepcopy(rv.value[name].value)
 					rv.value[name].value = []
 					rv.value[name].value.append(copy.deepcopy(t))
