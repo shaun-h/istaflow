@@ -113,7 +113,7 @@ class FlowCreationView(object):
 
 	def tableview_can_move(self, tableview, section, row):
 		# Return True if a reordering control should be shown for the given row (in editing mode).
-		return row >= self.extraRows:
+		return row >= self.extraRows
 
 	def tableview_delete(self, tableview, section, row):
 		# Called when the user confirms deletion of the given row.
