@@ -3,9 +3,7 @@ import ui
 
 class FlowsView(object):
 	def __init__(self, flows, flowselectedcb, flowdeletedcb, thememanager):
-		self.flows = flows
-		if self.flows == None:
-			self.flows = []
+		self.flows = flows or []
 		self.flowselectedcb = flowselectedcb
 		self.flowdeletedcb = flowdeletedcb
 		self.thememanager = thememanager
