@@ -24,6 +24,8 @@ class ElementRuntimeView (object):
 			value = ''
 		if param.type == 'string':
 			param.value = console.input_alert(name, '', value)
+		elif param.type == 'int':
+			param.value = int(console.input_alert(name,'',str(value)))
 		elif param.type == 'variable':
 			pass
 		elif param.type == 'list':

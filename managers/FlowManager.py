@@ -49,6 +49,7 @@ class FlowManager (object):
 		prevOutputType = None
 		elementNumber = 1
 		foreachstore = None
+		forstore = None
 		self.nav_view = navview
 		self.runtime_variables = {}
 		if type == 'Action Extension' and not appex.is_running_extension():
@@ -83,6 +84,18 @@ class FlowManager (object):
 				else:
 					foreachstore = None
 					output = None
+			elif elementType == 'For':
+				forcount = element.get_param_by_name('forcount')
+				if forcount == None:
+					return False, 'For element count parameter not setup correctly'
+				forstore = [elementNumber,forcount.value,0]
+			elif elementType == 'EndFor':
+				output = None
+				forstore[2] += 1
+				if forstore[2] < forstore[1]:
+					elementNumber = forstore[0]
+				else:
+					forstore = None
 			elementNumber += 1
 		elementNumber = 0
 		self.elementchangecb(elementNumber)
