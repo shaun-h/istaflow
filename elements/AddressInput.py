@@ -33,8 +33,8 @@ class AddressInput(ElementBase):
 	def get_params(self):
 		return self.params
 		
-	def set_params(self, params = []):
-		self.params = params
+	def set_params(self, params = None):
+		self.params = params or []
 		
 	def get_description(self):
 		return 'Manually enter an address'
@@ -52,7 +52,11 @@ class AddressInput(ElementBase):
 		return self.type
 		
 	def run(self, input=''):
-		formDict = [{'type':'text','title':'Title','key':'title'},{'type':'text', 'title':'Street', 'autocorrection':False},{'type':'text', 'title':'City', 'autocorrection':False},{'type':'text', 'title':'Country', 'autocorrection':False},{'type':'text', 'title':'Zip Postcode','key':'ZIP', 'autocorrection':False}]
+		formDict = [{'type':'text','title':'Title','key':'title'},
+			{'type':'text', 'title':'Street', 'autocorrection':False},
+			{'type':'text', 'title':'City', 'autocorrection':False},
+			{'type':'text', 'title':'Country', 'autocorrection':False},
+			{'type':'text', 'title':'Zip Postcode','key':'ZIP', 'autocorrection':False}]
 		address = dialogs.form_dialog(title='Address Input', fields=formDict)
 		ev = ElementValue(type = self.get_output_type(), value = address)
 		self.status = 'complete'
