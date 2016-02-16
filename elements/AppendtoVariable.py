@@ -55,7 +55,7 @@ class AppendtoVariable(ElementBase):
 		
 	def run(self, input=''):
 		np = self.get_param_by_name('VariableName')
-		name = np.value if np.value else console.input_alert('Please enter Variable name')
+		name = np.value or console.input_alert('Please enter Variable name')
 		rv = self.get_param_by_name('fm:runtime_variables')
 		if not name in rv.value:
 			rv.value[name] = None
