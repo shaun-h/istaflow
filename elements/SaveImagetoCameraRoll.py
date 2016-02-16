@@ -2,8 +2,8 @@
 from ElementBase import ElementBase
 from ElementParameter import ElementParameter
 from ElementValue import ElementValue
-import photos
 import console
+import photos
 
 class SaveImagetoCameraRoll(ElementBase):
 	def __init__(self):
@@ -34,8 +34,8 @@ class SaveImagetoCameraRoll(ElementBase):
 	def get_params(self):
 		return self.params
 		
-	def set_params(self, params = []):
-		self.params = params
+	def set_params(self, params = None):
+		self.params = params or []
 		
 	def get_description(self):
 		return 'Saves input image to Camera Roll'
@@ -55,7 +55,7 @@ class SaveImagetoCameraRoll(ElementBase):
 	def run(self, input):
 		try:
 			if not photos.save_image(input.value):
-				console.alert('didnt work')
-		except:
-			console.alert('error')
+				console.alert("didn't work")
+		except error:
+			console.alert('error: {}'.format(error))
 		self.status = 'complete'

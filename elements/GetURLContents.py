@@ -21,8 +21,10 @@ class GetURLContents(ElementBase):
 		return False
 		
 	def setup_params(self):
-		self.params.append(ElementParameter(name='verb',displayName='Verb',display=True, type='list',value='GET',allowedValues=['GET', 'POST', 'PUT', 'DELETE']))
+		allowedValues = 'GET POST PUT DELETE'.split()
+		self.params.append(ElementParameter(name='verb',displayName='Verb',display=True, type='list',value='GET',allowedValues=allowedValues))
 		self.params.append(ElementParameter(name='params', displayName='Parameters', display=True, type='dictionary', value=None))
+
 	def get_status(self):
 		return self.status
 		
@@ -38,8 +40,8 @@ class GetURLContents(ElementBase):
 	def get_params(self):
 		return self.params
 		
-	def set_params(self, params = []):
-		self.params = params
+	def set_params(self, params = None):
+		self.params = params or []
 		
 	def get_description(self):
 		return 'Get the contents from a URL'
@@ -77,12 +79,8 @@ class GetURLContents(ElementBase):
 		self.status = 'complete'
 		if r.status_code == 200:
 			type = r.headers['content-type'].split('/')[0]
-			if type == 'image':
-				a = Image.open(StringIO(r.content))
-				ev = ElementValue(type=type, value=a)
-				return ev
-			else:
-				return ElementValue(type=type, value=r.text)
+			value = Image.open(StringIO(r.content)) if type == 'image' else r.text
+			return ElementValue(type=type, value=value)
 		else:
 			console.alert(title='Error',message=r.status_code,button1='Ok',hide_cancel_button=True)
-			return ElementValue(type=None,value=None)
+			return ElementValue(type=None, value=None)

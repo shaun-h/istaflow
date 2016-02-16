@@ -33,8 +33,8 @@ class GetLocationfromAddress(ElementBase):
 	def get_params(self):
 		return self.params
 		
-	def set_params(self, params = []):
-		self.params = params
+	def set_params(self, params = None):
+		self.params = params or []
 		
 	def get_description(self):
 		return 'Get location from Address'
@@ -53,11 +53,8 @@ class GetLocationfromAddress(ElementBase):
 		
 	def run(self, input):
 		self.status = 'complete'
-		v = input.value
-		if isinstance(input.value, list):
-			v = input.value[0]
+		v = input.value[0] if isinstance(input.value, list) else input.value
 		loc = location.geocode(v)
-		if 'title' in v.keys():
+		if 'title' in v:
 			loc[0]['title'] = v['title']
-		ev = ElementValue(type = self.get_output_type(), value = loc)
-		return ev
+		return ElementValue(type = self.get_output_type(), value = loc)

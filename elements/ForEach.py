@@ -32,8 +32,8 @@ class ForEach(ElementBase):
 	def get_params(self):
 		return self.params
 		
-	def set_params(self, params = []):
-		self.params = params
+	def set_params(self, params = None):
+		self.params = params or []
 		
 	def get_description(self):
 		return 'Pull each element of a list out'
@@ -51,7 +51,7 @@ class ForEach(ElementBase):
 		return self.type
 		
 	def run(self, input=''):
-		if not isinstance(input.value,list):
+		if not isinstance(input.value, list):
 			print 'List not provided to foreach'
 		self.status = 'complete'
 		return input

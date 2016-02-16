@@ -35,8 +35,8 @@ class GetBatteryDetails(ElementBase):
 	def get_params(self):
 		return self.params
 		
-	def set_params(self, params = []):
-		self.params = params
+	def set_params(self, params = None):
+		self.params = params or []
 		
 	def get_description(self):
 		return 'Get details about the current state of the battery.'
@@ -54,17 +54,12 @@ class GetBatteryDetails(ElementBase):
 		return self.type
 		
 	def run(self, input=''):
-		batteryDetails = {}
-		UIDevice = ObjCClass('UIDevice')
-		device = UIDevice.currentDevice()
 		battery_states = {1: 'unplugged', 2: 'charging', 3: 'full'}
-
+		device = ObjCClass('UIDevice').currentDevice()
 		device.setBatteryMonitoringEnabled_(True)
 		battery_percent = device.batteryLevel() * 100
 		state = device.batteryState()
-		state_str = battery_states.get(state, 'unknown')
-		batteryDetails['State'] = state_str
-		batteryDetails['Level'] = battery_percent
 		device.setBatteryMonitoringEnabled_(False)
+		batteryDetails = {'Level': battery_percent, 'State': battery_states.get(state, 'unknown')}
 		self.status = 'complete'
-		return ElementValue(type=self.get_output_type(),value=batteryDetails)
+		return ElementValue(type=self.get_output_type(), value=batteryDetails)

@@ -35,8 +35,8 @@ class TakePhoto(ElementBase):
 	def get_params(self):
 		return self.params
 		
-	def set_params(self, params = []):
-		self.params = params
+	def set_params(self, params = None):
+		self.params = params or []
 		
 	def get_description(self):
 		return 'Take a photo using the devices camera and returns it.'
@@ -57,8 +57,4 @@ class TakePhoto(ElementBase):
 		self.status = 'complete'
 		#console.alert(title='Known Issue',message='Take Photo sometimes freezes the ui and pythonista needs to be killed.',button1='Ok',hide_cancel_button=True)
 		time.sleep(.5)
-		p = None
-		p = photos.capture_image()
-		ev = ElementValue(type = self.get_output_type(), value = p)
-		
-		return ev
+		return ElementValue(type = self.get_output_type(), value = photos.capture_image())

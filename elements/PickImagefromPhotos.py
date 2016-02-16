@@ -33,8 +33,8 @@ class PickImagefromPhotos(ElementBase):
 	def get_params(self):
 		return self.params
 		
-	def set_params(self, params = []):
-		self.params = params
+	def set_params(self, params = None):
+		self.params = params or []
 		
 	def get_description(self):
 		return 'Pick a image from photo library and returns it.'
@@ -53,5 +53,4 @@ class PickImagefromPhotos(ElementBase):
 		
 	def run(self):
 		img = photos.pick_image()
-		ev = ElementValue(type = self.get_output_type(), value = img)
-		return ev
+		return ElementValue(type = self.get_output_type(), value = img)

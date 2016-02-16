@@ -33,8 +33,8 @@ class GetCurrentLocation(ElementBase):
 	def get_params(self):
 		return self.params
 		
-	def set_params(self, params = []):
-		self.params = params
+	def set_params(self, params = None):
+		self.params = params or []
 		
 	def get_description(self):
 		return 'Get current location of the device'
@@ -56,8 +56,5 @@ class GetCurrentLocation(ElementBase):
 		loc = location.get_location()
 		location.stop_updates()
 		titleParam = self.get_param_by_name('title').value
-		loc['title'] = 'Current Location'
-		if not titleParam == None:
-			loc['title'] = titleParam
-		ev = ElementValue(type = self.get_output_type(), value = loc)
-		return ev
+		loc['title'] = titleParam or 'Current Location'
+		return ElementValue(type = self.get_output_type(), value = loc)

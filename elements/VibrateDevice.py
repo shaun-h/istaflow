@@ -34,8 +34,8 @@ class VibrateDevice(ElementBase):
 	def get_params(self):
 		return self.params
 		
-	def set_params(self, params = []):
-		self.params = params
+	def set_params(self, params = None):
+		self.params = params or []
 		
 	def get_description(self):
 		return 'Vibrates the device'
@@ -53,8 +53,7 @@ class VibrateDevice(ElementBase):
 		return self.type
 		
 	def run(self, input=''):
-		c = ctypes.CDLL(None)
-		p = c.AudioServicesPlaySystemSound
+		p = ctypes.CDLL(None).AudioServicesPlaySystemSound
 		p.restype, p.argtypes = None, [ctypes.c_int32]
 		vibrate_id = 0x00000fff
 		p(vibrate_id)
