@@ -1,15 +1,13 @@
 # coding: utf-8
 import ui
-import copy
-class ElementListView(object):
-	def __init__(self, elements, selectedCallBack, thememanager):
+
+class ElementManagementView(object):
+	def __init__(self, elements, thememanager):
 		self.elements = elements
-		self.scb = selectedCallBack
 		self.thememanager = thememanager
 
 	def tableview_did_select(self, tableview, section, row):
-		section_key = self.elements.keys()[section]
-		self.scb(copy.deepcopy(self.elements[section_key][row]))
+		pass
 		
 	def tableview_title_for_header(self, tableview, section):
 		return self.elements.keys()[section]
@@ -24,13 +22,13 @@ class ElementListView(object):
 		section_key = self.elements.keys()[section]
 		try:
 			cell = ui.TableViewCell('subtitle')
-			cell.background_color = self.thememanager.main_background_colour
-			cell.text_label.text_color = self.thememanager.main_text_colour
 			cell.text_label.text = self.elements[section_key][row].get_title()
 			cell.detail_text_label.text = self.elements[section_key][row].get_description()
-			cell.detail_text_label.text_color = self.thememanager.main_text_colour
 			cell.image_view.image = ui.Image.named(self.elements[section_key][row].get_icon())
-			cell.selectable = True
+			cell.selectable = False
+			cell.background_color = self.thememanager.main_background_colour
+			cell.text_label.text_color = self.thememanager.main_text_colour
+			cell.detail_text_label.text_color = self.thememanager.main_text_colour
 			return cell
 		except:
 			cell = ui.TableViewCell('subtitle')
@@ -39,8 +37,8 @@ class ElementListView(object):
 			cell.selectable = False
 			return cell
 		
-def get_view(elements, cb, thememanager):
-	dbo = ElementListView(elements = elements, selectedCallBack = cb, thememanager = thememanager)
+def get_view(elements, thememanager):
+	dbo = ElementManagementView(elements = elements, thememanager = thememanager)
 	table_view = ui.TableView()
 	table_view.name = 'Elements'
 	table_view.data_source = dbo

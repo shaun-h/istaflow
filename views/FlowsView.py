@@ -2,10 +2,11 @@
 import ui
 
 class FlowsView(object):
-	def __init__(self, flows, flowselectedcb, flowdeletedcb):
-		self.flows = flows
+	def __init__(self, flows, flowselectedcb, flowdeletedcb, thememanager):
+		self.flows = flows or []
 		self.flowselectedcb = flowselectedcb
 		self.flowdeletedcb = flowdeletedcb
+		self.thememanager = thememanager
 
 	def tableview_did_select(self, tableview, section, row):
 		self.flowselectedcb(self.flows[row])
@@ -22,6 +23,8 @@ class FlowsView(object):
 	def tableview_cell_for_row(self, tableview, section, row):
 		cell = ui.TableViewCell()
 		cell.text_label.text = self.flows[row]
+		cell.background_color = self.thememanager.main_background_colour
+		cell.text_label.text_color = self.thememanager.main_text_colour
 		cell.selectable = True
 		return cell
 	
@@ -44,9 +47,10 @@ class FlowsView(object):
 		pass
 
 table_view = ui.TableView()
-def get_view(flows, selectedcb, deletedcb):
-	dbo = FlowsView(flows = flows, flowselectedcb = selectedcb, flowdeletedcb = deletedcb)
+def get_view(flows, selectedcb, deletedcb, thememanager):
+	dbo = FlowsView(flows = flows, flowselectedcb = selectedcb, flowdeletedcb = deletedcb, thememanager=thememanager)
 	table_view.name = 'Flows'
+	table_view.background_color=thememanager.main_background_colour
 	table_view.data_source = dbo
 	table_view.delegate = dbo
 	return table_view

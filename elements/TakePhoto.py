@@ -2,12 +2,14 @@
 from ElementBase import ElementBase
 from ElementParameter import ElementParameter
 from ElementValue import ElementValue
-import clipboard
+import photos
+import console
+import time
 
-class SetClipboardText(ElementBase):
+class TakePhoto(ElementBase):
 	def __init__(self):
 		self.status = 'running'
-		self.output = None
+		self.output = None 
 		self.params = None
 		self.type = 'Standard'
 		self.setup_params()
@@ -20,37 +22,43 @@ class SetClipboardText(ElementBase):
 	
 	def get_status(self):
 		return self.status
-	
+		
 	def get_input_type(self):
-		return 'string'
+		return None
 	
 	def get_output(self):
 		return self.output
-	
+		
 	def get_output_type(self):
-		return None
+		return 'image'
 		
 	def get_params(self):
 		return self.params
 		
-	def set_params(self, params=[]):
-		self.params=params
+	def set_params(self, params = []):
+		self.params = params
 		
 	def get_description(self):
-		return "This sets the system clipboard with text input provided."
-	
+		return 'Take a photo using the devices camera and returns it.'
+		
 	def get_title(self):
-		return 'Set Clipboard Text'
+		return 'Take Photo'
 		
 	def get_icon(self):
-		return 'iob:ios7_copy_32'
+		return 'iob:ios7_camera_32'
 		
 	def get_category(self):
-		return 'Text'
-	
+		return 'Image'
+		
 	def get_type(self):
 		return self.type
 		
-	def run(self, input):
-		clipboard.set(input.value)
+	def run(self):
 		self.status = 'complete'
+		#console.alert(title='Known Issue',message='Take Photo sometimes freezes the ui and pythonista needs to be killed.',button1='Ok',hide_cancel_button=True)
+		time.sleep(.5)
+		p = None
+		p = photos.capture_image()
+		ev = ElementValue(type = self.get_output_type(), value = p)
+		
+		return ev

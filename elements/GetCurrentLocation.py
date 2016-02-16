@@ -2,13 +2,13 @@
 from ElementBase import ElementBase
 from ElementParameter import ElementParameter
 from ElementValue import ElementValue
-import clipboard
+import location
 
-class GetClipboardText(ElementBase):
+class GetCurrentLocation(ElementBase):
 	def __init__(self):
 		self.status = 'running'
 		self.output = None 
-		self.params = None
+		self.params = []
 		self.type = 'Standard'
 		self.setup_params()
 	
@@ -16,7 +16,7 @@ class GetClipboardText(ElementBase):
 		return False
 		
 	def setup_params(self):
-		pass
+		self.params.append(ElementParameter(name='title',displayName='Title',display=True,type='string',value='Current Location'))
 	
 	def get_status(self):
 		return self.status
@@ -28,7 +28,7 @@ class GetClipboardText(ElementBase):
 		return self.output
 		
 	def get_output_type(self):
-		return 'string'
+		return 'location'
 		
 	def get_params(self):
 		return self.params
@@ -37,22 +37,27 @@ class GetClipboardText(ElementBase):
 		self.params = params
 		
 	def get_description(self):
-		return "This gets the text value of the system clipboard"
+		return 'Get current location of the device'
 	
 	def get_title(self):
-		return 'Get Clipboard Text'
+		return 'Get Current Location'
 		
 	def get_icon(self):
-		return 'iob:ios7_copy_32'
+		return 'iob:location_32'
 		
 	def get_category(self):
-		return 'Text'
+		return 'Location'
 	
 	def get_type(self):
 		return self.type
 		
-	def run(self):
-		clip = clipboard.get()
-		self.status = 'complete'
-		ev = ElementValue(type = self.get_output_type(), value = clip)
+	def run(self, input=''):
+		location.start_updates()
+		loc = location.get_location()
+		location.stop_updates()
+		titleParam = self.get_param_by_name('title').value
+		loc['title'] = 'Current Location'
+		if not titleParam == None:
+			loc['title'] = titleParam
+		ev = ElementValue(type = self.get_output_type(), value = loc)
 		return ev

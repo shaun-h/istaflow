@@ -2,12 +2,12 @@
 from ElementBase import ElementBase
 from ElementParameter import ElementParameter
 from ElementValue import ElementValue
-import clipboard
+import location
 
-class SetClipboardText(ElementBase):
+class GetLocationfromAddress(ElementBase):
 	def __init__(self):
 		self.status = 'running'
-		self.output = None
+		self.output = None 
 		self.params = None
 		self.type = 'Standard'
 		self.setup_params()
@@ -20,37 +20,44 @@ class SetClipboardText(ElementBase):
 	
 	def get_status(self):
 		return self.status
-	
+		
 	def get_input_type(self):
-		return 'string'
+		return 'address'
 	
 	def get_output(self):
 		return self.output
-	
+		
 	def get_output_type(self):
-		return None
+		return 'location'
 		
 	def get_params(self):
 		return self.params
 		
-	def set_params(self, params=[]):
-		self.params=params
+	def set_params(self, params = []):
+		self.params = params
 		
 	def get_description(self):
-		return "This sets the system clipboard with text input provided."
+		return 'Get location from Address'
 	
 	def get_title(self):
-		return 'Set Clipboard Text'
+		return 'Get Location from Address'
 		
 	def get_icon(self):
-		return 'iob:ios7_copy_32'
+		return 'iob:location_32'
 		
 	def get_category(self):
-		return 'Text'
+		return 'Location'
 	
 	def get_type(self):
 		return self.type
 		
 	def run(self, input):
-		clipboard.set(input.value)
 		self.status = 'complete'
+		v = input.value
+		if isinstance(input.value, list):
+			v = input.value[0]
+		loc = location.geocode(v)
+		if 'title' in v.keys():
+			loc[0]['title'] = v['title']
+		ev = ElementValue(type = self.get_output_type(), value = loc)
+		return ev

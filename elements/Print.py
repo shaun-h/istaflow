@@ -1,16 +1,27 @@
 # coding: utf-8
 from ElementBase import ElementBase
+from ElementParameter import ElementParameter
+from ElementValue import ElementValue
 
 class Print(ElementBase):
 	def __init__(self):
 		self.status = 'running'
 		self.output = None 
+		self.params = None
+		self.type = 'Standard'
+		self.setup_params()
+	
+	def can_handle_list(self):
+		return True
+		
+	def setup_params(self):
+		pass
 	
 	def get_status(self):
 		return self.status
 		
 	def get_input_type(self):
-		return 'string'
+		return '*'
 	
 	def get_output(self):
 		return self.output
@@ -19,10 +30,10 @@ class Print(ElementBase):
 		return None
 		
 	def get_params(self):
-		return None
+		return self.params
 		
-	def set_params(self):
-		return None
+	def set_params(self, params = []):
+		self.params = params
 		
 	def get_description(self):
 		return "This prints the string that is in the input parameter"
@@ -36,6 +47,9 @@ class Print(ElementBase):
 	def get_category(self):
 		return 'Utility'
 	
+	def get_type(self):
+		return self.type
+		
 	def run(self, input):
-		print input
+		print input.value
 		self.status = 'complete'

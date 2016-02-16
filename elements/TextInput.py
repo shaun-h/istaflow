@@ -1,11 +1,22 @@
 # coding: utf-8
 from ElementBase import ElementBase
+from ElementParameter import ElementParameter
+from ElementValue import ElementValue
 import console
 
 class TextInput(ElementBase):
 	def __init__(self):
 		self.status = 'running'
 		self.output = None
+		self.params = None
+		self.type = 'Standard'
+		self.setup_params()
+	
+	def can_handle_list(self):
+		return False
+		
+	def setup_params(self):
+		pass
 		
 	def get_status(self):
 		return self.status
@@ -20,10 +31,10 @@ class TextInput(ElementBase):
 		return 'string'
 		
 	def get_params(self):
-		return None
+		return self.params
 		
-	def set_params(self):
-		return None
+	def set_params(self, params = []):
+		self.params = params
 		
 	def get_description(self):
 		return "This displays a text box for the user to enter text"
@@ -35,14 +46,16 @@ class TextInput(ElementBase):
 		return 'iob:document_text_32'
 		
 	def get_category(self):
-		return 'Utility'
+		return 'Text'
 
 	def show_input(self):
 		self.output = console.input_alert('Please enter text')
-		
+	
+	def get_type(self):
+		return self.type
+	
 	def run(self):
 		self.status = 'complete'
 		self.show_input()
-		return self.output
-		
-		
+		ev = ElementValue(type = self.get_output_type(), value = self.output)
+		return ev

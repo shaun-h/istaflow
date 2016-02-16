@@ -3,12 +3,13 @@ from ElementBase import ElementBase
 from ElementParameter import ElementParameter
 from ElementValue import ElementValue
 import console
+import copy
 
-class ShowAlert(ElementBase):
+class SetVariable(ElementBase):
 	def __init__(self):
 		self.status = 'running'
-		self.output = None
-		self.params = None
+		self.output = None 
+		self.params = []
 		self.type = 'Standard'
 		self.setup_params()
 	
@@ -16,16 +17,17 @@ class ShowAlert(ElementBase):
 		return True
 		
 	def setup_params(self):
-		pass
+		self.params.append(ElementParameter(name='fm:runtime_variables',type='*'))
+		self.params.append(ElementParameter(name='VariableName',displayName='Variable Name',display=True,type='string'))
 		
 	def get_status(self):
 		return self.status
 		
 	def get_input_type(self):
 		return '*'
-		
+	
 	def get_output(self):
-		self.output
+		return self.output
 		
 	def get_output_type(self):
 		return None
@@ -33,26 +35,30 @@ class ShowAlert(ElementBase):
 	def get_params(self):
 		return self.params
 		
-	def set_params(self, params=[]):
+	def set_params(self, params = []):
 		self.params = params
 		
 	def get_description(self):
-		return "This show an alert from the string that is in the input parameter"
+		return 'Set a variable to be used within the flow.'
 	
 	def get_title(self):
-		return 'Show Alert'
+		return 'Set Variable'
 		
 	def get_icon(self):
-		return 'iob:alert_circled_32'
+		return 'iob:ios7_gear_32'
 		
 	def get_category(self):
 		return 'Utility'
-		
+	
 	def get_type(self):
 		return self.type
-	
-	def run(self, input):
-		self.status = 'complete'
-		input = str(input.value)
-		console.alert(title='Message',message=input,button1='Ok',hide_cancel_button=True)
 		
+	def run(self, input):
+		np = self.get_param_by_name('VariableName')
+		if np.value == None:
+			name = console.input_alert('Please enter Variable name')
+		else:
+			name = np.value
+		rv = self.get_param_by_name('fm:runtime_variables')
+		rv.value[name] = copy.deepcopy(input)
+		self.status = 'complete'
