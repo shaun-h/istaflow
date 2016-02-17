@@ -43,7 +43,7 @@ class ElementBase (object):
 		raise self.not_implemented()
 	
 	def get_param_by_name(self, name):
-		params_by_name [p for p in self.params if p.name == name]
+		params_by_name = [p for p in self.params if p.name == name]
 		return params_by_name[-1] if params_by_name else None
 	
 	def not_implemented(self):
