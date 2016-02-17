@@ -33,8 +33,8 @@ class TextInput(ElementBase):
 	def get_params(self):
 		return self.params
 		
-	def set_params(self, params = []):
-		self.params = params
+	def set_params(self, params = None):
+		self.params = params or []
 		
 	def get_description(self):
 		return "This displays a text box for the user to enter text"
@@ -57,5 +57,4 @@ class TextInput(ElementBase):
 	def run(self):
 		self.status = 'complete'
 		self.show_input()
-		ev = ElementValue(type = self.get_output_type(), value = self.output)
-		return ev
+		return ElementValue(type = self.get_output_type(), value = self.output)

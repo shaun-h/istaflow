@@ -33,8 +33,8 @@ class GetClipboardImage(ElementBase):
 	def get_params(self):
 		return self.params
 		
-	def set_params(self, params = []):
-		self.params = params
+	def set_params(self, params = None):
+		self.params = params or []
 		
 	def get_description(self):
 		 return 'This gets the an image from the system clipboard"'
@@ -54,5 +54,4 @@ class GetClipboardImage(ElementBase):
 	def run(self):
 		self.status = 'complete'
 		img = clipboard.get_image()
-		ev = ElementValue(type=self.get_output_type(),value=img)
-		return ev
+		return ElementValue(type=self.get_output_type(), value=img)

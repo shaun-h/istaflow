@@ -54,5 +54,5 @@ class ShowAlert(ElementBase):
 	def run(self, input):
 		self.status = 'complete'
 		input = str(input.value)
-		console.alert(title='Message',message=input,button1='Ok',hide_cancel_button=True)
-		
+		title = __file__.rpartition('/')[2].partition('.')[0] or 'Message'
+		console.alert(title=title, message=input, button1='Ok', hide_cancel_button=True)

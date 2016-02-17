@@ -6,7 +6,7 @@ import console
 import copy
 try:
 	import dialogs
-except :
+except ImportError:
 	pass
 import ui
 
@@ -41,8 +41,8 @@ class GetVariable(ElementBase):
 	def get_params(self):
 		return self.params
 
-	def set_params(self, params = []):
-		self.params = params
+	def set_params(self, params = None):
+		self.params = params or []
 
 	def get_description(self):
 		return 'Get a variable to be used within the flow.'
@@ -69,10 +69,10 @@ class GetVariable(ElementBase):
 		np = self.get_param_by_name('VariableName')
 		rv = self.get_param_by_name('fm:runtime_variables')
 		keysavailablestring = ''
-		for k in rv.value.keys():
+		for k in rv.value:
 			keysavailablestring += k + ' '
 		keysavailablemessage = 'Keys to choose from are: ' + keysavailablestring
-		if np.value == None or np.value.replace(' ', '') == '':
+		if (np.value or '').replace(' ', '') == '':
 			try:
 				key = dialogs.list_dialog('Vars',rv.value.keys())
 				self.name = key
@@ -82,6 +82,5 @@ class GetVariable(ElementBase):
 				
 		else:
 			self.name = np.value
-		if self.name == None:
-			self.name = console.input_alert(title='Please enter variable title', message=keysavailablemessage)
+		self.name = self.name or console.input_alert(title='Please enter variable title', message=keysavailablemessage)
 		return copy.deepcopy(rv.value[self.name])

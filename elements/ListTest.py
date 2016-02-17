@@ -32,8 +32,8 @@ class ListTest(ElementBase):
 	def get_params(self):
 		return self.params
 		
-	def set_params(self, params = []):
-		self.params = params
+	def set_params(self, params = None):
+		self.params = params or []
 		
 	def get_description(self):
 		return ''
@@ -51,4 +51,4 @@ class ListTest(ElementBase):
 		return self.type
 		
 	def run(self, input=''):
-		return ElementValue(type='string',value=['test','234','qwerty'])
+		return ElementValue(type='string', value=['test','234','qwerty'])

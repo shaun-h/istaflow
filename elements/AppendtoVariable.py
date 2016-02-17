@@ -35,9 +35,9 @@ class AppendtoVariable(ElementBase):
 	def get_params(self):
 		return self.params
 		
-	def set_params(self, params = []):
-		self.params = params
-		
+        def set_params(self, params = None):
+                self.params = params or []
+
 	def get_description(self):
 		return 'Appends input to a set variable'
 	
@@ -55,12 +55,9 @@ class AppendtoVariable(ElementBase):
 		
 	def run(self, input=''):
 		np = self.get_param_by_name('VariableName')
-		if np.value == None:
-			name = console.input_alert('Please enter Variable name')
-		else:
-			name = np.value
+		name = np.value or console.input_alert('Please enter Variable name')
 		rv = self.get_param_by_name('fm:runtime_variables')
-		if not name in rv.value.keys():
+		if not name in rv.value:
 			rv.value[name] = None
 		if rv.value[name] == None:
 			rv.value[name] = copy.deepcopy(input)

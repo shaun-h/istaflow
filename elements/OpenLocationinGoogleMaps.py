@@ -39,8 +39,8 @@ class OpenLocationinGoogleMaps(ElementBase):
 	def get_params(self):
 		return self.params
 		
-	def set_params(self, params = []):
-		self.params = params
+	def set_params(self, params = None):
+		self.params = params or []
 		
 	def get_description(self):
 		return 'Opens a location in the Google Maps app'
@@ -62,22 +62,15 @@ class OpenLocationinGoogleMaps(ElementBase):
 		viewsparam = self.get_param_by_name('viewmode')
 		zoomparam = self.get_param_by_name('zoom')
 		queryparam = self.get_param_by_name('query')
-		
-		url = 'comgooglemaps://?center=' + str(input.value['latitude']) + ',' + str(input.value['longitude']) 
-
-		if not mapmodeparam.value == None:
-			url = url + '&mapmode='+ mapmodeparam.value 
-		
-		if not viewsparam.value == None:
-			url = url + '&views=' + viewsparam.value
-		
-		if not zoomparam.value == None:
-			url = url + '&zoom=' + zoomparam.value
-		
-		if not queryparam.value == None:
-			url = url + '&q=' + queryparam.value
-		
-		
+		url = 'comgooglemaps://?center={latitude},{longitude}'.format(**input.value)
+		if mapmodeparam.value:
+			url += '&mapmode='+ mapmodeparam.value 
+		if viewsparam.value:
+			url += '&views=' + viewsparam.value
+		if zoomparam.value:
+			url += '&zoom=' + zoomparam.value
+		if queryparam.value:
+			url += '&q=' + queryparam.value
 		uia = ObjCClass('UIApplication').sharedApplication()
 		if not uia.openURL_(nsurl(url)):
 			console.alert(title='Error oppening App',message='Is Google Maps app installed?',button1='Ok',hide_cancel_button=True)

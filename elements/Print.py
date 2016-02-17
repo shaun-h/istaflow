@@ -32,8 +32,8 @@ class Print(ElementBase):
 	def get_params(self):
 		return self.params
 		
-	def set_params(self, params = []):
-		self.params = params
+	def set_params(self, params = None):
+		self.params = params or []
 		
 	def get_description(self):
 		return "This prints the string that is in the input parameter"
@@ -51,5 +51,5 @@ class Print(ElementBase):
 		return self.type
 		
 	def run(self, input):
-		print input.value
+		print(input.value)
 		self.status = 'complete'

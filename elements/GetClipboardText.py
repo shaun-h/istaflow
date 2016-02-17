@@ -33,8 +33,8 @@ class GetClipboardText(ElementBase):
 	def get_params(self):
 		return self.params
 		
-	def set_params(self, params = []):
-		self.params = params
+	def set_params(self, params = None):
+		self.params = params or []
 		
 	def get_description(self):
 		return "This gets the text value of the system clipboard"
@@ -54,5 +54,4 @@ class GetClipboardText(ElementBase):
 	def run(self):
 		clip = clipboard.get()
 		self.status = 'complete'
-		ev = ElementValue(type = self.get_output_type(), value = clip)
-		return ev
+		return ElementValue(type = self.get_output_type(), value = clip)
