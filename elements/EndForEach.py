@@ -39,7 +39,7 @@ class EndForEach(ElementBase):
 		return 'End of Foreach'
 	
 	def get_title(self):
-		return 'End ForEach'
+		return 'End Foreach'
 		
 	def get_icon(self):
 		return 'iob:ios7_drag_32'
