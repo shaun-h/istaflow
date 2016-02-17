@@ -64,17 +64,32 @@ class ElementRuntimeView (object):
 		return len(self.params)
 		
 	def tableview_cell_for_row(self, tableview, section, row):
-		cell = ui.TableViewCell('value1')
 		param = self.params[row]
 		name = param.displayName
+		cell = None
 		if name == None or name == '':
 			name = param.name
+		if param.type == 'bool':
+			cell = ui.TableViewCell()
+			cell.selectable = False
+			switch = ui.Switch()
+			switch.name = param.name
+			switch.value = param.value
+			switch.y = cell.center.y - switch.height/2
+			switch.x = cell.width + switch.width/2   
+			switch.action = self.switch_change
+			cell.add_subview(switch)
+		else:
+			cell = ui.TableViewCell('value1')
+			if not param.value == None:
+				cell.detail_text_label.text = str(param.value)
+			cell.detail_text_label.text_color = self.thememanager.main_text_colour	
+			
+				
 		cell.text_label.text = name
-		if not param.value == None:
-			cell.detail_text_label.text = str(param.value)
 		cell.background_color = self.thememanager.main_background_colour
 		cell.text_label.text_color = self.thememanager.main_text_colour
-		cell.detail_text_label.text_color = self.thememanager.main_text_colour
+		
 		return cell
 	
 	def tableview_can_delete(self, tableview, section, row):
@@ -95,6 +110,11 @@ class ElementRuntimeView (object):
 		for param in element.get_params():
 			if param.display:
 				self.params.append(param)
+	
+	def switch_change(self, sender):
+		for p in self.params:
+			if p.name == sender.name:
+				p.value = sender.value
 		
 
 table_view = ui.TableView()
