@@ -211,6 +211,9 @@ class ista(object):
 		
 	def elementselectedcb(self, element):
 		self.selectedElements.append(element)
+		extraElements = self.element_manager.get_extra_elements_for_element(element)
+		for ele in extraElements:
+			self.selectedElements.append(ele)
 		self.flow_creation_view.data_source.elements=self.selectedElements
 		self.flow_creation_view.reload_data()
 		self.close_elementsview()

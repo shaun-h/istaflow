@@ -13,6 +13,7 @@ class ElementManager (object):
 		self.elementsFolder = 'elements'
 		self.elementExclusionList = ('ElementBase.py','__init__.py','Template.py','ElementParameter.py','ElementValue.py')
 		self.requiredElementInstanceMethods = ('get_status', 'get_input', 'get_output','get_input_type', 'get_output_type', 'get_params','set_params', 'get_description', 'get_title','get_category', 'get_icon', 'run')
+		self.extraElements = {'For':['End For'], 'Foreach':['End Foreach']}
 		sys.path.append('elements')
 
 	def get_all_elements(self, element_type=None):
@@ -46,6 +47,13 @@ class ElementManager (object):
 		else:
 			return []
 
+	def get_extra_elements_for_element(self, element):
+		elementsToReturn = []
+		if element.get_title() in self.extraElements:
+			for ele in self.extraElements[element.get_title()]:
+				elementsToReturn.append(self.get_element_with_title(ele))
+		return elementsToReturn
+		
 	def get_element_class(self, element):
 		# The element class is element.__class__
 		return element.__class__.__name__
