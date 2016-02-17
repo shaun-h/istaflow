@@ -205,7 +205,6 @@ class ista(object):
 		self.validate_navigationview()
 		#ui seems to need to be portrait otherwise capture image view breaks
 		self.navigation_view.present(orientations=['portrait'], title_bar_color=self.theme_manager.main_bar_colour, hide_title_bar=self.hide_title_bar)
-		#self.navigation_view.present()
 		if self.hide_title_bar:
 			ToastView.display_toast(view=self.navigation_view, help_text='Close by swiping down with two fingers')
 		
