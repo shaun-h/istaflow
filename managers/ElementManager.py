@@ -26,7 +26,16 @@ class ElementManager (object):
 		invalidElements = []
 		for i in elements:
 			mod = import_module(i[0])
-			reload(mod)
+			print(mod)
+			try:
+				reload(mod)
+			except NameError:
+				try:
+					from importlib import reload
+					reload(mod)
+				except ImportError:
+					from imp import reload
+					reload(mod)
 			klass = getattr(mod,i[0])
 			klassIsValid = True
 			for method in self.requiredElementInstanceMethods:
@@ -74,7 +83,7 @@ class ElementManager (object):
 		templatePath = os.path.join(self.elementsFolder, 'Template.py')
 		elementPath = os.path.join(self.elementsFolder, "{fileName}.py".format(fileName=titleValidated))
 		if os.path.isfile(elementPath):
-			print 'Element Already Exists'
+			print('Element Already Exists')
 			return
 		with open(templatePath, 'r') as f:
 			# str.format thinks that on line 8 ```self.params = {}``` and
@@ -88,6 +97,6 @@ if __name__ == '__main__':
 	sys.path[-1] = '../elements'
 	ElementManager.elementsFolder = '../elements'
 	manager = ElementManager()
-	print manager.get_all_elements()
-	print manager.get_element_with_title('newElement')
+	print(manager.get_all_elements())
+	print(manager.get_element_with_title('newElement'))
 	manager.create_element('newElement1')
