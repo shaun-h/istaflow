@@ -58,3 +58,4 @@ class VibrateDevice(ElementBase):
 		vibrate_id = 0x00000fff
 		p(vibrate_id)
 		self.status = 'complete'
+

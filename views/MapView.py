@@ -1,5 +1,7 @@
 # coding: utf-8
 # This has been derived for mapview example by Ole Zorn @omz url to come soon
+
+from __future__ import absolute_import
 import ui
 from objc_util import *
 import location
@@ -47,3 +49,5 @@ if __name__ == '__main__':
 	m.add_pin(lat = loc['latitude'], lon = loc['longitude'],title='Test')
 	m.mk_map_view.setShowsUserLocation_(True)
 	m.present()
+
+

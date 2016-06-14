@@ -1,8 +1,10 @@
 # coding: utf-8
+
+from __future__ import absolute_import
 import ui
 import console
 import dialogs
-import ElementParameterDictionaryInputView
+from . import ElementParameterDictionaryInputView
 
 class ElementRuntimeView (object):
 	def __init__(self, thememanager):
@@ -125,3 +127,5 @@ def get_view(thememanager):
 	table_view.delegate = dbo
 	table_view.background_color = thememanager.main_background_colour
 	return table_view
+
+

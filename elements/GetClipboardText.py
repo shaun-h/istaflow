@@ -55,3 +55,4 @@ class GetClipboardText(ElementBase):
 		clip = clipboard.get()
 		self.status = 'complete'
 		return ElementValue(type = self.get_output_type(), value = clip)
+

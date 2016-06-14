@@ -1,7 +1,9 @@
 # coding: utf-8
+
+from __future__ import absolute_import
 import ui
 import console
-import AssetPickerView
+from . import AssetPickerView
 
 dbo = None
 class ElementCreationView(object):
@@ -177,3 +179,5 @@ def get_view(savecb, apcb, capcb, thememanager):
 
 
 	
+
+

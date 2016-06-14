@@ -1,11 +1,13 @@
 # coding: utf-8
 # original script from https://forum.omz-software.com/topic/2440/asset-picker-in-a-scene/7
 
+
+from __future__ import absolute_import
 import os
 import json
 import ui
 import scene
-import Image
+from PIL import Image
 
 def get_asset_folder():
 	try:
@@ -96,3 +98,5 @@ def get_view(selected_cb, parent=None, object_type='none'):
 	source = get_collection_info(asset_type='image')
 	main_view = AssetPicker(source, name='Assets', object_type=object_type, parent=parent, selected_cb=selected_cb)
 	return main_view
+
+

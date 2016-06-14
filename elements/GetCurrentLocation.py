@@ -58,3 +58,4 @@ class GetCurrentLocation(ElementBase):
 		titleParam = self.get_param_by_name('title').value
 		loc['title'] = titleParam or 'Current Location'
 		return ElementValue(type = self.get_output_type(), value = loc)
+

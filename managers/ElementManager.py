@@ -1,10 +1,15 @@
 # coding: utf-8
+
+
+from __future__ import absolute_import
+from __future__ import print_function
 import os
 # from os import listdir # -> Is not an issue however it is neater to just import os
 # from os.path import isfile, join, splitext # --> join is a builtin method causing name space issues
 from importlib import import_module
 import sys
 import copy
+import imp
 sys.path.append('elements')
 
 
@@ -26,16 +31,15 @@ class ElementManager (object):
 		invalidElements = []
 		for i in elements:
 			mod = import_module(i[0])
-			print(mod)
 			try:
-				reload(mod)
+				imp.reload(mod)
 			except NameError:
 				try:
 					from importlib import reload
-					reload(mod)
+					imp.reload(mod)
 				except ImportError:
 					from imp import reload
-					reload(mod)
+					imp.reload(mod)
 			klass = getattr(mod,i[0])
 			klassIsValid = True
 			for method in self.requiredElementInstanceMethods:
@@ -97,6 +101,9 @@ if __name__ == '__main__':
 	sys.path[-1] = '../elements'
 	ElementManager.elementsFolder = '../elements'
 	manager = ElementManager()
-	print(manager.get_all_elements())
-	print(manager.get_element_with_title('newElement'))
+	print((manager.get_all_elements()))
+	print((manager.get_element_with_title('newElement')))
 	manager.create_element('newElement1')
+
+
+

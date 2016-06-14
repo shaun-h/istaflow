@@ -58,3 +58,4 @@ class GetLocationfromAddress(ElementBase):
 		if 'title' in v:
 			loc[0]['title'] = v['title']
 		return ElementValue(type = self.get_output_type(), value = loc)
+

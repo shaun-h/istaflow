@@ -52,6 +52,7 @@ class ForEach(ElementBase):
 		
 	def run(self, input=''):
 		if not isinstance(input.value, list):
-			print 'List not provided to foreach'
+			print('List not provided to foreach')
 		self.status = 'complete'
 		return input
+

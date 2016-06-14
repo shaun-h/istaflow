@@ -63,3 +63,4 @@ class GetBatteryDetails(ElementBase):
 		batteryDetails = {'Level': battery_percent, 'State': battery_states.get(state, 'unknown')}
 		self.status = 'complete'
 		return ElementValue(type=self.get_output_type(), value=batteryDetails)
+

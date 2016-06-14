@@ -51,5 +51,6 @@ class Print(ElementBase):
 		return self.type
 		
 	def run(self, input):
-		print(input.value)
+		print((input.value))
 		self.status = 'complete'
+

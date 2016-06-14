@@ -54,3 +54,4 @@ class PickImagefromPhotos(ElementBase):
 	def run(self):
 		img = photos.pick_image()
 		return ElementValue(type = self.get_output_type(), value = img)
+

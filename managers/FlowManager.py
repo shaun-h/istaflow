@@ -1,4 +1,6 @@
 # coding: utf-8
+
+from __future__ import absolute_import
 import json
 import os
 import time
@@ -118,3 +120,6 @@ class FlowManager (object):
 	
 	def handle_foreach(self):
 		pass
+
+
+

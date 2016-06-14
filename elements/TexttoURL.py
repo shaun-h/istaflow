@@ -63,3 +63,4 @@ class TexttoURL(ElementBase):
 			else:
 				console.alert(title='Information',message='Url passed with incorrect protocol given',button1='Ok',hide_cancel_button=True)
 		return ElementValue(type='url',value=stringUrl)
+

@@ -68,3 +68,4 @@ class OpenLocationinAppleMaps(ElementBase):
 		if not uia.openURL_(nsurl(url)):
 			console.alert(title='Error oppening App',message='Something went wrong!',button1='Ok',hide_cancel_button=True)
 		self.status = 'complete'
+

@@ -75,3 +75,4 @@ class OpenLocationinGoogleMaps(ElementBase):
 		if not uia.openURL_(nsurl(url)):
 			console.alert(title='Error oppening App',message='Is Google Maps app installed?',button1='Ok',hide_cancel_button=True)
 		self.status = 'complete'
+

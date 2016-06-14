@@ -35,8 +35,8 @@ class AppendtoVariable(ElementBase):
 	def get_params(self):
 		return self.params
 		
-        def set_params(self, params = None):
-                self.params = params or []
+	def set_params(self, params = None):
+		self.params = params or []
 
 	def get_description(self):
 		return 'Appends input to a set variable'
@@ -76,3 +76,4 @@ class AppendtoVariable(ElementBase):
 				console.alert('Error','Incorrect type to append to variable',button1='Ok',hide_cancel_button=True)
 				
 		self.status = 'complete'
+

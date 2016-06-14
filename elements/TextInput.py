@@ -58,3 +58,4 @@ class TextInput(ElementBase):
 		self.status = 'complete'
 		self.show_input()
 		return ElementValue(type = self.get_output_type(), value = self.output)
+

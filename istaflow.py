@@ -1,4 +1,7 @@
- # coding: utf-8
+#!/usr/bin/env python3
+# coding: utf-8
+
+from __future__ import absolute_import
 from views import ElementListView, FlowCreationView, FlowsView, ElementManagementView, ElementCreationView, ElementRuntimeView, ToastView
 from managers import ElementManager, FlowManager, ThemeManager
 import ui
@@ -38,7 +41,7 @@ class ista(object):
 		self.setup_flowcreationview()
 		self.setup_elementruntimeview()
 		self.setup_navigationview(self.flow_view)
-	
+			
 	def setup_elementruntimeview(self):
 		self.element_runtime_view = ElementRuntimeView.get_view(self.theme_manager) 
 		
@@ -58,7 +61,7 @@ class ista(object):
 					self.elements[element.get_category()] = ele_value
 				except KeyError:
 					self.elements[element.get_category()]=[element]
-		self.elements = collections.OrderedDict(sorted(self.elements.items(), key=lambda t:t[0] ))
+		self.elements = collections.OrderedDict(sorted(list(self.elements.items()), key=lambda t:t[0] ))
 	
 	def get_flows(self, appexonly):
 		self.flows = self.flow_manager.get_flows(appexonly=appexonly)
@@ -77,7 +80,7 @@ class ista(object):
 				e = self.element_manager.get_element_with_title(element['title'])
 				if not e.get_params() == None:
 					for p in e.get_params():
-						if p.name in element['params'].keys():
+						if p.name in list(element['params'].keys()):
 							p.value = element['params'][p.name]
 				self.selectedElements.append(e)
 			type = self.flow_manager.get_type_for_flow(self.selectedFlow)
@@ -134,7 +137,7 @@ class ista(object):
 		self.element_creation_view = ElementCreationView.get_view(savecb=self.create_element, apcb=self.show_assetpicker, capcb = self.close_assetpicker, thememanager = self.theme_manager)
 	
 	def setup_flowsview(self):
-		self.flow_view = FlowsView.get_view(self.flows, self.flowselectedcb, self.deleteflow, self.theme_manager)
+		self.flow_view = FlowsView.get_view(self.flows, self.flowselectedcb,self.deleteflow, self.theme_manager)
 		
 	def setup_flowcreationview(self):
 		self.flow_creation_view = FlowCreationView.get_view(elements = self.selectedElements, saveCallBack = self.savecb, addElementAction = self.show_elementsview, saveFlowAction = self.saveflow, runFlowAction = self.runflow, showElementRuntimeView = self.show_elementruntimeview, thememanager=self.theme_manager, flowType = self.selectedFlowType, flowTypeSelection = self.show_flowtypeselection)
@@ -246,7 +249,7 @@ class ista(object):
 				console.alert(title='Complete',message=message,button1='Ok',hide_cancel_button=True)
 			else:
 				console.alert(title='Error',message=message,button1='Ok',hide_cancel_button=True)
-		except ValueError, e:
+		except ValueError as e:
 			console.alert(str(e))
 			
 	def elementchange(self, currentelementnumber):
@@ -259,3 +262,6 @@ def main():
 	
 if __name__ == '__main__':
 	main()
+
+
+

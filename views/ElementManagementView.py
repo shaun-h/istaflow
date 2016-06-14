@@ -1,4 +1,6 @@
 # coding: utf-8
+
+from __future__ import absolute_import
 import ui
 
 class ElementManagementView(object):
@@ -10,16 +12,16 @@ class ElementManagementView(object):
 		pass
 		
 	def tableview_title_for_header(self, tableview, section):
-		return self.elements.keys()[section]
+		return list(self.elements.keys())[section]
 
 	def tableview_number_of_sections(self, tableview):
 		return len(self.elements)
 
 	def tableview_number_of_rows(self, tableview, section):
-		return len(self.elements[self.elements.keys()[section]])
+		return len(self.elements[list(self.elements.keys())[section]])
 		
 	def tableview_cell_for_row(self, tableview, section, row):
-		section_key = self.elements.keys()[section]
+		section_key = list(self.elements.keys())[section]
 		try:
 			cell = ui.TableViewCell('subtitle')
 			cell.text_label.text = self.elements[section_key][row].get_title()
@@ -46,3 +48,5 @@ def get_view(elements, thememanager):
 	table_view.background_color = thememanager.main_background_colour
 	return table_view
 	
+
+

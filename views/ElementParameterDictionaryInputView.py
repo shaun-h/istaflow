@@ -1,5 +1,7 @@
 # coding: utf-8
 # coding: utf-8
+
+from __future__ import absolute_import
 import ui
 import dialogs
 
@@ -9,7 +11,7 @@ class ElementParameterDictionaryInputView(object):
 		self.thememanager = None
 
 	def tableview_did_select(self, tableview, section, row):
-		key = self.dictionary.keys()[row]
+		key = list(self.dictionary.keys())[row]
 		value = self.dictionary[key]
 		edit_item(key, value)
 		
@@ -20,11 +22,11 @@ class ElementParameterDictionaryInputView(object):
 		return 1
 
 	def tableview_number_of_rows(self, tableview, section):
-		return len(self.dictionary.keys())
+		return len(list(self.dictionary.keys()))
 		
 	def tableview_cell_for_row(self, tableview, section, row):
 		cell = ui.TableViewCell('value1')
-		key = self.dictionary.keys()[row]
+		key = list(self.dictionary.keys())[row]
 		cell.text_label.text = key
 		cell.detail_text_label.text = self.dictionary[key]
 		cell.background_color = self.thememanager.main_background_colour
@@ -38,7 +40,7 @@ class ElementParameterDictionaryInputView(object):
 	
 	def tableview_delete(self, tableview, section, row):
 		# Called when the user confirms deletion of the given row.
-		key = self.dictionary.keys()[row]
+		key = list(self.dictionary.keys())[row]
 		self.dictionary.pop(key)
 		del_row([row])
 
@@ -72,3 +74,5 @@ def add_item(sender):
 		
 def del_row(row):
 	table_view.delete_rows(row)
+
+

@@ -1,4 +1,6 @@
 # coding: utf-8
+
+from __future__ import absolute_import
 import ui
 
 class FlowsView(object):
@@ -54,3 +56,5 @@ def get_view(flows, selectedcb, deletedcb, thememanager):
 	table_view.data_source = dbo
 	table_view.delegate = dbo
 	return table_view
+
+

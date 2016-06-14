@@ -56,3 +56,4 @@ class ShowAlert(ElementBase):
 		input = str(input.value)
 		title = __file__.rpartition('/')[2].partition('.')[0] or 'Message'
 		console.alert(title=title, message=input, button1='Ok', hide_cancel_button=True)
+

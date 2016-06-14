@@ -52,3 +52,4 @@ class ListTest(ElementBase):
 		
 	def run(self, input=''):
 		return ElementValue(type='string', value=['test','234','qwerty'])
+

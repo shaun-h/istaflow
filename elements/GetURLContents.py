@@ -1,9 +1,14 @@
 # coding: utf-8
+
 from ElementBase import ElementBase
 from ElementParameter import ElementParameter
 from ElementValue import ElementValue
 from PIL import Image
-from StringIO import StringIO
+try:
+	import StringIO
+except:
+	from io import StringIO
+
 import requests
 import console
 import time
@@ -84,3 +89,6 @@ class GetURLContents(ElementBase):
 		else:
 			console.alert(title='Error',message=r.status_code,button1='Ok',hide_cancel_button=True)
 			return ElementValue(type=None, value=None)
+
+
+

@@ -1,4 +1,6 @@
 # coding: utf-8
+
+from __future__ import absolute_import
 import ui
 import console
 dbo = None
@@ -162,3 +164,5 @@ def show_run_buttons():
 		
 def del_row(row):
 	table_view.delete_rows(row)
+
+

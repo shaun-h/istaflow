@@ -2,6 +2,8 @@
 # author: Shaun Hevey
 # toast.py is the implementation of a android inspired toast for pythonista.
 
+
+from __future__ import absolute_import
 import ui
 import time
 def display_toast(view, help_text, width = 220, height = 110, show_duration=2, fade_duration=0.5, background_colour=(.42, .42, .42), text_colour= (.96, .96, .96), corner_radius=10):
@@ -44,3 +46,5 @@ if __name__=='__main__':
 	view.background_color = (1.0, 1.0, 1.0)
 	view.present()
 	display_toast(view=view, help_text='Show me a toast in pythonista')
+
+

@@ -58,3 +58,4 @@ class TakePhoto(ElementBase):
 		#console.alert(title='Known Issue',message='Take Photo sometimes freezes the ui and pythonista needs to be killed.',button1='Ok',hide_cancel_button=True)
 		time.sleep(.5)
 		return ElementValue(type = self.get_output_type(), value = photos.capture_image())
+
