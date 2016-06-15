@@ -3,7 +3,7 @@
 
 from __future__ import absolute_import
 from views import ElementListView, FlowCreationView, FlowsView, ElementManagementView, ElementCreationView, ElementRuntimeView, ToastView
-from managers import ElementManager, FlowManager, ThemeManager
+from managers import ElementManager, FlowManager, ThemeManager, HomeScreenManager
 import ui
 import collections
 import console
@@ -25,6 +25,7 @@ class ista(object):
 		self.element_manager = None
 		self.flow_manager = None
 		self.theme_manager = None
+		self.home_screen_manager = None
 		self.elements = None
 		self.selectedElements = []
 		self.selectedFlowType = ''
@@ -32,6 +33,7 @@ class ista(object):
 		self.selectedFlow = None
 		self.flow_passed_in = None
 		self.setup_thememanager()
+		self.setup_homescreenmanager()
 		self.setup_elementsmanager()
 		self.setup_flowsmanager()		
 		self.get_valid_elements()
@@ -50,9 +52,14 @@ class ista(object):
 			self.flow_passed_in = sys.argv[1]
 			if self.flow_passed_in in self.flows:
 				self.flowselectedcb(self.flow_passed_in, True)
+				self.flow_passed_in = None
 			else:
 				console.alert('Error', self.flow_passed_in + ' does not exist!', button1='Ok',hide_cancel_button=True)
-			
+				self.flow_passed_in = None
+				
+	def setup_homescreenmanager(self):
+		self.home_screen_manager = HomeScreenManager.HomeScreenManager()
+		
 	def setup_elementruntimeview(self):
 		self.element_runtime_view = ElementRuntimeView.get_view(self.theme_manager) 
 		
@@ -153,7 +160,7 @@ class ista(object):
 		self.flow_view = FlowsView.get_view(self.flows, self.flowselectedcb,self.deleteflow, self.theme_manager)
 		
 	def setup_flowcreationview(self):
-		self.flow_creation_view = FlowCreationView.get_view(elements = self.selectedElements, saveCallBack = self.savecb, addElementAction = self.show_elementsview, saveFlowAction = self.saveflow, runFlowAction = self.runflow, showElementRuntimeView = self.show_elementruntimeview, thememanager=self.theme_manager, flowType = self.selectedFlowType, flowTypeSelection = self.show_flowtypeselection)
+		self.flow_creation_view = FlowCreationView.get_view(elements = self.selectedElements, saveCallBack = self.savecb, addElementAction = self.show_elementsview, saveFlowAction = self.saveflow, runFlowAction = self.runflow, showElementRuntimeView = self.show_elementruntimeview, thememanager=self.theme_manager, flowType = self.selectedFlowType, flowTypeSelection = self.show_flowtypeselection, saveToHomeScreenAction = self.addFlowToHomeScreen)
 	
 	@ui.in_background	
 	def show_flowtypeselection(self):
@@ -178,6 +185,13 @@ class ista(object):
 			self.get_flows(appex.is_running_extension())
 			self.flow_view.data_source.flows = self.flows
 			self.flow_view.reload_data()
+	
+	@ui.in_background
+	def addFlowToHomeScreen(self):
+		if self.flow_creation_view.data_source.title == '':
+			console.alert(title='Error',message='Please enter a title',button1='Ok',hide_cancel_button=True)
+		else:
+			self.home_screen_manager.show_form(self.flow_creation_view.data_source.title+'.flow')
 		
 	def validate_navigationview(self):
 		if self.navigation_view == None:

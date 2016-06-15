@@ -6,21 +6,24 @@ import console
 dbo = None
 
 class FlowCreationView(object):
-	def __init__(self, elements, saveCallBack, addElementAction, saveFlowAction, runFlowAction, showElementRuntimeView, thememanager, flowType, flowTypeSelection):
+	def __init__(self, elements, saveCallBack, addElementAction, saveFlowAction, runFlowAction, showElementRuntimeView, thememanager, flowType, flowTypeSelection, saveToHomeScreenAction):
 		self.flowType = flowType
 		self.elements = elements
 		self.saveCallBack = saveCallBack
 		self.flowTypeSelection = flowTypeSelection
 		self.showElementRuntimeView = showElementRuntimeView
-		self.extraRows = 2
+		self.extraRows = 3
 		self.adminRow = 0
-		self.typeRow = 1
+		self.saveToHomeScreenRow = 1
+		self.typeRow = 2
 		self.title = ''
 		self.currentElementNumber = -1
 		self.addElementButton = ui.ButtonItem(title = 'Add Element', action = addElementAction)
 		self.saveFlowButton = ui.ButtonItem(title='Save', action=saveFlowAction)
 		self.runFlowButton = ui.ButtonItem(title='Run', action=runFlowAction)
+		
 		self.titleButton = ui.Button(title='Change Title')
+		self.saveToHomeScreenAction = saveToHomeScreenAction
 		self.editButtonsRight = [self.addElementButton]
 		self.editButtonsLeft = [self.saveFlowButton]
 		self.runButtonsRight = [self.runFlowButton]
@@ -42,6 +45,8 @@ class FlowCreationView(object):
 				self.showElementRuntimeView(element)
 		elif row == self.typeRow:
 			self.flowTypeSelection()
+		elif row == self.saveToHomeScreenRow:
+			self.saveToHomeScreenAction()
 			
 	def tableview_title_for_header(self, tableview, section):
 		pass
@@ -70,7 +75,7 @@ class FlowCreationView(object):
 			cell.selectable = selectable
 			if self.currentElementNumber >= self.extraRows:
 				cell.selectable = False
-			if self.currentElementNumber+1 == row:
+			if self.currentElementNumber+2== row:
 				cell.background_color = self.thememanager.running_cell_background_colour
 				cell.text_label.text_color = self.thememanager.running_cell_text_colour
 				cell.detail_text_label.text_color = self.thememanager.running_cell_text_colour
@@ -93,6 +98,13 @@ class FlowCreationView(object):
 			self.titleButton.x = self.titleButton.width/2
 			self.titleButton.action = self.change_title
 			cell.add_subview(self.titleButton)
+			return cell
+		elif row == self.saveToHomeScreenRow:
+			cell = ui.TableViewCell()
+			cell.background_color=self.thememanager.main_background_colour
+			cell.selectable = True
+			cell.text_label.text_color = self.thememanager.main_text_colour
+			cell.text_label.text = 'Save To Home Screen'
 			return cell
 		elif row == self.typeRow:
 			cell = ui.TableViewCell('value1')
@@ -129,8 +141,8 @@ class FlowCreationView(object):
 
 table_view = ui.TableView()
 
-def get_view(elements, saveCallBack, addElementAction, saveFlowAction, runFlowAction, showElementRuntimeView,thememanager, flowType, flowTypeSelection):
-	dbo = FlowCreationView(elements = elements, saveCallBack = saveCallBack, addElementAction = addElementAction, saveFlowAction = saveFlowAction, runFlowAction = runFlowAction, showElementRuntimeView = showElementRuntimeView, thememanager=thememanager, flowType=flowType, flowTypeSelection=flowTypeSelection)
+def get_view(elements, saveCallBack, addElementAction, saveFlowAction, runFlowAction, showElementRuntimeView,thememanager, flowType, flowTypeSelection, saveToHomeScreenAction):
+	dbo = FlowCreationView(elements = elements, saveCallBack = saveCallBack, addElementAction = addElementAction, saveFlowAction = saveFlowAction, runFlowAction = runFlowAction, showElementRuntimeView = showElementRuntimeView, thememanager=thememanager, flowType=flowType, flowTypeSelection=flowTypeSelection, saveToHomeScreenAction=saveToHomeScreenAction)
 	table_view.name = 'Flow'
 	table_view.background_color = thememanager.main_background_colour
 	table_view.data_source = dbo
