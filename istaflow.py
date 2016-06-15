@@ -82,7 +82,7 @@ class ista(object):
 		self.element_runtime_view.reload()
 		self.navigation_view.push_view(self.element_runtime_view)	
 		
-	def show_flowcreationview(self, sender, autorun):
+	def show_flowcreationview(self, sender, autorun=False):
 		self.validate_navigationview()
 		self.selectedElements = []
 		if not self.selectedFlow == None:
