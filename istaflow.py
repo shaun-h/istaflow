@@ -10,6 +10,7 @@ import console
 import os
 import dialogs
 import appex
+import sys
 
 class ista(object):
 	def __init__(self):
@@ -29,6 +30,7 @@ class ista(object):
 		self.selectedFlowType = ''
 		self.flows = []
 		self.selectedFlow = None
+		self.flow_passed_in = None
 		self.setup_thememanager()
 		self.setup_elementsmanager()
 		self.setup_flowsmanager()		
@@ -41,6 +43,15 @@ class ista(object):
 		self.setup_flowcreationview()
 		self.setup_elementruntimeview()
 		self.setup_navigationview(self.flow_view)
+		self.check_params()
+			
+	def check_params(self):
+		if len(sys.argv) > 1:
+			self.flow_passed_in = sys.argv[1]
+			if self.flow_passed_in in self.flows:
+				self.flowselectedcb(self.flow_passed_in, True)
+			else:
+				console.alert('Error', self.flow_passed_in + ' does not exist!', button1='Ok',hide_cancel_button=True)
 			
 	def setup_elementruntimeview(self):
 		self.element_runtime_view = ElementRuntimeView.get_view(self.theme_manager) 
@@ -71,7 +82,7 @@ class ista(object):
 		self.element_runtime_view.reload()
 		self.navigation_view.push_view(self.element_runtime_view)	
 		
-	def show_flowcreationview(self, sender):
+	def show_flowcreationview(self, sender, autorun):
 		self.validate_navigationview()
 		self.selectedElements = []
 		if not self.selectedFlow == None:
@@ -89,6 +100,8 @@ class ista(object):
 			self.flow_creation_view.data_source.title = title
 			self.flow_creation_view.data_source.flowType = type
 			self.selectedFlow = None
+			if autorun:
+				self.runflow(None)
 		else:
 			self.flow_creation_view.data_source.title = ''
 			self.flow_creation_view.name = 'New Flow'
@@ -224,10 +237,10 @@ class ista(object):
 		self.selectedElements = saveElements
 		self.close_flowcreationview()
 		
-	def flowselectedcb(self, flow):
+	def flowselectedcb(self, flow, autorun = False):
 		self.selectedFlow = flow
 		self.selectedFlowType = self.flow_manager.get_type_for_flow(flow)
-		self.show_flowcreationview(None)
+		self.show_flowcreationview(None, autorun)
 	
 	def create_element(self, title, inputType, outputType, description, icon, category, canHandleList):
 		
