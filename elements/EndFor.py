@@ -45,7 +45,7 @@ class EndFor(ElementBase):
 		return 'iob:ios7_drag_32'
 		
 	def get_category(self):
-		return 'Conditional'
+		return 'Dont Display'
 		
 	def get_type(self):
 		return self.type

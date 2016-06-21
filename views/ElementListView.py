@@ -8,6 +8,8 @@ class ElementListView(object):
 		self.elements = elements
 		self.scb = selectedCallBack
 		self.thememanager = thememanager
+		if 'Dont Display' in self.elements.keys():
+			del self.elements['Dont Display']
 
 	def tableview_did_select(self, tableview, section, row):
 		section_key = list(self.elements.keys())[section]

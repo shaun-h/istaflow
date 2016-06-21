@@ -17,6 +17,7 @@ class ElementManager (object):
 	def __init__(self):
 		self.elementsFolder = 'elements'
 		self.elementExclusionList = ('ElementBase.py','__init__.py','Template.py','ElementParameter.py','ElementValue.py')
+	
 		self.requiredElementInstanceMethods = ('get_status', 'get_input', 'get_output','get_input_type', 'get_output_type', 'get_params','set_params', 'get_description', 'get_title','get_category', 'get_icon', 'run')
 		self.extraElements = {'For':['End For'], 'Foreach':['End Foreach']}
 		sys.path.append('elements')
@@ -50,7 +51,7 @@ class ElementManager (object):
 				validElements.append(klass())
 			else:
 				invalidElements.append(klass())
-
+		
 		if not element_type:
 			return {'valid':validElements, 'invalid':invalidElements}
 		elif element_type == 'valid':
