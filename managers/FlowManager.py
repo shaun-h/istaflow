@@ -52,6 +52,7 @@ class FlowManager (object):
 		elementNumber = 1
 		foreachstore = None
 		forstore = None
+		ifstore = None
 		self.nav_view = navview
 		self.runtime_variables = {}
 		if type == 'Action Extension' and not appex.is_running_extension():
@@ -98,6 +99,50 @@ class FlowManager (object):
 					elementNumber = forstore[0]
 				else:
 					forstore = None
+			elif elementType == 'If':
+				ifresult = element.get_param_by_name('ifresult')
+				if ifresult == None or ifresult.value == None:
+					return False, 'Result from if not found or is None, uisomething is wrong'
+				if not ifresult.value:
+					elsefound= False
+					i = elementNumber
+					skipnumber = 0
+					while not elsefound:
+						if i >= len(elements):
+							return False, 'Else not found for if block'
+						if elements[i].get_type() == 'If':
+							skipnumber = skipnumber + 1
+						if elements[i].get_type() == 'Else':
+							if skipnumber > 0:
+								skipnumber = skipnumber - 1
+								i = i + 1
+							else:
+								elsefound = True
+								elementNumber = i+1
+						else:
+							i = i+1
+			elif elementType == 'Else':
+				endiffound = False
+				i = elementNumber
+				skipnumber = 0
+				while not endiffound:
+					if i >= len(elements):
+						return False, 'End If not found for if block'
+					if elements[i].get_type() == 'If':
+							skipnumber = skipnumber + 1
+					if elements[i].get_type() == 'EndIf':
+						if skipnumber > 0:
+								skipnumber = skipnumber - 1
+								i = i + 1
+						else:
+							endiffound = True
+							elementNumber = i
+					else:
+						i = i+1
+			elif elementType == 'EndIf':
+				output = None
+				ifstore = None
+				
 			elementNumber += 1
 		elementNumber = 0
 		self.elementchangecb(elementNumber)

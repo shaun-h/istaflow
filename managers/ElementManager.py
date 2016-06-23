@@ -19,7 +19,7 @@ class ElementManager (object):
 		self.elementExclusionList = ('ElementBase.py','__init__.py','Template.py','ElementParameter.py','ElementValue.py')
 	
 		self.requiredElementInstanceMethods = ('get_status', 'get_input', 'get_output','get_input_type', 'get_output_type', 'get_params','set_params', 'get_description', 'get_title','get_category', 'get_icon', 'run')
-		self.extraElements = {'For':['End For'], 'Foreach':['End Foreach']}
+		self.extraElements = {'For':['End For'], 'Foreach':['End Foreach'],'If':['Else','End If']}
 		sys.path.append('elements')
 
 	def get_all_elements(self, element_type=None):

@@ -48,6 +48,8 @@ class ElementRuntimeView (object):
 			self.dictView.title_bar_color = self.thememanager.main_bar_colour
 			self.dictView.tint_color = self.thememanager.main_tint_colour
 			self.dictView.present(orientations=['portrait'])
+		elif param.type == 'Boolean':
+			pass
 		tableview.reload()
 	
 	def dictionaryReturn(self, sender):
