@@ -1,4 +1,5 @@
 # coding: utf-8
+# Based on omz record audio example
 from ElementBase import ElementBase
 from ElementParameter import ElementParameter
 from ElementValue import ElementValue
@@ -9,7 +10,6 @@ import console
 AVAudioSession = ObjCClass('AVAudioSession')
 NSURL = ObjCClass('NSURL')
 AVAudioRecorder = ObjCClass('AVAudioRecorder')
-AVAudioPlayer = ObjCClass('AVAudioPlayer')
 NSData = ObjCClass('NSData')
 
 class RecordAudio(ElementBase):
@@ -25,6 +25,7 @@ class RecordAudio(ElementBase):
 	
 	def setup_params(self):
 		self.params.append(ElementParameter(name='tempfilename',displayName='Temporary File name',display=True,type='string',value='recording.m4a'))
+		self.params.append(ElementParameter(name='removetempfile',displayName='Remove Temporary File',display=True,type='bool',value=True))
 	
 	def get_status(self):
 		return self.status
@@ -36,7 +37,7 @@ class RecordAudio(ElementBase):
 		return self.output
 		
 	def get_output_type(self):
-		return 'Audio'
+		return 'audio'
 		
 	def get_params(self):
 		return self.params
@@ -66,6 +67,7 @@ class RecordAudio(ElementBase):
 		settings = {ns('AVFormatIDKey'): ns(1633772320), ns('AVSampleRateKey'):ns(44100.00), ns('AVNumberOfChannelsKey'):ns(2)}
 	
 		tempfilenameparam = self.get_param_by_name('tempfilename')
+		removetempfileparam = self.get_param_by_name('removetempfile')
 		output_path = os.path.abspath(tempfilenameparam.value)
 
 		out_url = NSURL.fileURLWithPath_(ns(output_path))
@@ -76,10 +78,12 @@ class RecordAudio(ElementBase):
 				while True:
 					console.alert(title='Recording started', message='close this alert to end recording...')
 		except KeyboardInterrupt:
-			print('Stopping...')
 			recorder.stop()
 			recorder.release()
 			data = NSData.dataWithContentsOfURL_(out_url)
-			print('Stopped recording.')
-			return ElementValue(type=self.get_type(), value={'type':'m4a','filename':tempfilenameparam.value, 'audiodata':data})
+			retfilepath = output_path
+			if removetempfileparam.value:
+				os.remove(output_path)
+				retfilepath = None
+			return ElementValue(type=self.get_output_type(), value={'type':'m4a','filename':tempfilenameparam.value, 'audiodata':data, 'filepath':retfilepath})
 		self.status = 'complete'

@@ -2,12 +2,15 @@
 from ElementBase import ElementBase
 from ElementParameter import ElementParameter
 from ElementValue import ElementValue
+from objc_util import *
+import threading
+import time
 
 class PlayAudio(ElementBase):
 	def __init__(self):
 		self.status = 'running'
 		self.output = None 
-		self.params = None
+		self.params = []
 		self.type = 'Standard'
 		self.setup_params()
 	
@@ -15,7 +18,7 @@ class PlayAudio(ElementBase):
 		return False
 	
 	def setup_params(self):
-		pass
+		self.params.append(ElementParameter(name='volume',displayName='Player Volume',display=True,type='slider',value=0.5))
 	
 	def get_status(self):
 		return self.status
@@ -51,7 +54,13 @@ class PlayAudio(ElementBase):
 		return self.type
 		
 	def run(self, input=''):
-		player = 	AVAudioPlayer.alloc().initWithData_error_(input.value, None)
+		volume = self.get_param_by_name('volume').value
+		AVAudioPlayer = ObjCClass('AVAudioPlayer')
+		player = AVAudioPlayer.alloc().initWithData_error_(input.value['audiodata'], None)
+		player.volume = volume
 		player.play()
+		while player.playing():
+			time.sleep(0.1)
 		player.release()
 		self.status = 'complete'
+		
