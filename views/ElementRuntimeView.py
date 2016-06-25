@@ -83,6 +83,16 @@ class ElementRuntimeView (object):
 			switch.x = cell.width + switch.width/2   
 			switch.action = self.switch_change
 			cell.add_subview(switch)
+		elif param.type == 'slider':
+			cell = ui.TableViewCell()
+			cell.selectable = False
+			slider = ui.Slider()
+			slider.name = param.name
+			slider.value = param.value
+			slider.y = cell.center.y - slider.height/2
+			slider.x = cell.width-15
+			slider.action = self.switch_change
+			cell.add_subview(slider)
 		else:
 			cell = ui.TableViewCell('value1')
 			if not param.value == None:
