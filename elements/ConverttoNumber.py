@@ -42,7 +42,7 @@ class ConverttoNumber(ElementBase):
 		return 'Convert to Number'
 		
 	def get_icon(self):
-		return ''
+		return 'iob:ios7_cog_32'
 		
 	def get_category(self):
 		return 'Number'

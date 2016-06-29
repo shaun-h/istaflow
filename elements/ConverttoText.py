@@ -42,7 +42,7 @@ class ConverttoText(ElementBase):
 		return 'Convert to Text'
 		
 	def get_icon(self):
-		return ''
+		return 'iob:ios7_cog_32'
 		
 	def get_category(self):
 		return 'Text'
