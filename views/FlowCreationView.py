@@ -17,6 +17,7 @@ class FlowCreationView(object):
 		self.saveToHomeScreenRow = 1
 		self.typeRow = 2
 		self.title = ''
+		self.oldtitle = ''
 		self.currentElementNumber = -1
 		self.addElementButton = ui.ButtonItem(title = 'Add Element', action = addElementAction)
 		self.saveFlowButton = ui.ButtonItem(title='Save', action=saveFlowAction)
@@ -118,8 +119,11 @@ class FlowCreationView(object):
 			
 	@ui.in_background		
 	def change_title(self, sender):
+		self.oldtitle = self.title
 		self.title = console.input_alert('Flow title','',self.title,'Ok',False)
 		table_view.name = self.title
+		table_view.reload()
+		
 		
 	def tableview_can_delete(self, tableview, section, row):
 		# Return True if the user should be able to delete the given row.
