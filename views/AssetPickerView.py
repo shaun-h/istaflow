@@ -19,13 +19,13 @@ def get_asset_folder():
 def get_collection_info(asset_type=''):
 	folder = get_asset_folder()
 	try:
-		with open(folder+os.listdir(folder)[0], 'r') as f:
-			return [asset for asset in json.load(f)['collections'] if asset['type'] == asset_type]
+		with open(folder+os.listdir(folder)[0], 'rt', encoding='utf-8') as f:
+			return [asset for asset in json.loads(str(f.read()))['collections'] if asset['type'] == asset_type]
 	except ValueError:
 		return os.listdir(folder)
 
 class AssetPicker (ui.View):
-	def __init__(self, source, selected_cb, name='', dark_cells=False, object_type='none', parent=None):
+	def __init__(self, source, selected_cb, name='', dark_cells=False, object_type='none', parent=None, theme_manager= None):
 		w, h = ui.get_screen_size()
 		self.frame = (0, 0, w, h)
 		self.name = name
@@ -35,17 +35,11 @@ class AssetPicker (ui.View):
 		self.object_type = object_type
 		self.picked_asset = None
 		self.selected_cb = selected_cb
-		self.load_button_items()
+		self.theme_manager = theme_manager
 		self.create_table_view()
 
 	def is_main(self):
 		return all([1 if isinstance(i, dict) else 0 for i in self.source])
-
-	def load_button_items(self):
-		if self.is_main():
-			self.left_button_items = [ui.ButtonItem('Cancel', action=lambda s: self.navigation_view.close())]
-		else:
-			self.right_button_items = [ui.ButtonItem('Done', action=lambda s: self.navigation_view.close())]
 
 	def create_table_view(self):
 		table_view = ui.TableView()
@@ -55,6 +49,8 @@ class AssetPicker (ui.View):
 		table_view.height = self.height
 		table_view.delegate = self
 		table_view.data_source = self
+		table_view.background_color = self.theme_manager.main_background_colour
+		
 		self.add_subview(table_view)
 
 	def tableview_number_of_rows(self, tableview, section):
@@ -74,6 +70,9 @@ class AssetPicker (ui.View):
 			cell.image_view.image = ui.Image.named(self.source[row])
 			if self.dark_cells:
 				cell.image_view.background_color = 'black'
+		cell.text_label.text_color = self.theme_manager.main_text_colour
+		cell.detail_text_label.text_color = self.theme_manager.main_text_colour
+		cell.background_color = self.theme_manager.main_background_colour
 		return cell
 
 	def tableview_did_select(self, tableview, section, row):
@@ -92,11 +91,16 @@ class AssetPicker (ui.View):
 		else:
 			source = sorted(list(set([path.split('/')[-1]+':'+(i.split('@')[0] if '@' in i else i.split('.')[0]) for i in os.listdir(path)])))
 		dark_cells = 1 if 'darkBackground' in self.source[row] else 0
-		self.navigation_view.push_view(AssetPicker(source, name=self.source[row]['title'], dark_cells=dark_cells, object_type=self.object_type, parent=self.parent, selected_cb=self.selected_cb))
+		self.navigation_view.push_view(AssetPicker(source, name=self.source[row]['title'], dark_cells=dark_cells, object_type=self.object_type, parent=self.parent, selected_cb=self.selected_cb, theme_manager = self.theme_manager))
 
-def get_view(selected_cb, parent=None, object_type='none'):
+def get_view(selected_cb, parent=None, object_type='none', theme_manager= None):
 	source = get_collection_info(asset_type='image')
-	main_view = AssetPicker(source, name='Assets', object_type=object_type, parent=parent, selected_cb=selected_cb)
+	main_view = AssetPicker(source, name='Assets', object_type=object_type, parent=parent, selected_cb=selected_cb, theme_manager=theme_manager)
+	main_view.background_color = theme_manager.main_background_colour
 	return main_view
+
+if __name__ == '__main__':
+	v= get_view(None)
+	v.present()
 
 
