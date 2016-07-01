@@ -96,6 +96,8 @@ class ista(object):
 			elements = self.flow_manager.get_element_details_for_flow(self.selectedFlow)
 			for element in elements:
 				e = self.element_manager.get_element_with_title(element['title'])
+				if e == None:
+					raise ValueError('Flow has an element that isn\'t available. Title: ' + element['title'])	
 				if not e.get_params() == None:
 					for p in e.get_params():
 						if p.name in list(element['params'].keys()):
@@ -252,11 +254,15 @@ class ista(object):
 	def savecb(self, saveElements):
 		self.selectedElements = saveElements
 		self.close_flowcreationview()
-		
+	
+	@ui.in_background
 	def flowselectedcb(self, flow, autorun = False):
 		self.selectedFlow = flow
 		self.selectedFlowType = self.flow_manager.get_type_for_flow(flow)
-		self.show_flowcreationview(None, autorun)
+		try:
+			self.show_flowcreationview(None, autorun)
+		except ValueError as e:
+			console.alert(title='Error', message=str(e), button1='Ok', hide_cancel_button=True)
 	
 	def create_element(self, title, inputType, outputType, description, icon, category, canHandleList):
 		
