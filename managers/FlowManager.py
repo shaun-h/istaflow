@@ -57,96 +57,99 @@ class FlowManager (object):
 		self.runtime_variables = {}
 		if type == 'Action Extension' and not appex.is_running_extension():
 			return False, 'Flow type: Action Extension flow not running in extension'
-		while elementNumber<= len(elements):
-			element = elements[elementNumber-1]
-			self.elementchangecb(elementNumber)
-			elementType = element.get_type()
-			self.set_runtime_element_params(element)
-			if element.get_input_type() == None:
-				output = element.run()
-			else:
-				if prevOutputType == element.get_input_type() or element.get_input_type() == '*':
-					if output == None or not output.isList or element.can_handle_list():
-						output = element.run(output)
+		try:
+			while elementNumber<= len(elements):
+				element = elements[elementNumber-1]
+				self.elementchangecb(elementNumber)
+				elementType = element.get_type()
+				self.set_runtime_element_params(element)
+				if element.get_input_type() == None:
+					output = element.run()
+				else:
+					if prevOutputType == element.get_input_type() or element.get_input_type() == '*':
+						if output == None or not output.isList or element.can_handle_list():
+							output = element.run(output)
+						else:
+							raise ValueError('List provided to ' + element.get_title() + ' and cant handle list')
 					else:
-						raise ValueError('List provided to ' + element.get_title() + ' and cant handle list')
-				else:
-					raise ValueError('Invalid input type provided to ' + element.get_title())
-			self.get_runtime_element_params(element)
-			prevOutputType = output.type if output else element.get_output_type()
-			if elementType == 'Foreach':
-				foreachstore = [copy.deepcopy(output),elementNumber,len(output.value),0]
-				output.value = foreachstore[0].value[foreachstore[3]]
-				self.handle_foreach()
-			elif elementType == 'EndForeach':
-				foreachstore[3] += 1
-				if foreachstore[3] < foreachstore[2]:
-					elementNumber = foreachstore[1]
-					output.type = foreachstore[0].type
+						raise ValueError('Invalid input type provided to ' + element.get_title())
+				self.get_runtime_element_params(element)
+				prevOutputType = output.type if output else element.get_output_type()
+				if elementType == 'Foreach':
+					foreachstore = [copy.deepcopy(output),elementNumber,len(output.value),0]
 					output.value = foreachstore[0].value[foreachstore[3]]
-				else:
-					foreachstore = None
+					self.handle_foreach()
+				elif elementType == 'EndForeach':
+					foreachstore[3] += 1
+					if foreachstore[3] < foreachstore[2]:
+						elementNumber = foreachstore[1]
+						output.type = foreachstore[0].type
+						output.value = foreachstore[0].value[foreachstore[3]]
+					else:
+						foreachstore = None
+						output = None
+				elif elementType == 'For':
+					forcount = element.get_param_by_name('forcount')
+					if forcount == None:
+						return False, 'For element count parameter not setup correctly'
+					forstore = [elementNumber,forcount.value,0]
+				elif elementType == 'EndFor':
 					output = None
-			elif elementType == 'For':
-				forcount = element.get_param_by_name('forcount')
-				if forcount == None:
-					return False, 'For element count parameter not setup correctly'
-				forstore = [elementNumber,forcount.value,0]
-			elif elementType == 'EndFor':
-				output = None
-				forstore[2] += 1
-				if forstore[2] < forstore[1]:
-					elementNumber = forstore[0]
-				else:
-					forstore = None
-			elif elementType == 'If':
-				ifresult = element.get_param_by_name('ifresult')
-				if ifresult == None or ifresult.value == None:
-					return False, 'Result from if not found or is None, uisomething is wrong'
-				if not ifresult.value:
-					elsefound= False
+					forstore[2] += 1
+					if forstore[2] < forstore[1]:
+						elementNumber = forstore[0]
+					else:
+						forstore = None
+				elif elementType == 'If':
+					ifresult = element.get_param_by_name('ifresult')
+					if ifresult == None or ifresult.value == None:
+						return False, 'Result from if not found or is None, uisomething is wrong'
+					if not ifresult.value:
+						elsefound= False
+						i = elementNumber
+						skipnumber = 0
+						while not elsefound:
+							if i >= len(elements):
+								return False, 'Else not found for if block'
+							if elements[i].get_type() == 'If':
+								skipnumber = skipnumber + 1
+							if elements[i].get_type() == 'Else':
+								if skipnumber > 0:
+									skipnumber = skipnumber - 1
+									i = i + 1
+								else:
+									elsefound = True
+									elementNumber = i+1
+							else:
+								i = i+1
+				elif elementType == 'Else':
+					endiffound = False
 					i = elementNumber
 					skipnumber = 0
-					while not elsefound:
+					while not endiffound:
 						if i >= len(elements):
-							return False, 'Else not found for if block'
+							return False, 'End If not found for if block'
 						if elements[i].get_type() == 'If':
-							skipnumber = skipnumber + 1
-						if elements[i].get_type() == 'Else':
+								skipnumber = skipnumber + 1
+						if elements[i].get_type() == 'EndIf':
 							if skipnumber > 0:
 								skipnumber = skipnumber - 1
 								i = i + 1
 							else:
-								elsefound = True
-								elementNumber = i+1
+								endiffound = True
+								elementNumber = i
 						else:
 							i = i+1
-			elif elementType == 'Else':
-				endiffound = False
-				i = elementNumber
-				skipnumber = 0
-				while not endiffound:
-					if i >= len(elements):
-						return False, 'End If not found for if block'
-					if elements[i].get_type() == 'If':
-							skipnumber = skipnumber + 1
-					if elements[i].get_type() == 'EndIf':
-						if skipnumber > 0:
-								skipnumber = skipnumber - 1
-								i = i + 1
-						else:
-							endiffound = True
-							elementNumber = i
-					else:
-						i = i+1
-			elif elementType == 'EndIf':
-				output = None
-				ifstore = None
+				elif elementType == 'EndIf':
+					output = None
+					ifstore = None
 				
-			elementNumber += 1
-		elementNumber = 0
-		self.elementchangecb(elementNumber)
-		return True, 'Flow completed successfully'
+				elementNumber += 1
+			elementNumber = 0
+			self.elementchangecb(elementNumber)
+			return True, 'Flow completed successfully'
+		except KeyboardInterrupt:
+			return False, 'Cancelled by user'
 	
 	def set_runtime_element_params(self, element):
 		params = element.get_params()

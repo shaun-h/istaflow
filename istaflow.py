@@ -280,6 +280,8 @@ class ista(object):
 				console.alert(title='Error',message=message,button1='Ok',hide_cancel_button=True)
 		except ValueError as e:
 			console.alert(str(e))
+		self.flow_creation_view.data_source.currentElementNumber = -1
+		self.flow_creation_view.reload()
 			
 	def elementchange(self, currentelementnumber):
 		self.flow_creation_view.data_source.currentElementNumber = currentelementnumber
