@@ -20,17 +20,29 @@ class ElementRuntimeView (object):
 		param = self.params[row]
 		name = param.displayName
 		value = param.value
+		noVariable = True
+		if param.isVariableAllowed:
+			choice = console.alert(title='Variable Available', message = 'Would you like to choose a variable?', button1='Choose Variable', button2 = 'Ask when run', button3='Don\'t use a variable')
+			if choice == 1:
+				noVariable = False
+				param.useVariable = True
+				param.variableName = console.input_alert(title='Option',message='Please enter the variable name')
+				param.value = None
+			elif choice == 2:
+				noVariable = False
+				param.useVariable = True
+				param.value = None
 		if name == None or name == '':
 			name = param.name
 		if value == None:
 			value = ''
-		if param.type == 'string':
+		if noVariable and param.type == 'string':
 			param.value = console.input_alert(name, '', value)
-		elif param.type == 'int':
+		elif noVariable and param.type == 'int':
 			param.value = int(console.input_alert(name,'',str(value)))
-		elif param.type == 'variable':
+		elif noVariable and param.type == 'variable':
 			pass
-		elif param.type == 'list':
+		elif noVariable and param.type == 'list':
 			ret = dialogs.list_dialog(title=name,items=param.allowedValues, multiple=param.multipleAllowed)
 			yo = ''
 			if not ret == None:
@@ -41,14 +53,14 @@ class ElementRuntimeView (object):
 					yo = ret
 				yo = yo.rstrip(',')
 			param.value = yo
-		elif param.type == 'dictionary':
+		elif noVariable and param.type == 'dictionary':
 			self.dictionaryParam = param
 			self.dictView = ElementParameterDictionaryInputView.get_view(dictionary=param.value, title=name, cb=self.dictionaryReturn, thememanager = self.thememanager)
 			self.tv = tableview
 			self.dictView.title_bar_color = self.thememanager.main_bar_colour
 			self.dictView.tint_color = self.thememanager.main_tint_colour
 			self.dictView.present(orientations=['portrait'])
-		elif param.type == 'Boolean':
+		elif noVariable and param.type == 'Boolean':
 			pass
 		tableview.reload()
 	

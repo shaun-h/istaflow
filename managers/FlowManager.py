@@ -159,6 +159,8 @@ class FlowManager (object):
 					param.value = self.runtime_variables
 				if param.name == 'fm:nav_view':
 					param.value = self.nav_view
+				if param.useVariable:
+					element.get_runtime_variable_for_parameter(param)
 			element.set_params(params)
 			
 	def get_runtime_element_params(self, element):

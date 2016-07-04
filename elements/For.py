@@ -15,6 +15,7 @@ class For(ElementBase):
 		return False
 	
 	def setup_params(self):
+		self.params.append(ElementParameter(name='fm:runtime_variables',type='*'))
 		self.params.append(ElementParameter(name='forcount',displayName='For Loop Count',display=True,type='int',value=1))
 	
 	def get_status(self):

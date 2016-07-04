@@ -1,4 +1,8 @@
 # coding: utf-8
+import dialogs
+import console
+import copy
+
 class ElementBase (object):
 	def can_handle_list(self):
 		raise self.not_implemented()
@@ -41,6 +45,27 @@ class ElementBase (object):
 		
 	def run(self):
 		raise self.not_implemented()
+	
+	def get_runtime_variable_for_parameter(self, parameter):
+		rv = self.get_param_by_name('fm:runtime_variables')
+		if rv == None:
+			raise LookupError('Element requires fm:runtime_variables')
+		
+		keysavailablestring = ''
+		for k in rv.value:
+			keysavailablestring += k + ' '
+		keysavailablemessage = 'Keys to choose from are: ' + keysavailablestring
+		while parameter.variableName == None or parameter.variableName.replace(' ', '') == '':
+			try:
+				key = dialogs.list_dialog('Vars',list(rv.value.keys()))
+				parameter.variableName = key
+			except :
+				# if dialogs isnt available then fall back to console input
+				parameter.variableName = console.input_alert(title='Please enter variable title', message=keysavailablemessage)
+		if parameter.variableName in rv.value:
+			parameter.value = copy.deepcopy(rv.value[parameter.variableName].value)
+		else:
+			raise KeyError('Parameter ' + parameter.variableName + ' does not exist')
 	
 	def get_param_by_name(self, name):
 		params_by_name = [p for p in self.params if p.name == name]
