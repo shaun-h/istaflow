@@ -107,7 +107,12 @@ class ElementRuntimeView (object):
 			cell.add_subview(slider)
 		else:
 			cell = ui.TableViewCell('value1')
-			if not param.value == None:
+			if param.useVariable:
+				if not param.variableName == None and not param.variableName == '':
+					cell.detail_text_label.text = 'Variable: ' + str(param.variableName)
+				else:
+					cell.detail_text_label.text = 'Variable: Choose at runtime'
+			elif not param.value == None:
 				cell.detail_text_label.text = str(param.value)
 			cell.detail_text_label.text_color = self.thememanager.main_text_colour	
 			
