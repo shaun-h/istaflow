@@ -26,7 +26,7 @@ class ElementCreationView(object):
 		self.canHandleList = False
 		self.showAssetPickerCallBack = showAssetPickerCallBack
 		self.closeAssetPickerCallBack = closeAssetPickerCallBack
-		self.assetPickerView = AssetPickerView.get_view(self.set_iconcb)
+		self.assetPickerView = AssetPickerView.get_view(self.set_iconcb, theme_manager = thememanager)
 		self.thememanager = thememanager
 	
 	def reset_view(self):
