@@ -101,7 +101,14 @@ class ista(object):
 				if not e.get_params() == None:
 					for p in e.get_params():
 						if p.name in list(element['params'].keys()):
-							p.value = element['params'][p.name]
+							temp = element['params'][p.name]
+							if(isinstance(temp, dict)):
+								p.value = temp['value']
+								p.useVariable = temp['useVariable']
+								p.variableName = temp['variableName']
+								p.askAtRuntime = temp['askAtRuntime']
+							else:
+								p.value = temp
 				self.selectedElements.append(e)
 			type = self.flow_manager.get_type_for_flow(self.selectedFlow)
 			title = os.path.splitext(self.selectedFlow)[0]

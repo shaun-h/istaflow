@@ -1,6 +1,6 @@
 # coding: utf-8
 class ElementParameter (object):
-	def __init__(self, name, type, displayName='', display=False, value=None, allowedValues=None, multipleAllowed=False, isVariableAllowed = True):
+	def __init__(self, name, type, displayName='', display=False, value=None, allowedValues=None, multipleAllowed=False, isVariableAllowed = True, askAtRuntime = False):
 		self.name = name
 		self.displayName = displayName
 		self.display = display
@@ -11,3 +11,4 @@ class ElementParameter (object):
 		self.useVariable = False
 		self.isVariableAllowed = isVariableAllowed
 		self.variableName = ''
+		self.askAtRuntime = askAtRuntime

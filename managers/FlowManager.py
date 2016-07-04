@@ -6,6 +6,7 @@ import os
 import time
 import copy
 import appex
+import sys
 
 class FlowManager (object):
 	def __init__(self, elementchangecb):
@@ -26,7 +27,7 @@ class FlowManager (object):
 	def save_flow(self, title, elements, type):
 		names = []
 		for ele in elements:
-			params = {p.name: p.value for p in (ele.get_params() or []) if p.display}
+			params = {p.name: {'value':p.value if not p.askAtRuntime else None, 'useVariable':p.useVariable, 'variableName':p.variableName if not p.askAtRuntime else '', 'askAtRuntime':p.askAtRuntime} for p in (ele.get_params() or []) if p.display}
 			ob = {'title':ele.get_title(),'params':params}
 			names.append(ob)
 		fl = {'type':type,'elements':names}
@@ -150,6 +151,8 @@ class FlowManager (object):
 			return True, 'Flow completed successfully'
 		except KeyboardInterrupt:
 			return False, 'Cancelled by user'
+		except:
+			return False, str(sys.exc_info()[1])
 	
 	def set_runtime_element_params(self, element):
 		params = element.get_params()

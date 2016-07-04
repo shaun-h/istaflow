@@ -28,10 +28,18 @@ class ElementRuntimeView (object):
 				param.useVariable = True
 				param.variableName = console.input_alert(title='Option',message='Please enter the variable name')
 				param.value = None
+				param.askAtRuntime = False
 			elif choice == 2:
 				noVariable = False
 				param.useVariable = True
 				param.value = None
+				param.askAtRuntime = True
+				param.variableName=''
+			else:
+				noVariable = True
+				param.useVariable = False
+				param.askAtRuntime = False
+				param.variableName = ''
 		if name == None or name == '':
 			name = param.name
 		if value == None:
