@@ -179,5 +179,9 @@ class FlowManager (object):
 		with open(self.dir+title,'r') as f:
 			clipboard.set(f.read())
 
+	def create_from_export(self, title, contents):
+		f = open(self.dir+title+'.flow','w')
+		f.write(contents)
+		f.close()
 
 

@@ -11,6 +11,7 @@ import os
 import dialogs
 import appex
 import sys
+import clipboard
 
 class ista(object):
 	def __init__(self):
@@ -139,7 +140,7 @@ class ista(object):
 		self.navigation_view.pop_view(view)
 		
 	def setup_navigationview(self, initview):           
-		initview.right_button_items = [ui.ButtonItem(title='Add Flow', action=self.show_flowcreationview)]
+		initview.right_button_items = [ui.ButtonItem(title='Add Flow', action=self.show_flow_choice_menu)]
 		initview.left_button_items = [ui.ButtonItem(title='Elements', action=self.show_elementmanagementview)]
 		self.navigation_view = ui.NavigationView(initview)
 		self.navigation_view.bar_tint_color=self.theme_manager.main_bar_colour
@@ -147,6 +148,20 @@ class ista(object):
 		self.navigation_view.background_color = self.theme_manager.main_background_colour
 		self.navigation_view.title_color = self.theme_manager.main_title_text_colour
 	
+	@ui.in_background
+	def show_flow_choice_menu(self,sender):
+		option = console.alert(title='Create Flow', message='Would you like to import or create?', hide_cancel_button=True, button1='Import from Clipboard', button2='Create')
+		if option == 1:
+			title = '' 
+			while title == '':
+				title = console.input_alert(title='Please enter title for flow', message='If flow exists it will be copied over')
+			
+			self.flow_manager.create_from_export(title, clipboard.get())
+			self.get_flows(appex.is_running_extension())
+			self.flow_view.data_source.flows = self.flows
+			self.flow_view.reload_data()
+		elif option == 2:
+			self.show_flowcreationview(sender)
 	def setup_flowsmanager(self):
 		self.flow_manager = FlowManager.FlowManager(self.elementchange)
 		
