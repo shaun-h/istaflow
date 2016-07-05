@@ -93,7 +93,7 @@ class AssetPicker (ui.View):
 		dark_cells = 1 if 'darkBackground' in self.source[row] else 0
 		self.navigation_view.push_view(AssetPicker(source, name=self.source[row]['title'], dark_cells=dark_cells, object_type=self.object_type, parent=self.parent, selected_cb=self.selected_cb, theme_manager = self.theme_manager))
 
-def get_view(selected_cb, parent=None, object_type='none', theme_manager= None):
+def get_view(selected_cb, parent=None, object_type='none', theme_manager=None):
 	source = get_collection_info(asset_type='image')
 	main_view = AssetPicker(source, name='Assets', object_type=object_type, parent=parent, selected_cb=selected_cb, theme_manager=theme_manager)
 	main_view.background_color = theme_manager.main_background_colour
