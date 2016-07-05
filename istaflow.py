@@ -216,24 +216,27 @@ class ista(object):
 			except FileNotFoundError:
 				console.alert(title='Error Sharing', message='Flow not found, have you saved your flow?')
 		
-	@ui.in_background
+	#@ui.in_background
 	def saveflow(self,sender):
 		if self.flow_creation_view.data_source.title == '':
-			console.alert(title='Error',message='Please enter a title',button1='Ok',hide_cancel_button=True)
+			self.show_alert(title='Error', message='Please enter a title')
+			#console.alert(title='Error',message='Please enter a title',button1='Ok',hide_cancel_button=True)
 		else:
 			if not self.flow_creation_view.data_source.oldtitle == '':
 				self.deleteflow(self.flow_creation_view.data_source.oldtitle+'.flow')
 			self.selectedFlowType = self.flow_creation_view.data_source.flowType
 			self.flow_manager.save_flow(self.flow_creation_view.data_source.title, self.selectedElements, self.selectedFlowType)
-			console.alert(title='Success',message='Flow has been saved',button1='Ok',hide_cancel_button=True)
+			self.show_alert(title='Success', message='Flow has been saved')
+			#console.alert(title='Success',message='Flow has been saved',button1='Ok',hide_cancel_button=True)
 			self.get_flows(appex.is_running_extension())
 			self.flow_view.data_source.flows = self.flows
 			self.flow_view.reload_data()
 	
-	@ui.in_background
+	#@ui.in_background
 	def addFlowToHomeScreen(self):
 		if self.flow_creation_view.data_source.title == '':
-			console.alert(title='Error',message='Please enter a title',button1='Ok',hide_cancel_button=True)
+			self.show_alert(title='Error', message='Please enter a title')
+			#console.alert(title='Error',message='Please enter a title',button1='Ok',hide_cancel_button=True)
 		else:
 			self.home_screen_manager.show_form(self.flow_creation_view.data_source.title+'.flow')
 		
@@ -298,15 +301,18 @@ class ista(object):
 		self.selectedElements = saveElements
 		self.close_flowcreationview()
 	
-	@ui.in_background
 	def flowselectedcb(self, flow, autorun = False):
 		self.selectedFlow = flow
 		self.selectedFlowType = self.flow_manager.get_type_for_flow(flow)
 		try:
 			self.show_flowcreationview(None, autorun)
 		except ValueError as e:
-			console.alert(title='Error', message=str(e), button1='Ok', hide_cancel_button=True)
+			self.show_alert(title='Error', message=str(e))
 	
+	@ui.in_background
+	def show_alert(self, title, message):
+		console.alert(title=title, message=message, button1='Ok', hide_cancel_button=True)
+		
 	def create_element(self, title, inputType, outputType, description, icon, category, canHandleList):
 		
 		self.element_manager.create_element(title=title, inputType=inputType, outputType=outputType, description=description, icon=icon, category=category, canHandleList=canHandleList)
@@ -318,17 +324,20 @@ class ista(object):
 		self.elements_view.reload_data()
 		self.element_creation_view.reload()
 		
-	@ui.in_background
+	#@ui.in_background
 	def runflow(self,sender):
 		try:
 			self.flow_creation_view.reload()
 			ret, message= self.flow_manager.run_flow(self.selectedElements,self.navigation_view, self.selectedFlowType)
 			if ret:
-				console.alert(title='Complete',message=message,button1='Ok',hide_cancel_button=True)
+				self.show_alert(title='Complete', message=message)
+				#console.alert(title='Complete',message=message,button1='Ok',hide_cancel_button=True)
 			else:
-				console.alert(title='Error',message=message,button1='Ok',hide_cancel_button=True)
+				self.show_alert(title='Error', message=message)
+				#console.alert(title='Error',message=message,button1='Ok',hide_cancel_button=True)
 		except ValueError as e:
-			console.alert(str(e))
+			self.show_alert(title='Error', message=str(e))
+			#console.alert(str(e))
 		self.flow_creation_view.data_source.currentElementNumber = -1
 		self.flow_creation_view.reload()
 			
