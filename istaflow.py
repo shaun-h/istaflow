@@ -3,7 +3,7 @@
 
 from __future__ import absolute_import
 from views import ElementListView, FlowCreationView, FlowsView, ElementManagementView, ElementCreationView, ElementRuntimeView, ToastView
-from managers import ElementManager, FlowManager, ThemeManager, HomeScreenManager
+from managers import ElementManager, FlowManager, ThemeManager, HomeScreenManager, SettingsManager
 import ui
 import collections
 import console
@@ -33,6 +33,8 @@ class ista(object):
 		self.flows = []
 		self.selectedFlow = None
 		self.flow_passed_in = None
+		self.settings_manager = None
+		self.setup_settingsmanager()
 		self.setup_thememanager()
 		self.setup_homescreenmanager()
 		self.setup_elementsmanager()
@@ -62,7 +64,13 @@ class ista(object):
 		self.home_screen_manager = HomeScreenManager.HomeScreenManager()
 		
 	def setup_elementruntimeview(self):
-		self.element_runtime_view = ElementRuntimeView.get_view(self.theme_manager) 
+		self.element_runtime_view = ElementRuntimeView.get_view(self.theme_manager)
+	
+	def setup_settingsmanager(self):
+		self.settings_manager = SettingsManager.SettingsManager()
+		
+	def show_settingmanager(self, sender):
+		self.settings_manager.show_form()
 		
 	def get_valid_elements(self):
 		if self.element_manager == None:
@@ -141,7 +149,7 @@ class ista(object):
 		
 	def setup_navigationview(self, initview):           
 		initview.right_button_items = [ui.ButtonItem(title='Add Flow', action=self.show_flow_choice_menu)]
-		initview.left_button_items = [ui.ButtonItem(title='Elements', action=self.show_elementmanagementview)]
+		initview.left_button_items = [ui.ButtonItem(title='Elements', action=self.show_elementmanagementview),ui.ButtonItem(title='Settings',action=self.show_settingmanager)]
 		self.navigation_view = ui.NavigationView(initview)
 		self.navigation_view.bar_tint_color=self.theme_manager.main_bar_colour
 		self.navigation_view.tint_color = self.theme_manager.main_tint_colour
@@ -182,7 +190,7 @@ class ista(object):
 	
 	def setup_flowsview(self):
 		self.flow_view = FlowsView.get_view(self.flows, self.flowselectedcb,self.deleteflow, self.theme_manager)
-		
+			
 	def setup_flowcreationview(self):
 		self.flow_creation_view = FlowCreationView.get_view(elements = self.selectedElements, saveCallBack = self.savecb, addElementAction = self.show_elementsview, saveFlowAction = self.saveflow, runFlowAction = self.runflow, showElementRuntimeView = self.show_elementruntimeview, thememanager=self.theme_manager, flowType = self.selectedFlowType, flowTypeSelection = self.show_flowtypeselection, saveToHomeScreenAction = self.addFlowToHomeScreen, copyFlowToClipboardCallBack=self.copyFlowToClipboard)
 	
@@ -271,7 +279,10 @@ class ista(object):
 		self.validate_navigationview()
 		#ui seems to need to be portrait otherwise capture image view breaks
 		self.navigation_view.present(orientations=['portrait'], title_bar_color=self.theme_manager.main_bar_colour, hide_title_bar=self.hide_title_bar)
-		if self.hide_title_bar:
+		show_setting = self.settings_manager.get_setting_by_key('displayHowToClose')
+		if show_setting == None:
+			show_setting = True
+		if self.hide_title_bar and show_setting:
 			ToastView.display_toast(view=self.navigation_view, help_text='Close by swiping down with two fingers')
 		
 	def elementselectedcb(self, element):
