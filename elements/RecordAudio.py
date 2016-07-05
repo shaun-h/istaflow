@@ -26,7 +26,7 @@ class RecordAudio(ElementBase):
 	def setup_params(self):
 		self.params.append(ElementParameter(name='tempfilename',displayName='Temporary File name',display=True,type='string',value='recording.m4a'))
 		self.params.append(ElementParameter(name='removetempfile',displayName='Remove Temporary File',display=True,type='bool',value=True))
-	
+		self.params.append(ElementParameter(name='fm:runtime_variables',type='*'))
 	def get_status(self):
 		return self.status
 		

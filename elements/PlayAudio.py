@@ -19,6 +19,7 @@ class PlayAudio(ElementBase):
 	
 	def setup_params(self):
 		self.params.append(ElementParameter(name='volume',displayName='Player Volume',display=True,type='slider',value=0.5))
+		self.params.append(ElementParameter(name='fm:runtime_variables',type='*'))
 	
 	def get_status(self):
 		return self.status

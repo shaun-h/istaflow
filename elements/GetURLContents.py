@@ -27,8 +27,9 @@ class GetURLContents(ElementBase):
 		
 	def setup_params(self):
 		allowedValues = 'GET POST PUT DELETE'.split()
-		self.params.append(ElementParameter(name='verb',displayName='Verb',display=True, type='list',value='GET',allowedValues=allowedValues))
+		self.params.append(ElementParameter(name='verb',displayName='Verb',display=True, type='list',value='GET',allowedValues=allowedValues, isVariableAllowed = False))
 		self.params.append(ElementParameter(name='params', displayName='Parameters', display=True, type='dictionary', value=None))
+		self.params.append(ElementParameter(name='fm:runtime_variables',type='*'))
 
 	def get_status(self):
 		return self.status

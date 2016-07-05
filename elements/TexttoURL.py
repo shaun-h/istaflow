@@ -16,7 +16,7 @@ class TexttoURL(ElementBase):
 		pass
 	
 	def setup_params(self):
-		self.params.append(ElementParameter(name='protocol',displayName='Protocol',display=True,type='list',value='http://',allowedValues=['http://','https://','ftp://']))
+		self.params.append(ElementParameter(name='protocol',displayName='Protocol',display=True,type='list',value='http://',allowedValues=['http://','https://','ftp://'],isVariableAllowed=False))
 	
 	def get_status(self):
 		return self.status

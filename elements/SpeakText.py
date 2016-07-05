@@ -16,7 +16,7 @@ class SpeakText(ElementBase):
 		return False
 	
 	def setup_params(self):
-		self.params.append(ElementParameter(name='speechlanguage',displayName='Speech Language',display=True,type='list',value='en_US',allowedValues=speech.get_languages()))
+		self.params.append(ElementParameter(name='speechlanguage',displayName='Speech Language',display=True,type='list',value='en_US',allowedValues=speech.get_languages(), isVariableAllowed=False))
 	
 	def get_status(self):
 		return self.status

@@ -19,8 +19,8 @@ class OpenLocationinAppleMaps(ElementBase):
 		return False
 		
 	def setup_params(self):
-		self.params.append(ElementParameter(name='mapmode',displayName='Map Mode',display=True,type='list',value='standard',allowedValues=sorted(self.map_mode_dict.keys())))
-		self.params.append(ElementParameter(name='zoom',displayName='Zoom',display=True,type='string',value='12'))
+		self.params.append(ElementParameter(name='mapmode',displayName='Map Mode',display=True,type='list',value='standard',allowedValues=sorted(self.map_mode_dict.keys()),isVariableAllowed=False))
+		self.params.append(ElementParameter(name='zoom',displayName='Zoom',display=True,type='string',value='12',isVariableAllowed=False))
 	
 	def get_status(self):
 		return self.status

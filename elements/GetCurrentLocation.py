@@ -17,6 +17,7 @@ class GetCurrentLocation(ElementBase):
 		
 	def setup_params(self):
 		self.params.append(ElementParameter(name='title',displayName='Title',display=True,type='string',value='Current Location'))
+		self.params.append(ElementParameter(name='fm:runtime_variables',type='*'))
 	
 	def get_status(self):
 		return self.status

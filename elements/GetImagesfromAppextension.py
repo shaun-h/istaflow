@@ -18,6 +18,7 @@ class GetImagesfromAppextension(ElementBase):
 	
 	def setup_params(self):
 		self.params.append(ElementParameter(name='allowMultiple',displayName='Allow Multiple Images',display=True, type='bool',value=False))
+		self.params.append(ElementParameter(name='fm:runtime_variables',type='*'))
 	
 	def get_status(self):
 		return self.status

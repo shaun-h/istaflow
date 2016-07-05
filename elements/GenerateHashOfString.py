@@ -20,7 +20,7 @@ class GenerateHashOfString(ElementBase):
 		algs = []
 		for t in hashlib.algorithms_available:
 			algs.append(t)
-		self.params.append(ElementParameter(name='algorithms',displayName='Hash Algorithm',display=True, type='list',value='md5',allowedValues=algs))
+		self.params.append(ElementParameter(name='algorithms',displayName='Hash Algorithm',display=True, type='list',value='md5',allowedValues=algs, isVariableAllowed = False))
 		
 	
 	def get_status(self):

@@ -18,7 +18,9 @@ class Sleep(ElementBase):
 	
 	def setup_params(self):
 		self.params.append(ElementParameter(name='secondstosleep',displayName='Seconds to sleep',display=True,type='int',value=1))
-	
+		
+		self.params.append(ElementParameter(name='fm:runtime_variables',type='*'))
+
 	def get_status(self):
 		return self.status
 		

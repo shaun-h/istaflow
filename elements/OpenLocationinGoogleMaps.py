@@ -17,12 +17,13 @@ class OpenLocationinGoogleMaps(ElementBase):
 		return False
 		
 	def setup_params(self):
-		self.params.append(ElementParameter(name='mapmode',displayName='Map Mode',display=True,type='list',value='standard',allowedValues=['standard','streetview']))
-		self.params.append(ElementParameter(name='viewmode',displayName='View Mode',display=True,type='list',value=None,allowedValues=['satellite', 'traffic', 'transit'],multipleAllowed=True))
+		self.params.append(ElementParameter(name='mapmode',displayName='Map Mode',display=True,type='list',value='standard',allowedValues=['standard','streetview'],isVariableAllowed=False))
+		self.params.append(ElementParameter(name='viewmode',displayName='View Mode',display=True,type='list',value=None,allowedValues=['satellite', 'traffic', 'transit'],multipleAllowed=True,isVariableAllowed=False))
 		
-		self.params.append(ElementParameter(name='zoom',displayName='Zoom',display=True,type='string',value='12'))
+		self.params.append(ElementParameter(name='zoom',displayName='Zoom',display=True,type='string',value='12',isVariableAllowed=False))
 		
 		self.params.append(ElementParameter(name='query',displayName='Query in area',display=True,type='string'))
+		self.params.append(ElementParameter(name='fm:runtime_variables',type='*'))
 	
 	def get_status(self):
 		return self.status

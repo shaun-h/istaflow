@@ -15,10 +15,11 @@ class If(ElementBase):
 		return True
 	
 	def setup_params(self):
-		self.params.append(ElementParameter(name='checkoption',displayName='Item to check',display=True,type='list',value='input value',allowedValues=['input value','input type']))
-		self.params.append(ElementParameter(name='conditiontype',displayName='Condition Type',display=True,type='list',value='==',allowedValues=['==','<','>','>=','<=','not ==']))
+		self.params.append(ElementParameter(name='checkoption',displayName='Item to check',display=True,type='list',value='input value',allowedValues=['input value','input type'], isVariableAllowed=False))
+		self.params.append(ElementParameter(name='conditiontype',displayName='Condition Type',display=True,type='list',value='==',allowedValues=['==','<','>','>=','<=','not =='], isVariableAllowed = False))
 		self.params.append(ElementParameter(name='checkvalue',displayName='Check Value',display=True,type='string',value=None))
 		self.params.append(ElementParameter(name='ifresult',displayName='If Result',display=False,type='Boolean', value = None))
+		self.params.append(ElementParameter(name='fm:runtime_variables',type='*'))
 	
 	def get_status(self):
 		return self.status

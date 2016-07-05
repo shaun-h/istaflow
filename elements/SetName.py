@@ -16,6 +16,7 @@ class SetName(ElementBase):
 	
 	def setup_params(self):
 		self.params.append(ElementParameter(name='name',displayName='Name',display=True,type='string', value=''))
+		self.params.append(ElementParameter(name='fm:runtime_variables',type='*'))
 	
 	def get_status(self):
 		return self.status
