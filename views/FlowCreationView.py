@@ -3,21 +3,23 @@
 from __future__ import absolute_import
 import ui
 import console
+import clipboard
 dbo = None
 
 class FlowCreationView(object):
-	def __init__(self, elements, saveCallBack, addElementAction, saveFlowAction, runFlowAction, showElementRuntimeView, thememanager, flowType, flowTypeSelection, saveToHomeScreenAction):
+	def __init__(self, elements, saveCallBack, addElementAction, saveFlowAction, runFlowAction, showElementRuntimeView, thememanager, flowType, flowTypeSelection, saveToHomeScreenAction, copyFlowToClipboardCallBack):
 		self.flowType = flowType
 		self.elements = elements
 		self.saveCallBack = saveCallBack
 		self.safeFlowAction = saveFlowAction
 		self.flowTypeSelection = flowTypeSelection
 		self.showElementRuntimeView = showElementRuntimeView
-		self.extraRows = 4
+		self.extraRows = 5
 		self.adminRow = 0
 		self.saveToHomeScreenRow = 3
 		self.typeRow = 2
 		self.titleRow = 1
+		self.shareRow = 4
 		self.title = ''
 		self.oldtitle = ''
 		self.currentElementNumber = -1
@@ -30,6 +32,7 @@ class FlowCreationView(object):
 		self.runButtonsRight = [self.runFlowButton]
 		self.runButtonsLeft = []
 		self.thememanager = thememanager
+		self.copyFlowToClipboardCallBack = copyFlowToClipboardCallBack
 	
 	def update_buttons(self):
 		if table_view.editing:
@@ -45,6 +48,8 @@ class FlowCreationView(object):
 				self.saveToHomeScreenAction()
 			elif row == self.titleRow:
 				self.change_title()
+			elif row == self.shareRow:
+				self.shareFlow()
 		elif section == 1:
 			element = self.elements[row]
 			params = element.get_params() or []
@@ -134,6 +139,13 @@ class FlowCreationView(object):
 				cell.text_label.text = 'Flow Title'
 				cell.detail_text_label.text = self.title
 				return cell
+			elif row == self.shareRow:
+				cell = ui.TableViewCell()
+				cell.background_color=self.thememanager.main_background_colour
+				cell.selectable = True
+				cell.text_label.text_color = self.thememanager.main_text_colour
+				cell.text_label.text = 'Share Flow'
+				return cell
 			
 	@ui.in_background		
 	def change_title(self):
@@ -170,12 +182,17 @@ class FlowCreationView(object):
 			to = 0
 		self.elements.insert(to, self.elements.pop(from_row))
 		tableview.reload()
-
+	
+	@ui.in_background
+	def shareFlow(self):
+		option = console.alert(title='Share',message='How would you like to share the flow?', button1='Copy to Clipboard')
+		if option == 1:
+			self.copyFlowToClipboardCallBack()
 
 table_view = ui.TableView()
 
-def get_view(elements, saveCallBack, addElementAction, saveFlowAction, runFlowAction, showElementRuntimeView,thememanager, flowType, flowTypeSelection, saveToHomeScreenAction):
-	dbo = FlowCreationView(elements = elements, saveCallBack = saveCallBack, addElementAction = addElementAction, saveFlowAction = saveFlowAction, runFlowAction = runFlowAction, showElementRuntimeView = showElementRuntimeView, thememanager=thememanager, flowType=flowType, flowTypeSelection=flowTypeSelection, saveToHomeScreenAction=saveToHomeScreenAction)
+def get_view(elements, saveCallBack, addElementAction, saveFlowAction, runFlowAction, showElementRuntimeView,thememanager, flowType, flowTypeSelection, saveToHomeScreenAction, copyFlowToClipboardCallBack):
+	dbo = FlowCreationView(elements = elements, saveCallBack = saveCallBack, addElementAction = addElementAction, saveFlowAction = saveFlowAction, runFlowAction = runFlowAction, showElementRuntimeView = showElementRuntimeView, thememanager=thememanager, flowType=flowType, flowTypeSelection=flowTypeSelection, saveToHomeScreenAction=saveToHomeScreenAction, copyFlowToClipboardCallBack = copyFlowToClipboardCallBack)
 	table_view.name = 'Flow'
 	table_view.background_color = thememanager.main_background_colour
 	table_view.data_source = dbo

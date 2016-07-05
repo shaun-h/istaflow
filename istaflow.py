@@ -169,7 +169,7 @@ class ista(object):
 		self.flow_view = FlowsView.get_view(self.flows, self.flowselectedcb,self.deleteflow, self.theme_manager)
 		
 	def setup_flowcreationview(self):
-		self.flow_creation_view = FlowCreationView.get_view(elements = self.selectedElements, saveCallBack = self.savecb, addElementAction = self.show_elementsview, saveFlowAction = self.saveflow, runFlowAction = self.runflow, showElementRuntimeView = self.show_elementruntimeview, thememanager=self.theme_manager, flowType = self.selectedFlowType, flowTypeSelection = self.show_flowtypeselection, saveToHomeScreenAction = self.addFlowToHomeScreen)
+		self.flow_creation_view = FlowCreationView.get_view(elements = self.selectedElements, saveCallBack = self.savecb, addElementAction = self.show_elementsview, saveFlowAction = self.saveflow, runFlowAction = self.runflow, showElementRuntimeView = self.show_elementruntimeview, thememanager=self.theme_manager, flowType = self.selectedFlowType, flowTypeSelection = self.show_flowtypeselection, saveToHomeScreenAction = self.addFlowToHomeScreen, copyFlowToClipboardCallBack=self.copyFlowToClipboard)
 	
 	@ui.in_background	
 	def show_flowtypeselection(self):
@@ -182,7 +182,17 @@ class ista(object):
 		
 	def deleteflow(self, flowtitle):
 		self.flow_manager.delete_flow(flowtitle)
-			
+	
+	def copyFlowToClipboard(self):
+		if self.flow_creation_view.data_source.title == '':
+			console.alert(title='Error',message='Please enter a title',button1='Ok',hide_cancel_button=True)
+		else:
+			try:
+				self.flow_manager.copy_Flow_To_Clipboard(self.flow_creation_view.data_source.title+'.flow')
+				console.alert(title='Success', message='Flow copied to clipboard', hide_cancel_button=True, button1='Ok')
+			except FileNotFoundError:
+				console.alert(title='Error Sharing', message='Flow not found, have you saved your flow?')
+		
 	@ui.in_background
 	def saveflow(self,sender):
 		if self.flow_creation_view.data_source.title == '':

@@ -7,6 +7,7 @@ import time
 import copy
 import appex
 import sys
+import clipboard
 
 class FlowManager (object):
 	def __init__(self, elementchangecb):
@@ -173,6 +174,10 @@ class FlowManager (object):
 	
 	def handle_foreach(self):
 		pass
+	
+	def copy_Flow_To_Clipboard(self, title):
+		with open(self.dir+title,'r') as f:
+			clipboard.set(f.read())
 
 
 
