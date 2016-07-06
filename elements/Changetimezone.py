@@ -20,6 +20,7 @@ class Changetimezone(ElementBase):
 		tm = []
 		for aa in a:
 			tm.append(aa)
+		tm.sort()
 		self.params.append(ElementParameter(name='timezone',displayName='Time Zone',display=True,type='list',value=None,allowedValues=tm,multipleAllowed=False,isVariableAllowed=False))
 	
 	def get_status(self):
