@@ -52,4 +52,4 @@ class Count(ElementBase):
 		
 	def run(self, input=''):
 		self.status = 'complete'
-		return ElementValue(type=self.type, value=len(input.value))
+		return ElementValue(type=self.get_output_type(), value=len(input.value))

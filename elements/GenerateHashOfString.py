@@ -59,4 +59,4 @@ class GenerateHashOfString(ElementBase):
 	def run(self, input=''):
 		algo = self.get_param_by_name('algorithms')
 		self.status = 'complete'
-		return ElementValue(type=self.output, value=hashlib.new(algo.value, input.value.encode('utf-8')).hexdigest())
+		return ElementValue(type=self.get_output_type(), value=hashlib.new(algo.value, input.value.encode('utf-8')).hexdigest())
