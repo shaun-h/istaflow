@@ -107,7 +107,7 @@ class FlowCreationView(object):
 				editButton.width *= 1.4
 				editButton.action = swap_edit
 				editButton.y = cell.height/2 - editButton.height/2
-				editButton.x = cell.width
+				editButton.x = ui.get_screen_size()[0]-(editButton.width*1.5)
 				cell.add_subview(editButton)
 				self.saveFlowButton.y = cell.height/2 - self.saveFlowButton.height/2
 				self.saveFlowButton.x = self.saveFlowButton.width
