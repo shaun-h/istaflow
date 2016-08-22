@@ -65,7 +65,6 @@ class FlowManager (object):
 				element = elements[elementNumber-1]
 				self.elementchangecb(elementNumber)
 				elementType = element.get_type()
-				print(element.get_title())
 				self.set_runtime_element_params(element)
 				if element.get_input_type() == None:
 					output = element.run()
@@ -80,7 +79,6 @@ class FlowManager (object):
 				self.get_runtime_element_params(element)
 				prevOutputType = output.type if output else element.get_output_type()
 				if elementType == 'Foreach':
-					print('hit')
 					foreachstore = [output.copyMe(),elementNumber,len(output.value),0]
 					output.value = foreachstore[0].value[foreachstore[3]]
 					self.handle_foreach()
@@ -89,6 +87,7 @@ class FlowManager (object):
 					if foreachstore[3] < foreachstore[2]:
 						elementNumber = foreachstore[1]
 						output.type = foreachstore[0].type
+						prevOutputType = output.type
 						output.value = foreachstore[0].value[foreachstore[3]]
 					else:
 						foreachstore = None
@@ -155,9 +154,9 @@ class FlowManager (object):
 			return True, 'Flow completed successfully'
 		except KeyboardInterrupt:
 			return False, 'Cancelled by user'
-		#except:
-			#traceback.print_tb()
-			#return False, str(sys.exc_info()[1])
+		except:
+			traceback.print_tb()
+			return False, str(sys.exc_info()[1])
 	
 	def set_runtime_element_params(self, element):
 		params = element.get_params()
