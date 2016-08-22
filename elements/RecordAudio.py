@@ -85,5 +85,5 @@ class RecordAudio(ElementBase):
 			if removetempfileparam.value:
 				os.remove(output_path)
 				retfilepath = None
-			return ElementValue(type=self.get_output_type(), value={'type':'m4a','filename':tempfilenameparam.value, 'audiodata':data, 'filepath':retfilepath})
+			return ElementValue(type=self.get_output_type(), value={'type':'m4a','filename':tempfilenameparam.value, 'audiodata':data, 'filepath':retfilepath}, objcCopy = True)
 		self.status = 'complete'
