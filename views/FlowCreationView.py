@@ -174,7 +174,7 @@ class FlowCreationView(object):
 		if section == 1:
 			print(section + row)
 			self.elements.pop(row)
-			del_row([(section, row)])
+			del_row([(row,section)])
 
 	def tableview_move_row(self, tableview, from_section, from_row, to_section, to_row):
 		to = to_row

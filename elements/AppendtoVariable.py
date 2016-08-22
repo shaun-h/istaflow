@@ -4,6 +4,7 @@ from ElementParameter import ElementParameter
 from ElementValue import ElementValue
 import console 
 import copy
+from objc_util import *
 
 class AppendtoVariable(ElementBase):
 	def __init__(self):
@@ -60,18 +61,28 @@ class AppendtoVariable(ElementBase):
 		if not name in rv.value:
 			rv.value[name] = None
 		if rv.value[name] == None:
-			rv.value[name] = copy.deepcopy(input)
+			rv.value[name] = input.copyMe()
+			rv.value[name].value = []
+			rv.value[name].value.append(input.copyValue())
+			#if not input.objcCopy:
+			#	rv.value[name] = copy.deepcopy(input)
+			#else:
+			#	ev = ElementValue(input.type, input.value.copy(), input.isList, )
+			#	rv.value[name] = ev
 		else:
 			if input.type == rv.value[name].type:
 				if not isinstance(rv.value[name].value,list):
-					t = copy.deepcopy(rv.value[name].value)
+					#t = copy.deepcopy(rv.value[name].value)
+					t = rv.value[name].copyValue()
 					rv.value[name].value = []
-					rv.value[name].value.append(copy.deepcopy(t))
-				if input.isList:
-					for i in input.value:
-						rv.value[name].value.append(copy.deepcopy(i))
+					rv.value[name].value.append(t)
+					
+				if isinstance(input,list):
+					
+					for i in input.copyValue():
+						rv.value[name].value.append(i)
 				else:
-					rv.value[name].value.append(copy.deepcopy(input.value))
+					rv.value[name].value.append(input.copyValue())
 			else:
 				console.alert('Error','Incorrect type to append to variable',button1='Ok',hide_cancel_button=True)
 				

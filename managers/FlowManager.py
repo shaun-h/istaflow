@@ -8,6 +8,7 @@ import copy
 import appex
 import sys
 import clipboard
+import traceback
 
 class FlowManager (object):
 	def __init__(self, elementchangecb):
@@ -64,12 +65,13 @@ class FlowManager (object):
 				element = elements[elementNumber-1]
 				self.elementchangecb(elementNumber)
 				elementType = element.get_type()
+				print(element.get_title())
 				self.set_runtime_element_params(element)
 				if element.get_input_type() == None:
 					output = element.run()
 				else:
 					if prevOutputType == element.get_input_type() or element.get_input_type() == '*':
-						if output == None or not output.isList or element.can_handle_list():
+						if output == None or not isinstance(output.value,list) or element.can_handle_list():
 							output = element.run(output)
 						else:
 							raise ValueError('List provided to ' + element.get_title() + ' and cant handle list')
@@ -78,7 +80,8 @@ class FlowManager (object):
 				self.get_runtime_element_params(element)
 				prevOutputType = output.type if output else element.get_output_type()
 				if elementType == 'Foreach':
-					foreachstore = [copy.deepcopy(output),elementNumber,len(output.value),0]
+					print('hit')
+					foreachstore = [output.copyMe(),elementNumber,len(output.value),0]
 					output.value = foreachstore[0].value[foreachstore[3]]
 					self.handle_foreach()
 				elif elementType == 'EndForeach':
@@ -152,8 +155,9 @@ class FlowManager (object):
 			return True, 'Flow completed successfully'
 		except KeyboardInterrupt:
 			return False, 'Cancelled by user'
-		except:
-			return False, str(sys.exc_info()[1])
+		#except:
+			#traceback.print_tb()
+			#return False, str(sys.exc_info()[1])
 	
 	def set_runtime_element_params(self, element):
 		params = element.get_params()

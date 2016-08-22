@@ -57,7 +57,6 @@ class GetVariable(ElementBase):
 		return 'Utility'
 	
 	def selected_callback(self, item):
-		print(item)
 		self.name = item.name
 		self.status = 'complete'
 		self.get_param_by_name('fm:nav_view').value.pop_view()
@@ -83,5 +82,5 @@ class GetVariable(ElementBase):
 		else:
 			self.name = np.value
 		self.name = self.name or console.input_alert(title='Please enter variable title', message=keysavailablemessage)
-		return copy.deepcopy(rv.value[self.name])
+		return rv.value[self.name].copyMe()
 
