@@ -155,7 +155,6 @@ class FlowManager (object):
 		except KeyboardInterrupt:
 			return False, 'Cancelled by user'
 		except:
-			traceback.print_tb()
 			return False, str(sys.exc_info()[1])
 	
 	def set_runtime_element_params(self, element):

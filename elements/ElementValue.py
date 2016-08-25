@@ -7,6 +7,10 @@ class ElementValue (object):
 		self.name = name
 		self.objcCopy = objcCopy
 	
+	@property
+	def isList(self):
+		return isinstance(self.value, list)
+	
 	def copyMe(self):
 		if self.objcCopy:
 			type = self.type
