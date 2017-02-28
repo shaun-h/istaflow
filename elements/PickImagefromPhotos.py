@@ -52,6 +52,6 @@ class PickImagefromPhotos(ElementBase):
 		return self.type
 		
 	def run(self):
-		img = photos.pick_image()
+		img = photos.pick_asset().get_ui_image()
 		return ElementValue(type = self.get_output_type(), value = img)
 
